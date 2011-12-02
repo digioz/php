@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IPAddresses>
+	<IPAddress>
+		<ip>62.45.104.22</ip>
+		<status>OK</status>
+		<timestamp>20090409</timestamp>
+	</IPAddress>
+	<IPAddress>
+		<ip>76.85.49.3</ip>
+		<status>BAD</status>
+		<timestamp>20090301</timestamp>
+	</IPAddress>
+</IPAddresses>

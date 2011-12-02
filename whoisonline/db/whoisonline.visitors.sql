@@ -1,0 +1,6 @@
+CREATE TABLE `visitors` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ip` VARCHAR(20) NOT NULL,
+  `modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY(`id`)
+);

@@ -1,0 +1,29 @@
+DigiOz Directory Indexer Version 1.2 Changelog:						     |
+-----------------------------------------------						     |
+- Fixed Data Sorting Issue that didn't used to sort by date correctly.                       |
+- Added ASC and DESC Sort by Name Functionality.                                             |
+- Added ASC and DESC Sort by Date Functionality. 					     |
+- Added ASC and DESC Sort by Size Functionality.                                             |
+											     |
+DigiOz Directory Indexer Version 1.1 Changelog:                                              |
+-----------------------------------------------                                              |
+- Added function for sorting by filename, filedate and filesize                              |
+- New File Data format for file date                                                         |
+- File sizes specified in KB                                                                 |
+- Multi-dimensional array used for storing and sorting directory file informations           |           
+                                                                                             |
+DigiOz Directory Indexer Version 1.0 Changelog:                                              |
+-----------------------------------------------                                              |
+- Script Creates list of all files in "files" directory and posts a link to them.            |
+- Number of columns that the list displays can be modified to meet demand.                   |           
+                                                                                             |
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

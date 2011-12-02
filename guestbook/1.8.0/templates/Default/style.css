@@ -1,0 +1,301 @@
+BODY, TD { font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; color: #000000; text-decoration: none; }
+
+A {  font-family: Verdana, Helvetica, Arial, sans-serif;  font-weight: normal; color: #000000; text-decoration: none; }
+
+A:Hover {
+	color: red;
+	background: #FAC6C6;
+}
+
+HR { height: 1pt; color: Maroon; }
+
+h1, h2, h3, h4 {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-variant: normal;
+	color: black;
+	width: 100%;
+	margin: 0 auto;
+	margin-bottom: 1.5em;
+	margin-top: 1em;
+	text-align: center;
+	padding: 0px;
+}
+.date{
+	  font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 8px; font-weight: normal; color: #000000; text-decoration: none; }
+.italic{
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #999999;
+	text-decoration: none;
+	font-style : italic;
+}
+input.button {
+	background-color : #C0C0C0;
+	color : #000000;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+INPUT {
+	background-color : #FFFFFF;
+	color : #000000;
+    border-color: #000000;
+	font-size: 11px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+TEXTAREA {
+	background-color : #FFFFFF;
+	color : #000000;
+        border-color: #000000;
+	font-size: 11px;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+div.gbookRecord {
+	margin: 0 auto;
+	background: #EFEFEF;
+	border: 1px solid #C0C0C0;
+	border-top: none;
+	width: 500px;
+	margin-bottom: 15px;
+	margin-top: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div.gbookRecordBanner{
+	margin: 0 auto;
+	background: url(images/toolbar.jpg) no-repeat;
+	border: 1px solid black;
+	height: 20px;
+	width: 500px;
+	border: 1px solid #C0C0C0;
+	margin-bottom: 0;
+}
+div.gbookAdminRecord {
+	margin: 0 auto;
+	background: #EFEFEF;
+	border: 1px solid #C0C0C0;
+	border-top: none;
+	width: 500px;
+	margin-bottom: 15px;
+	margin-top: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div.gbookAdminRecordBanner{
+	margin: 0 auto;
+	background: url(images/toolbar.jpg) no-repeat;
+	border: 1px solid black;
+	height: 20px;
+	width: 500px;
+	border: 1px solid #C0C0C0;
+	margin-bottom: 0;
+	font-size: 14px;
+}
+
+
+div.gbookRecord .gbookRecordLabel {
+	font-weight: bold;
+}
+
+div.gbookRecord p {
+	margin-bottom: 0;
+	margin-top: 0;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: left;
+	clear: both;
+}
+div.gbookRecord p.gbookRecordMsg {
+	margin-top: 1.5em;
+}
+
+.hidden {
+	display: none;
+}
+
+
+.red, p.alert, p.error, p.deleteRecordButton a, p.editRecordButton a {
+	color: red;
+}
+
+p.deleteRecordButton a, p.editRecordButton a {
+	font-weight: bold;
+}
+
+div.modifyButtons p.deleteRecordButton, div.modifyButtons p.editRecordButton {
+	margin-left: 1em;
+	margin-right: 1em;
+	padding: 2px;
+	border: 1px solid red;
+	width: 11em;
+	text-align: center;
+	float: left;
+	clear: none;
+}
+div.gbookRecord p.deleteRecordButton:hover, div.gbookRecord p.editRecordButton:hover {
+	background: #FAC6C6;
+}
+
+div.gbookRecord div.modifyButtons {
+	margin: 0 auto;
+	margin-bottom: 4em;
+	margin-top: .5em;
+	width: 28em;
+}
+
+p.newRecordTemplate{
+ 	align: center;
+}
+div.newGbookRecordSection {
+	margin: 0 auto;
+	background: #EFEFEF;
+	border: 1px solid #C0C0C0;
+	border-top: none;
+	width: 500px;
+	margin-bottom: 15px;
+	margin-top: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div.newGbookRecordSection div.smileyImages {
+        text-align: center;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+
+div.newGbookRecordSection p.newRecordInputBox{
+        width: 490px;
+        text-align: left;
+}
+
+div.newGbookRecordSection p.newRecordInputBox span.yourNameTextInput p.newRecordsubmitButton {
+	padding-top: 3px;
+	padding-bottom: 3px;
+        margin-right: 10%;
+        text-align: right;
+}
+
+div.newGbookRecordSection p.newRecordInputBox  span.younametext{
+        width: 140px;
+
+        margin-top: 4px;
+        font-size: 1.4em;
+        padding-left: 10px;
+        float: left;
+}
+
+
+div.newGbookRecordSection p.newRecordInputBox span.yourNameTextInput{
+        width: 340px;
+
+}
+
+span.addMsg{
+     color: red;
+     font-weight: bold;
+     text-align: center;
+}
+
+span.footer {
+    color: black;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+span.spamDetected {
+     font-size: 1em;
+     font-weight: bold;
+}
+
+span.addLink{
+    color: red;
+}
+span.search{
+     font-size: 1em;
+}
+
+p {
+	text-align: center;
+}
+
+p span.page_numbers{
+	font-size: 1em;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+        color: black;
+}
+
+ul.menu {
+	margin: 0 auto;
+	width: 500px;
+	margin-bottom: 1.5em;
+    margin-left: 0;
+	padding: 0;
+}
+
+ul.menu li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 2px;
+	text-align: center;
+	background: url(templates/Default/images/admin_menu_button.png) repeat-x top left;
+	height: 30px;
+}
+
+ul.menu li:hover {
+	background: #415c87;
+}
+
+ul.menu li {
+	background: #EFEFEF;
+}
+
+ul.menu li a {
+	font-size: 1.5em;
+	color:  black;
+	line-height: 30px;
+}
+ul.menu li a:hover {
+	background: #415c87;
+}
+
+
+.blue {
+	color: blue;
+}
+.green {
+	color: green;
+}
+.black {
+	color: black;
+}
+
+form#search {
+	margin: 0 auto;
+	width: 40em;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+table {
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+
+td, th {
+	vertical-align: top;
+	border: 1px solid #CCC7C7;
+	padding: 5px;
+}
+th {
+	font-size: 10pt;
+	text-align: left;
+}

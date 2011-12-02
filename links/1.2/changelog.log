@@ -1,0 +1,38 @@
+DigiOz Links Page Version 1.2 Changelog:                                                     |
+---------------------------------------                                                      |
+                                                                                             |
+- Your Name entered will now have to be 40 or less characters.                               |
+- Your Email entered will now have to be 40 or less characters.                              |
+- Your Link entered will now have to be 70 or less characters.                               |
+- You will have to entere an email address in the proper format                              |
+  for the scrip to add the entry to the guestbook.                                           |
+- Any words longer then 25 characters will now be broken up, to                              |
+  avoid the resizing of the table with of the guestbook by odd                               |
+  length word entries.                                                                       |
+- The "http://" will now be automatically placed in front of the                             |
+  links, if they don't already have it. Links that have two                                  |
+  "http://" will also automatically be corrected.                                            |
+                                                                                             |
+                                                                                             |
+DigiOz Links Page Version 1.1 Changelog:                                                     |
+---------------------------------------                                                      |
+- System dynamically breaks Links entries into pages.                                        |
+- You can choose how many links page entries per page you would like to view.                |                                                                                                    |
+- Some display formatting was done on the file add.php to allow better viewing of result     |
+- Option of the display New Entries First (on top of page) added                             |
+- Option to display New Entries Last (bottom of page) added                                  |
+- Problem with displaying double and single quotes fixed                                     |
+- HTML insertion in the body of guestbook entries has been disabled                          |
+- Smilie Face feature added to convert :) :( :o to smiley images.                            |
+- Default table background color changed from gray to white.                                 |
+- Each Links Entry is now stored on a new line in the list.txt file(Data Storage Change)     |
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

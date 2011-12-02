@@ -1,0 +1,20 @@
+DigiOz Guestbook Version 1.1 Changelog:                                  |
+---------------------------------------                                  |
+                                                                         |
+- Option of the display New Entries First (on top of page) added         |
+- Option to display New Entries Last (bottom of page) added              |
+- Problem with displaying double and single quotes fixed                 |
+- HTML insertion in the body of guestbook entries has been disabled      |
+- Smilie Face feature added to convert :) :( :o to smiley images.        |
+- Default table background color changed from gray to white.             |
+- Each Guestbook Entry is now stored on a new line in the list.txt file  |
+--------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

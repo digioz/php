@@ -1,0 +1,27 @@
+DigiOz Graphic PHP Counter Changelog:
+-------------------------------------
+
+Version 1.1
+-----------
+Stefan Hummert 	- www.donneker.de
+	- Worked on the counter.txt file locking to fix a bug that would reset the counter 
+	  if two people try to write to it at the same time
+	- Added domain URL and change file path to absolute path to enable placement of 
+	  counter anywhere at any level on a website
+Pete Soheil - www.digioz.com
+	- Created a seperate configuration file "config.php" to set the counter settings in.
+
+Version 1.0
+-----------
+Pete Soheil - www.digioz.com
+	- Wrote Initial Counter Code!
+
+
+
+
+
+
+
+
+
+

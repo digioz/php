@@ -1,0 +1,32 @@
+BODY, TD { font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; color: #000000; text-decoration: none; }
+ 
+A {  font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; color: #000000; text-decoration: none; }
+
+A:Hover {	color: red; }
+
+HR { height: 1pt; color: Maroon; }
+
+H1, H2, H3, H4 {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-variant: normal;
+	background-color: white;
+	color: black;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+.date{
+	  font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 8px; font-weight: normal; color: #000000; text-decoration: none; }
+.italic{
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #999999;
+	text-decoration: none;
+	font-style : italic;
+}
+input.button {
+	background-color : #C0C0C0;
+	color : #000000;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+}
