@@ -1,0 +1,94 @@
+What's New in DigiOz Guestbook Version 1.7.2:                                                |
+-------------------------------------------                                                  |
+- Browser input validation added to the following pages:  				     |
+		* admin/delete.php			 				     |
+		* admin/delete_process.php						     |
+		* admin/view.php							     |
+											     |
+What's New in DigiOz Guestbook Version 1.7.1:                                                |
+-------------------------------------------                                                  |
+- Small patch issued for previous version to prevent a security hole in the guestbook,       |
+  which allowed an attacker to obtain the absolute path to the server directory where        |
+  the guestbook is installed. 								     |
+											     |
+What's New in DigiOz Guestbook Version 1.7:                                                  |
+-------------------------------------------                                                  |
+- Guestbook Entries are now stored as OBJECTS into the text file (Pete).		     |
+- New Administrative Interface Allows Admin to Delete Guestbook Entries Safely (Pete).	     |
+- Some bug fixes on the code thanks to Mike (mr pain) and Robbert (Thank you both).	     |
+- New Search Feature Added, which allows searching by any entry field (Thanks Mike).	     |
+- Language File generator form now allows admin to create their own wording for language.    |
+- Option added to log visitor IP and Spammer IP Number and address.			     | 
+- Ban option added based on visitor's IP Number.					     | 
+- Spam block feature added based on keyword specified by admin in config.php file.	     |
+- Added Optional Image Verification Feature using GD library to avoid spam. 		     | 
+											     |
+What's New in DigiOz Guestbook Version 1.6:                                                  |
+-------------------------------------------                                                  |
+- Bad word filter was added to the guestbook system.                                         |
+- Messsage flooding prevention was added to the system.                                      |
+- German Language file translation corrected.                                                |
+                                                                                             |
+What's New in DigiOz Guestbook Version 1.5:                                                  |
+-------------------------------------------                                                  |
+- Language files included for guestbook for the following languages were added:              |
+	- Danish                                                                             |
+	- Swedish                                                                            |
+	- Greek                                                                              |
+- Email notification of administator was added.                                              |
+- Option added for making Email, Name and/or Message optional.                               |
+- All configuration adjustments can now be made from config.php file.                        |
+- All functions moved to the "functions.php" file for easier inclusion.                      |
+- New PHP file "index.php" was added which redirects visitor to the entry fom. It aslo       |
+  Provides additional security by not allowing visitors to access the guestbook directory.   |
+- GNU License was added to the script in order to make this code officially open source.     |
+- HTML tags are now disabled in Name field                                                   |
+                                                                                             |
+What's New in DigiOz Guestbook Version 1.4:                                                  |
+-------------------------------------------                                                  |
+- Language files included for guestbook for the following languages:                         |
+	- English                                                                            |
+	- German                                                                             |
+	- Dutch                                                                              |
+	- Philippino                                                                         |
+- JavaScript Smiley insertion buttons added to the entry add form                            |
+- UBB Code added for BOLD, UNDERLINED, ITALIC, and CENTER formatting                         |
+  of text entered in the guestbook                                                           |
+                                                                                             |
+DigiOz Guestbook Version 1.3 Changelog:                                                      |
+---------------------------------------                                                      |
+-Your Name entered will now have to be 40 or less characters.                                |
+-Your Email entered will now have to be 40 or less characters.                               |
+-You will have to entere an email address in the proper format                               |
+ for the scrip to add the entry to the guestbook.                                            |
+-Any words longer then 25 characters will now be broken up, to                               |
+ avoid the resizing of the table with of the guestbook by odd                                |
+ length word entries.                                                                        |
+                                                                                             |
+DigiOz Guestbook Version 1.2 Changelog:                                                      |
+---------------------------------------                                                      |
+- System dynamically breaks guestbook entries into pages.                                    |
+- You can choose how many guestbook entries per page you would like to view.                 |
+                                                                                             |
+- Some display formatting was done on the file add.php to allow better viewing of results.   |
+                                                                                             |
+DigiOz Guestbook Version 1.1 Changelog:                                                      |
+---------------------------------------                                                      |
+                                                                                             |
+- Option of the display New Entries First (on top of page) added                             |
+- Option to display New Entries Last (bottom of page) added                                  |
+- Problem with displaying double and single quotes fixed                                     |
+- HTML insertion in the body of guestbook entries has been disabled                          |
+- Smilie Face feature added to convert :) :( :o to smiley images.                            |
+- Default table background color changed from gray to white.                                 |
+- Each Guestbook Entry is now stored on a new line in the list.txt file(Data Storage Change) |
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
