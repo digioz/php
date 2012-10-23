@@ -1,6 +1,6 @@
-Thank You for Choosing the DigiOz Guestbook version 1.7.3.
+Thank You for Choosing the DigiOz Guestbook version 1.7.4.
 
-Changes in DigiOz Guestbook Version 1.7.3:
+Changes in DigiOz Guestbook Version 1.7.4:
 ------------------------------------------
 add.php 	  - Added additional sanitization to the log write code
 config.php 	  - moved the Guestbook version into this file
