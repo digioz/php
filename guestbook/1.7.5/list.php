@@ -31,6 +31,12 @@ $tpl->assign( "goback", $goback );
 $page = $_GET['page'];
 $order= $_GET['order'];
 
+if ($page == "" || $order == "")
+{
+    $page = 1;
+    $order = "asc";
+}
+
 // Validate browser input ------------------------------------------------------------
 
 if (is_numeric($page) == false) 
