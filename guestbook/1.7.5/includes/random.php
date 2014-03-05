@@ -1,9 +1,5 @@
 <?php
 
-if(!defined('IN_GB')) {
-   die('Direct access not permitted');
-}
-
 //start session 
 session_start(); 
   
@@ -18,7 +14,7 @@ $_SESSION['image_random_value'] = md5($rand);
   
 // choose background image 
 $bgNum = rand(1, 5); 
-$image = imagecreatefromjpeg("images/back$bgNum.jpg"); 
+$image = imagecreatefromjpeg("../images/back$bgNum.jpg"); 
   
   
 // Make text color blak 
