@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_STORIES_FORM_LBL_RATING_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="name" type="text"
+                
+            label="COM_STORIES_FORM_LBL_RATING_NAME"
+            description="COM_STORIES_FORM_DESC_RATING_NAME" 
+                
+                
+                 required="true" 
+            size="50"
+            maxlength="50" /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_STORIES_FORM_LBL_RATING_CREATED_BY"
+            description="COM_STORIES_FORM_DESC_RATING_CREATED_BY"  />
+
+	</fieldset>
+
+</form>

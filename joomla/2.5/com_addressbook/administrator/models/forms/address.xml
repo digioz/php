@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="firstname" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_FIRSTNAME"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_FIRSTNAME" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+       <field name="middlename" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_MIDDLENAME"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_MIDDLENAME" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+       <field name="lastname" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_LASTNAME"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_LASTNAME" 
+                
+                
+                 required="true" 
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+       <field name="company" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_COMPANY"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_COMPANY" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="100" /> 
+
+       <field name="address" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_ADDRESS"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_ADDRESS" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="100" /> 
+
+       <field name="address2" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_ADDRESS2"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_ADDRESS2" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="100" /> 
+
+       <field name="city" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_CITY"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_CITY" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+       <field name="statename" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_STATENAME"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_STATENAME" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+       <field name="country" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_COUNTRY"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_COUNTRY" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="50"
+            maxlength="50" /> 
+
+ 
+		<field name="email" type="email" label="Email" description="" validate="email"   /> 
+
+       <field name="website" type="textarea"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_WEBSITE"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_WEBSITE" 
+                
+                
+                
+            menu_published="0"
+            cols="100"
+            rows="8"
+            filter="url" /> 
+
+       <field name="twitter" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_TWITTER"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_TWITTER" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="100" /> 
+
+       <field name="facebook" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_FACEBOOK"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_FACEBOOK" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="200" /> 
+
+       <field name="linkedin" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_LINKEDIN"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_LINKEDIN" 
+                
+                
+                
+            menu_published="0"
+            filter="raw"
+            size="100"
+            maxlength="200" /> 
+
+       <field name="birthdate" type="calendar"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_BIRTHDATE"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_BIRTHDATE" 
+                
+                
+                 /> 
+
+       <field name="workphone" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_WORKPHONE"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_WORKPHONE" 
+                
+                
+                
+            filter="tel"
+            size="50"
+            maxlength="100" /> 
+
+       <field name="homephone" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_HOMEPHONE"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_HOMEPHONE" 
+                
+                
+                
+            filter="tel"
+            size="50"
+            maxlength="100" /> 
+
+       <field name="mobilephone" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_MOBILEPHONE"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_MOBILEPHONE" 
+                
+                
+                
+            filter="tel"
+            size="50"
+            maxlength="100" /> 
+
+       <field name="fax" type="text"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_FAX"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_FAX" 
+                
+                
+                
+            filter="tel"
+            size="50"
+            maxlength="100" /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_CREATED_BY"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_CREATED_BY"  /> 
+
+       <field name="notes" type="editor"
+                
+            label="COM_ADDRESSBOOK_FORM_LBL_ADDRESS_NOTES"
+            description="COM_ADDRESSBOOK_FORM_DESC_ADDRESS_NOTES" 
+                
+                
+                
+            cols="100"
+            rows="8" /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+
+	</fieldset>
+
+</form>

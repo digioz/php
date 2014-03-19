@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_STORIES_TITLE_LIST_VIEW_STORIES" option="View">
+        <message>
+                        <![CDATA[COM_STORIES_TITLE_LIST_VIEW_STORIES_DESC]]>
+        </message>
+	</layout>
+</metadata>
