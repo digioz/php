@@ -10,7 +10,7 @@ $gb_version = "1.7.5";
 
 // Theme directory -------------------------------------------------------------------
 
-$theme = "simple";
+$theme = "default";
 
 // Variables for making a field optional in form -------------------------------------
 
@@ -34,7 +34,7 @@ $notify_message     = "A new entry has been submitted to your DigiOz Guestbook."
 
 // Guestbook Configuration Variables ------------------------------------------------
 
-$total_records_per_page	= 5;	// determines how many messages show per page in list
+$total_records_per_page	= 2;	// determines how many messages show per page in list
 
 // Variable for choosing language file name -----------------------------------------
 
@@ -42,7 +42,7 @@ $default_language   = "language.php";
 
 // Image Verification Feature -------------------------------------------------------
 
-$image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha.
+$image_verify       = 1;      // Set to 1 for simple, or 2 for Recaptcha.
 							  // If you select 2, you have to set the Recaptcha 
 							  // public and private keys below as well
 							  // Do Image Verification to prevent spam post

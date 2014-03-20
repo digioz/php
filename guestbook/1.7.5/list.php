@@ -139,35 +139,45 @@ else
 			echo $html;
 	}
 
-	echo "<center>";
 
+	echo '<ul id="pagination-freebie"><ul class="pagination dark">';
+	echo "<center>";
+	
 	// Creating the Forward and Backward links -------------------------------------
 
 	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
 	{
-		echo "<br><a href=\"list.php?page=$fwd&order=$order\">&lt&lt</a>";
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&gt&gt</a><br>";
-	}
-	else if ($fwd == 0)
-	{ 
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&gt&gt</a><br>"; 
+		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>";
 	}
 	else if ($rwd == 0)
 	{ 
-		echo "<br><a href=\"list.php?page=$fwd&order=$order\">&lt&lt</a>"; 
+		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
 	}
 	else if ($rwd == $totalpages+1)
 	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\">&lt&lt</a><br>"; 
-	}
-
-	for ($i = 1; $i<=$totalpages; $i++)
-	{
-		echo " <b>[ <a href=\"list.php?page=$i&order=$order\"><b>$i</b></a> ]</b> ";
+		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
 	}
 	
-	echo "</center>";
+	// loop through and display each page number
+	
+	for ($i = 1; $i<=$totalpages; $i++)
+	{
+		echo "<b><a href=\"list.php?page=$i&order=$order\"><li><b>$i</b></li></a></b>";
+	}
+	
+	
+	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
+	{
+		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"next\">&gt&gt</li></a>";
+	}
+	else if ($fwd == 0)
+	{ 
+		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"next\">&gt&gt</li></a>"; 
+	}
+	
 
+	echo "</ul></ul>";
+	echo "</center>";
 }
 
 	$html = $tpl->draw( 'footer', $return_string = true );

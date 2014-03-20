@@ -148,9 +148,11 @@ if (filesize($filename) == 0)
         echo $html;
     }
 
+	echo '<ul id="pagination-freebie"><ul class="pagination dark">';
+	
     // Navigation Bar  
     $self = $_SERVER['PHP_SELF'];                       // This page's path used in link creation
-    $gbSearchNav = "<p  align='center' style=\"font-size: 12px; font-weight: bold; text-decoration: none;    background-color: #FFFFFF;\">"; 
+    $gbSearchNav = ""; 
     $numNavItems = 10;                                  // Number of seperate page links to display in nav menu
 
     $numNavGroup = (INT)(($pageNum-1)/$numNavItems) ;   // Calculate number of navigation groups
@@ -171,24 +173,25 @@ if (filesize($filename) == 0)
 
     if($numNavGroup >0)
     { // Add first page and back nav (chevrons)to menu 
-        $gbSearchNav .= "<a href=\"$self?page=1&search_term=$search\">&nbsp;Page 1&nbsp;</a>";
-        $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=$search\">&nbsp;&lt;&lt;&lt;&nbsp;</a>";
+        $gbSearchNav .= "<a href=\"$self?page=1&search_term=$search\"><li>&nbsp;Page 1&nbsp;</li></a>";
+        $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=$search\"><li class=\"prev\">&nbsp;&lt;&lt;&lt;&nbsp;</li></a>";
     }
 
     // Add page nav core group and square brackets or other separator. 
     for($page = $numNavGroup*$numNavItems+1; $page < $ref+1; $page++)
     {
-        $gbSearchNav .=  "[<a href=\"$self?page=$page&search_term=$search\">$page</a>]&nbsp;";
+        $gbSearchNav .=  "<a href=\"$self?page=$page&search_term=$search\"><li>$page</li></a>&nbsp;";
     }
 
     if($numberOfPages >(($numNavGroup+1)*$numNavItems) )
     {                                                   // Add last page and forward nav
-        $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=$search\">&gt;&gt&gt;</a> ";
-        $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=$search\">Page $numberOfPages</a> ";
+        $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=$search\"><li class=\"prev\">&gt;&gt&gt;</li></a> ";
+        $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=$search\"><li>Page $numberOfPages</li></a> ";
     }
 
-    $gbSearchNav .= "</P>";                             // complete the paragraph
     echo $gbSearchNav;                                  // after all that hard work display it
+	
+	echo "</ul></ul>";
   
     // Write Footer 
     $html = $tpl->draw( 'footer', $return_string = true );
