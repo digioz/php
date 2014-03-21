@@ -31,6 +31,8 @@ $tpl->assign( "goback", $goback );
 $page = $_GET['page'];
 $order= $_GET['order'];
 
+$currentPage = $page;
+
 if ($page == "" || $order == "")
 {
     $page = 1;
@@ -58,8 +60,8 @@ if (!($order == "asc" || $order == "desc"))
 // -----------------------------------------------------------------------------------
 
 if ($page == "") { $page = 1; }
-$fwd = $page - 1;
-$rwd = $page +1;
+$fwd = $page + 1;
+$rwd = $page - 1;
 
 // Setting the default values for number of records per page -------------------------
 
@@ -139,44 +141,50 @@ else
 			echo $html;
 	}
 
+    echo "<center><div style=\"width:100%\">";
+	echo '<br><ul id="pagination-freebie"><ul class="pagination dark">';
 
-	echo '<ul id="pagination-freebie"><ul class="pagination dark">';
-	echo "<center>";
 	
 	// Creating the Forward and Backward links -------------------------------------
 
-	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
+	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
 	{
-		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>";
+		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"prev\">&lt</li></a>";
 	}
-	else if ($rwd == 0)
+	else if ($rwd > 0)
 	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
+		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"prev\">&lt</li></a>"; 
 	}
-	else if ($rwd == $totalpages+1)
-	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
-	}
+	//else if ($rwd == $totalpages+1)
+	//{ 
+	//	echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
+	//}
 	
 	// loop through and display each page number
 	
 	for ($i = 1; $i<=$totalpages; $i++)
 	{
-		echo "<b><a href=\"list.php?page=$i&order=$order\"><li><b>$i</b></li></a></b>";
+        if ($currentPage == $i)
+        {
+             echo "<b><a href=\"list.php?page=$i&order=$order\"><li style=\"color:#8BBBE0;\"><b>$i</b></li></a></b>";  
+        }
+        else
+        {
+            echo "<b><a href=\"list.php?page=$i&order=$order\"><li><b>$i</b></li></a></b>"; 
+        }
 	}
-	
-	
-	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
+
+	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
 	{
-		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"next\">&gt&gt</li></a>";
+		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"next\">&gt</li></a>";
 	}
-	else if ($fwd == 0)
+	else if ($fwd > 0 && $fwd <= $totalpages)
 	{ 
-		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"next\">&gt&gt</li></a>"; 
+		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"next\">&gt</li></a>"; 
 	}
 	
 
-	echo "</ul></ul>";
+	echo "</ul></ul></div>";
 	echo "</center>";
 }
 
