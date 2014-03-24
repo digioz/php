@@ -109,8 +109,7 @@ for ($i=0; $i<$outCount; $i++)
   }
 }
 
-//$URL="delete.php";
-//header ("Location: $URL");
+include("includes/header.php");  
 
 ?>
 
@@ -126,14 +125,8 @@ for ($i=0; $i<$outCount; $i++)
 </tr>
 </table></center>
 
-<p>&nbsp;</p>
-<p>
-<center>
-        <a href="index.php"><font color="red"><b>Admin Main</b></font></a> -
-        <a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a>
-</center></p>
-
-</body>
-</html>
+<?php
+include ("includes/footer.php");
+?>
 
 

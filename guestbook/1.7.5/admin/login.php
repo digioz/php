@@ -25,21 +25,49 @@ if (isset($_POST['Submitted']))
 } 
 
 // If they are NOT logged in then show the form to login... 
-if ($_SESSION['Logged_In'] != "True") { 
+if ($_SESSION['Logged_In'] != "True") {
 
-    echo "<br><h1 align=\"center\">Guestbook Admin Interface</h1><br><br><center><table bgcolor=#EFEFEF bordercolor=#C0C0C0 border=1 width=300 cellspacing=0 cellpadding=10><tr><td>";
-    echo "<center><br><br><form method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">
-        <b>Username: </b> <input type=\"textbox\" name=\"Username\"><br />
-        <b>Password: </b> <input type=\"password\" name=\"Password\"><br />
-        <input type=\"hidden\" name=\"Submitted\" value=\"True\"><br />
-        <input type=\"Submit\" name=\"Submit\" value=\"Log In\">
-    </form></center>";
-    echo "</td></tr></table></center>";
+?> 
+    
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>DigiOz Guestbook Admin Interface Login</title>
+<link rel="stylesheet" type="text/css" href="css/login.css" media="screen" />
+</head>
+<body>
+<div class="wrap">
+    <div id="content">
+        <h3>Guestbook Admin Interface Login</h3> 
+        <p>&nbsp;</p>
+        <div id="main">
+            <div class="full_w">
+            
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <label for="login">Username:</label>
+                    <input id="login" name="Username" class="text" />
+                    <label for="pass">Password:</label>
+                    <input id="pass" name="Password" type="password" class="text" />
+                    <input type="hidden" name="Submitted" value="True">
+                    <br /> 
+                    <div class="sep"></div>
+                    <button type="submit" class="ok">Login</button>
+                </form>
+            </div>
+            <div class="footer"> <a href="http://www.digioz.com">&copy; 2007- <?php echo date("Y"); ?> DigiOz Multimedia, Inc.</a> </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>   
+    
+<?php
 } 
 else 
 { 
     //echo "<center><font size=\"-1\">You are logged in as: <b>" . $_SESSION['Username'] . "</b> <a href=\"" . $_SERVER['PHP_SELF'] . "?mode=logout\">Logout</a></font></center>";
-    
     //echo "<center><h2><a href=\"index.php\">Enter Admin Interface</a></h2></center>";
     $URL="index.php";
     header ("Location: $URL");

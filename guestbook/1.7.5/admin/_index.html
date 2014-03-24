@@ -1,8 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="author" content="Paweł 'kilab' Balicki - kilab.pl" />
 <title>SimpleAdmin</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/navi.css" media="screen" />
@@ -20,43 +19,35 @@ $(function(){
 	<div id="header">
 		<div id="top">
 			<div class="left">
-				<p>Welcome, <strong>Paweł B.</strong> [ <a href="">logout</a> ]</p>
+				<p>[ <a href="">logout</a> ]</p>
 			</div>
 			<div class="right">
 				<div class="align-right">
-					<p>Last login: <strong>23-04-2012 23:12</strong></p>
+					<p>Guestbook Admin Interface</p>
 				</div>
 			</div>
 		</div>
 		<div id="nav">
 			<ul>
-				<li class="upp"><a href="#">Main control</a>
+				<li class="upp"><a href="#">Entry Management</a>
 					<ul>
-						<li>&#8250; <a href="">Visit site</a></li>
-						<li>&#8250; <a href="">Reports</a></li>
-						<li>&#8250; <a href="">Add new page</a></li>
-						<li>&#8250; <a href="">Site config</a></li>
+						<li>&#8250; <a href="delete.php">Entry List</a></li>
 					</ul>
 				</li>
-				<li class="upp"><a href="#">Manage content</a>
+				<li class="upp"><a href="#">Tracking</a>
 					<ul>
-						<li>&#8250; <a href="">Show all pages</a></li>
-						<li>&#8250; <a href="">Add new page</a></li>
-						<li>&#8250; <a href="">Add new gallery</a></li>
-						<li>&#8250; <a href="">Categories</a></li>
+						<li>&#8250; <a href="view.php?lg=1">View User IP</a></li>
+						<li>&#8250; <a href="view.php?lg=2">View Spammer IP</a></li>
 					</ul>
 				</li>
-				<li class="upp"><a href="#">Users</a>
+				<li class="upp"><a href="#">Languages</a>
 					<ul>
-						<li>&#8250; <a href="">Show all uses</a></li>
-						<li>&#8250; <a href="">Add new user</a></li>
-						<li>&#8250; <a href="">Lock users</a></li>
+						<li>&#8250; <a href="generate_language.php">Generate Language File</a></li>
 					</ul>
 				</li>
 				<li class="upp"><a href="#">Settings</a>
 					<ul>
-						<li>&#8250; <a href="">Site configuration</a></li>
-						<li>&#8250; <a href="">Contact Form</a></li>
+						<li>&#8250; <a href="view.php?lg=3">Current Settings</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -66,42 +57,34 @@ $(function(){
 	<div id="content">
 		<div id="sidebar">
 			<div class="box">
-				<div class="h_title">&#8250; Main control</div>
+				<div class="h_title">&#8250; Entry Management</div>
 				<ul id="home">
-					<li class="b1"><a class="icon view_page" href="">Visit site</a></li>
-					<li class="b2"><a class="icon report" href="">Reports</a></li>
-					<li class="b1"><a class="icon add_page" href="">Add new page</a></li>
-					<li class="b2"><a class="icon config" href="">Site config</a></li>
+					<li class="b1"><a class="icon view_page" href="delete.php">Entry List</a></li>
 				</ul>
 			</div>
 			
 			<div class="box">
-				<div class="h_title">&#8250; Manage content</div>
+				<div class="h_title">&#8250; Tracking</div>
 				<ul>
-					<li class="b1"><a class="icon page" href="">Show all pages</a></li>
-					<li class="b2"><a class="icon add_page" href="">Add new page</a></li>
-					<li class="b1"><a class="icon photo" href="">Add new gallery</a></li>
-					<li class="b2"><a class="icon category" href="">Categories</a></li>
+					<li class="b1"><a class="icon category" href="view.php?lg=1">View User IP</a></li>
+					<li class="b2"><a class="icon category" href="view.php?lg=2">View Spammer IP</a></li>
 				</ul>
 			</div>
 			<div class="box">
-				<div class="h_title">&#8250; Users</div>
+				<div class="h_title">&#8250; Languages</div>
 				<ul>
-					<li class="b1"><a class="icon users" href="">Show all users</a></li>
-					<li class="b2"><a class="icon add_user" href="">Add new user</a></li>
-					<li class="b1"><a class="icon block_users" href="">Lock users</a></li>
+					<li class="b1"><a class="icon users" href="generate_language.php">Generate Language File</a></li>
 				</ul>
 			</div>
 			<div class="box">
 				<div class="h_title">&#8250; Settings</div>
 				<ul>
-					<li class="b1"><a class="icon config" href="">Site configuration</a></li>
-					<li class="b2"><a class="icon contact" href="">Contact Form</a></li>
+					<li class="b1"><a class="icon config" href="view.php?lg=3">Current Settings</a></li>
 				</ul>
 			</div>
 		</div>
 		<div id="main">
-			<div class="half_w half_left">
+			<!--<div class="half_w half_left">
 				<div class="h_title">Visits statistics</div>
 					<script src="js/highcharts_init.js"></script>
 					<div id="container" style="min-width: 300px; height: 180px; margin: 0 auto"></div>
@@ -131,7 +114,7 @@ $(function(){
 				</div>
 			</div>
 			
-			<div class="clear"></div>
+			<div class="clear"></div>-->
 			
 			<div class="full_w">
 				<div class="h_title">Paragraph, headers, lists, notify</div>

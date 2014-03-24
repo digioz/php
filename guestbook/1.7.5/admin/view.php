@@ -7,15 +7,11 @@ define('IN_GB', TRUE);
 session_start();
 
 include("login_check.php");
+include("includes/header.php");  
 ?>
-<html>
-<head><title>Guestbook Admin Interface</title></head>
-  <link rel="STYLESHEET" type="text/css" href="../style.css">
-<body>
 
-<br>
-<h2 align="center">IP Tracking Interface</h2>
-<br><br><center>
+<center>
+
 <?php
 
 $lg = $_GET['lg'];
@@ -146,13 +142,6 @@ else
 
 <!-- Footer Starts Here -->
 
-<p>&nbsp;</p>
-<p>
-<center>
-        <a href="index.php"><font color="red"><b>Admin Main</b></font></a> -
-        <a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a>
-</center>
-</p>
-
-</body>
-</html>
+<?php
+include ("includes/footer.php");
+?>

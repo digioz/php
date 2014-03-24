@@ -7,17 +7,11 @@ define('IN_GB', TRUE);
 session_start();
 
 include("login_check.php");
+include("includes/header.php"); 
 
 ?>
 
-<html>
-<head><title>DigiOz Guestbook Administrative Interface</title></head>
-  <link rel="STYLESHEET" type="text/css" href="../style.css">
-<body>
-
-<br>
-<h2 align="center">Guestbook Admin Interface</h2>
-<br><br><center>
+<center>
 
 <?php
 
@@ -171,14 +165,9 @@ echo "</center>";
 
 ?>
 </center>
-<p>&nbsp;</p>
-<p>
-<center>
-        <a href="index.php"><font color="red"><b>Admin Main</b></font></a> -
-        <a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a>
-</center></p>
 
-</body>
-</html>
+<?php
+include ("includes/footer.php");
+?>
 
 
