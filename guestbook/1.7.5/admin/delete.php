@@ -2,6 +2,8 @@
 
 // Begin Login Verification --------------------------------------------
 
+define('IN_GB', TRUE);
+
 session_start();
 
 include("login_check.php");
@@ -19,8 +21,8 @@ include("login_check.php");
 
 <?php
 
-include("../gbclass.php");
-include("../config.php");
+include("../includes/gbclass.php");
+include("../includes/config.php");
 include("../language/$default_language");
 
 $page = isset($_GET['page']) ? $_GET['page'] : "";
@@ -130,15 +132,15 @@ for ($i=$end-1; $i>$start-2; $i--)
 	echo "<a href=\"delete_process.php?id=".$i."\"><b><font color=red>Delete</font></b></a><br>";
         echo "<table bgcolor=#EFEFEF bordercolor=#C0C0C0 border=1 width=500 cellspacing=0 cellpadding=10><tr><td>";
         echo "<b>$listDatetxt: </b>";
-        $lines[$i]->showDate();
-	echo "<br><b>$listnametxt: </b>";
-        $lines[$i]->showFrom();
+        echo $lines[$i]->gbDate;
+	    echo "<br><b>$listnametxt: </b>";
+        echo $lines[$i]->gbFrom;
         echo "<br><b>$listemailtxt: </b><a href=\"mailto:";
-        $lines[$i]->showEmail();
+        echo $lines[$i]->gbEmail;
         echo "\">";
-        $lines[$i]->showEmail();
+        echo $lines[$i]->gbEmail;
         echo "</a><br><br><b>$listMessagetxt: </b>";
-        $lines[$i]->showMessage();
+        echo $lines[$i]->gbMessage;
         echo "</td></tr></table><br>";
 }
 

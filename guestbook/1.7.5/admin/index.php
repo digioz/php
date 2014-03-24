@@ -2,6 +2,8 @@
 
 // Begin Login Verification --------------------------------------------
 
+define('IN_GB', TRUE);
+
 session_start();
 
 include("login_check.php");

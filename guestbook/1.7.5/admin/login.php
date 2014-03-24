@@ -2,11 +2,13 @@
 
 // This starts the session ---------------------------------------------
 
+define('IN_GB', TRUE);
+
 session_start();
 
 // This is the administrative Username and Password --------------------
 
-include("../config.php");
+include("../includes/config.php");
 
 // If the form was submitted -------------------------------------------
 

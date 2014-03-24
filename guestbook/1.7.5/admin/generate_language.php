@@ -1,5 +1,7 @@
 <?php
 
+define('IN_GB', TRUE);
+
 // Begin Login Verification --------------------------------------------
 
 session_start();

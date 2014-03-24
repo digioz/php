@@ -2,6 +2,8 @@
 
 // Begin Login Verification --------------------------------------------
 
+define('IN_GB', TRUE);
+
 session_start();
 
 include("login_check.php");
@@ -61,7 +63,7 @@ elseif ($lg == 3)
   echo "<center><h3 align=\"center\"><u>Current Guestbook Settings</u></h3>";
   echo "<br><br><u><b>Note</b></u>: To change any of the above values, simply open the file <b>config.php</b> in notepad<br>and changes the corresponding value to '1' to '0' depending on your selection.";
 
-  include("../config.php");
+  include("../includes/config.php");
   
   echo "<br><br><table border=1 bordercolor=#C0C0C0 width=600>";
   echo "<tr><td><b><center>Setting</center></b></td><td><b><center>Option Selected</center></b></td></tr>";

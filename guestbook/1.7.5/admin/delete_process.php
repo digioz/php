@@ -2,12 +2,14 @@
 
 // Begin Login Verification --------------------------------------------
 
+define('IN_GB', TRUE);
+
 session_start();
 
 include("login_check.php");
 
-include("../gbclass.php");
-include("../config.php");
+include("../includes/gbclass.php");
+include("../includes/config.php");
 include("../language/$default_language");
 
 $order= isset($_GET['order']) ? $_GET['order'] : "";
