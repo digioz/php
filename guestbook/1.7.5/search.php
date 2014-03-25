@@ -148,7 +148,7 @@ if (filesize($filename) == 0)
         echo $html;
     }
 
-	echo '<ul id="pagination-freebie"><ul class="pagination dark">';
+	echo '<div class="pagination">';
 	
     // Navigation Bar  
     $self = $_SERVER['PHP_SELF'];                       // This page's path used in link creation
@@ -173,25 +173,25 @@ if (filesize($filename) == 0)
 
     if($numNavGroup >0)
     { // Add first page and back nav (chevrons)to menu 
-        $gbSearchNav .= "<a href=\"$self?page=1&search_term=$search\"><li>&nbsp;Page 1&nbsp;</li></a>";
-        $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=$search\"><li class=\"prev\">&nbsp;&lt;&lt;&lt;&nbsp;</li></a>";
+        $gbSearchNav .= "<a href=\"$self?page=1&search_term=$search\">&nbsp;Page 1&nbsp;</a>";
+        $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=$search\">&nbsp;&lt;&lt;&lt;&nbsp;</a>";
     }
 
     // Add page nav core group and square brackets or other separator. 
     for($page = $numNavGroup*$numNavItems+1; $page < $ref+1; $page++)
     {
-        $gbSearchNav .=  "<a href=\"$self?page=$page&search_term=$search\"><li>$page</li></a>&nbsp;";
+        $gbSearchNav .=  "<a href=\"$self?page=$page&search_term=$search\">$page</a>&nbsp;";
     }
 
     if($numberOfPages >(($numNavGroup+1)*$numNavItems) )
     {                                                   // Add last page and forward nav
-        $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=$search\"><li class=\"prev\">&gt;&gt&gt;</li></a> ";
-        $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=$search\"><li>Page $numberOfPages</li></a> ";
+        $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=$search\">&gt;&gt&gt;</a> ";
+        $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=$search\">Page $numberOfPages</a> ";
     }
 
     echo $gbSearchNav;                                  // after all that hard work display it
 	
-	echo "</ul></ul>";
+	echo "</div>";
   
     // Write Footer 
     $html = $tpl->draw( 'footer', $return_string = true );
