@@ -141,7 +141,7 @@ else
 			echo $html;
 	}
 
-    echo "<center><div style=\"width:100%\">";
+    echo "<center>";
 	echo '<br><ul id="pagination-freebie"><ul class="pagination dark">';
 
 	
@@ -184,7 +184,7 @@ else
 	}
 	
 
-	echo "</ul></ul></div>";
+	echo "</ul></ul>";
 	echo "</center>";
 }
 

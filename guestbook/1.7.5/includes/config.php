@@ -34,7 +34,7 @@ $notify_message     = "A new entry has been submitted to your DigiOz Guestbook."
 
 // Guestbook Configuration Variables ------------------------------------------------
 
-$total_records_per_page	= 5;	// determines how many messages show per page in list
+$total_records_per_page	= 10;	// determines how many messages show per page in list
 
 // Variable for choosing language file name -----------------------------------------
 
