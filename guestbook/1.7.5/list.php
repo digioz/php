@@ -142,23 +142,19 @@ else
 	}
 
     echo "<center>";
-	echo '<br><ul id="pagination-freebie"><ul class="pagination dark">';
+	echo '<br><div class="pagination">';
 
 	
 	// Creating the Forward and Backward links -------------------------------------
 
 	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
 	{
-		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"prev\">&lt</li></a>";
+		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>";
 	}
 	else if ($rwd > 0)
 	{ 
-		echo "<a href=\"list.php?page=$rwd&order=$order\"><li class=\"prev\">&lt</li></a>"; 
+		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>"; 
 	}
-	//else if ($rwd == $totalpages+1)
-	//{ 
-	//	echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"prev\">&lt&lt</li></a>"; 
-	//}
 	
 	// loop through and display each page number
 	
@@ -166,25 +162,25 @@ else
 	{
         if ($currentPage == $i)
         {
-             echo "<b><a href=\"list.php?page=$i&order=$order\"><li style=\"color:#8BBBE0;\"><b>$i</b></li></a></b>";  
+             echo "<b><a href=\"list.php?page=$i&order=$order\" class=\"pagination current\"><b>$i</b></a></b>";  
         }
         else
         {
-            echo "<b><a href=\"list.php?page=$i&order=$order\"><li><b>$i</b></li></a></b>"; 
+            echo "<b><a href=\"list.php?page=$i&order=$order\">$i</a></b>"; 
         }
 	}
 
 	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
 	{
-		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"next\">&gt</li></a>";
+		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>";
 	}
 	else if ($fwd > 0 && $fwd <= $totalpages)
 	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\"><li class=\"next\">&gt</li></a>"; 
+		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>"; 
 	}
 	
 
-	echo "</ul></ul>";
+	echo "</div>";
 	echo "</center>";
 }
 
