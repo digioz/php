@@ -147,8 +147,9 @@ else
 	
 	// Creating the Forward and Backward links -------------------------------------
 
-	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
+	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
 	{
+		echo "<a href=\"list.php?page=1&order=$order\">&lt&lt</a>";
 		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>";
 	}
 	else if ($rwd > 0)
@@ -158,7 +159,21 @@ else
 	
 	// loop through and display each page number
 	
-	for ($i = 1; $i<=$totalpages; $i++)
+	$startPagination = $currentPage - 3;
+	$endPagination = $currentPage + 3;
+
+	if ($startPagination < 1)
+	{
+		$startPagination = 1;
+	}
+
+	if ($endPagination > $totalpages)
+	{
+		$endPagination = $totalpages;
+	}
+	
+	//for ($i = 1; $i<=$totalpages; $i++)
+	for ($i = $startPagination; $i<=$endPagination; $i++)  
 	{
         if ($currentPage == $i)
         {
@@ -179,6 +194,10 @@ else
 		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>"; 
 	}
 	
+	if ($currentPage < $totalpages)
+	{
+		echo "<a href=\"list.php?page=$totalpages&order=$order\">&gt&gt</a>"; 
+	}
 
 	echo "</div>";
 	echo "</center>";
