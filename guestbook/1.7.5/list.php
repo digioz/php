@@ -133,9 +133,9 @@ else
 			$tpl->assign( "listemailtxt", $listemailtxt);
 			$tpl->assign( "listMessagetxt", $listMessagetxt);
 			$tpl->assign( "outputdate", $lines[$i]->gbDate);
-			$tpl->assign( "outputfrom", stripslashes($lines[$i]->gbFrom));
+			$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
 			$tpl->assign( "outputemail", $lines[$i]->gbEmail);
-			$tpl->assign( "outputmessage", smiley_face(stripslashes($lines[$i]->gbMessage)));
+			$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
 			
 			$html = $tpl->draw( 'list', $return_string = true );
 			echo $html;

@@ -105,7 +105,7 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
         
     <tbody>
         <tr>
-            <td><?php echo stripslashes($lines[$i]->gbFrom); ?></td>
+            <td><?php echo $lines[$i]->gbFrom; ?></td>
             <td><a href="mailto:<?php echo $lines[$i]->gbEmail; ?>"><?php echo $lines[$i]->gbEmail; ?></a></td>
             <td><?php echo $lines[$i]->gbDate; ?></td>
             <td>
@@ -116,7 +116,7 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
         </tr>
         <tr>
              <td colspan="4">
-                <?php echo smiley_face(stripslashes($lines[$i]->gbMessage)); ?>   
+                <?php echo $lines[$i]->gbMessage; ?>   
              </td>
         </tr>
     </tbody>
