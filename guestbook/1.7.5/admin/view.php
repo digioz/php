@@ -7,6 +7,21 @@ define('IN_GB', TRUE);
 session_start();
 
 include("login_check.php");
+$lg = $_GET['lg'];
+
+if ($lg == "1")
+{
+	$pageTitle = "User IP Log"; 
+}
+else if ($lg == "2")
+{
+	$pageTitle = "Spammer IP Log"; 
+}
+else if ($lg == "3")
+{
+	$pageTitle = "Guestbook Settings"; 
+}
+
 include("includes/header.php");  
 ?>
 
@@ -14,7 +29,7 @@ include("includes/header.php");
 
 <?php
 
-$lg = $_GET['lg'];
+
 
 // Validate browser input ------------------------------------------------------------
 

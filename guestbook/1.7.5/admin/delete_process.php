@@ -7,6 +7,7 @@ define('IN_GB', TRUE);
 session_start();
 
 include("login_check.php");
+include("includes/header.php"); 
 
 include("../includes/gbclass.php");
 include("../includes/config.php");
@@ -16,14 +17,7 @@ $order= isset($_GET['order']) ? $_GET['order'] : "";
 
 ?>
 
-<html>
-<head><title>DigiOz Guestbook Administrative Interface</title></head>
-  <link rel="STYLESHEET" type="text/css" href="../style.css">
-<body>
-
-<br>
-<h2 align="center">Guestbook Admin Interface</h2>
-<br><br><center>
+<center>
 
 <?php
 
@@ -109,21 +103,18 @@ for ($i=0; $i<$outCount; $i++)
   }
 }
 
-include("includes/header.php");  
 
 ?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
-<center><table bgcolor=#C0C0C0 bordercolor=#C0C0C0 border=1 width=300 cellspacing=0 cellpadding=10 height=200>
-
-<tr>
-    <td> 
-    
-         <a href="delete.php"><center><b><font color="red">Message Deleted!</font></center></b></a><br><br>
-         <a href="delete.php"><center><b><font color="black">Back to Delete Menu</font></center></b></a><br>
-    
-    </td>
-</tr>
-</table></center>
+         <a href="index.php"><center><b><font color="red">Message Deleted!</font></center></b></a><br><br>
+         <a href="index.php"><center><b><font color="black">Back to Delete Menu</font></center></b></a><br>
+		 
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</center>
 
 <?php
 include ("includes/footer.php");

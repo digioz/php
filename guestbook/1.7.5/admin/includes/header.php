@@ -38,7 +38,6 @@ $(function(){
 				<li class="upp"><a href="#">Entry Management</a>
 					<ul>
 						<li>&#8250; <a href="index.php">Home</a></li>
-						<li>&#8250; <a href="delete.php">Entry List</a></li>
 					</ul>
 				</li>
 				<li class="upp"><a href="#">Tracking</a>
@@ -67,15 +66,14 @@ $(function(){
 				<div class="h_title">&#8250; Entry Management</div>
 				<ul id="home">
 					<li class="b1"><a class="icon view_page" href="index.php">Home</a></li>
-					<li class="b1"><a class="icon page" href="delete.php">Entry List</a></li>
 				</ul>
 			</div>
 			
 			<div class="box">
 				<div class="h_title">&#8250; Tracking</div>
 				<ul id="home">
-					<li class="b3"><a class="icon add_user" href="view.php?lg=1">View User IP</a></li>
-					<li class="b4"><a class="icon block_users" href="view.php?lg=2">View Spammer IP</a></li>
+					<li class="b1"><a class="icon add_user" href="view.php?lg=1">View User IP</a></li>
+					<li class="b1"><a class="icon block_users" href="view.php?lg=2">View Spammer IP</a></li>
 				</ul>
 			</div>
 			<div class="box">
@@ -92,3 +90,5 @@ $(function(){
 			</div>
 		</div>
 		<div id="main">
+		<div class="full_w">
+		<div class="h_title"><?php echo $pageTitle; ?></div>

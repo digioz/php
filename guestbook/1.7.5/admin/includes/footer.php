@@ -5,6 +5,7 @@ if(!defined('IN_GB')) {
 ?>
 
 </div>
+</div>
 		<div class="clear"></div>
 	</div>
 
