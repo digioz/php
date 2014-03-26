@@ -7,7 +7,7 @@
 
 
 <?php
-include("../gbclass.php");
+include("../gb.class.php");
 
 $fd = fopen ("list.txt", "r"); 
 while (!feof ($fd)) 

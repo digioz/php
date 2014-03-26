@@ -3,7 +3,7 @@ define('IN_GB', TRUE);
 
 session_start();
 
-include("includes/gbclass.php");
+include("includes/gb.class.php");
 include("includes/config.php");
 include("language/$default_language");
 

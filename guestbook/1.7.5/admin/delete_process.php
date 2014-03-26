@@ -9,7 +9,7 @@ session_start();
 include("login_check.php");
 include("includes/header.php"); 
 
-include("../includes/gbclass.php");
+include("../includes/gb.class.php");
 include("../includes/config.php");
 include("../language/$default_language");
 
