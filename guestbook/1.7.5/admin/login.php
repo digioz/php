@@ -21,6 +21,10 @@ if (isset($_POST['Submitted']))
         // Username to a session variable. 
         $_SESSION['Logged_In'] = true;
         $_SESSION['Username'] = $_Username; 
+    }
+    else
+    {
+        $error = "<center><div style=\"color:red;\">Invalid Login Information Entered.</div></center>";
     } 
 } 
 
@@ -58,6 +62,8 @@ if ($_SESSION['Logged_In'] != "True") {
             <div class="footer"> <a href="http://www.digioz.com">&copy; 2007- <?php echo date("Y"); ?> DigiOz Multimedia, Inc.</a> </div>
         </div>
     </div>
+    <p>&nbsp;</p>
+    <?php echo $error; ?>
 </div>
 
 </body>

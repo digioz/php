@@ -39,4 +39,5 @@ $msgnosearchterm		= "Please enter a search term and try again.";
 $msgresultofsearch		= "The result of your search";
 $msgnomatchfound		= "No match found.";
 $errorFormToken			= "Invalid Form Security Token Detected.";
+
 ?>
