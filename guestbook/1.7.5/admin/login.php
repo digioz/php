@@ -44,7 +44,7 @@ if ($_SESSION['Logged_In'] != "True") {
         <div id="main">
             <div class="full_w">
             
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <form action="login.php" method="post">
                     <label for="login">Username:</label>
                     <input id="login" name="Username" class="text" />
                     <label for="pass">Password:</label>
@@ -66,9 +66,7 @@ if ($_SESSION['Logged_In'] != "True") {
 <?php
 } 
 else 
-{ 
-    //echo "<center><font size=\"-1\">You are logged in as: <b>" . $_SESSION['Username'] . "</b> <a href=\"" . $_SERVER['PHP_SELF'] . "?mode=logout\">Logout</a></font></center>";
-    //echo "<center><h2><a href=\"index.php\">Enter Admin Interface</a></h2></center>";
+{
     $URL="index.php";
     header ("Location: $URL");
 } 
