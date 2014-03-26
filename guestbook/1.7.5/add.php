@@ -9,6 +9,7 @@ include("includes/config.php");
 include("language/$default_language");
 
 include("includes/rain.tpl.class.php");
+include("includes/csrf.class.php"); 
 
 raintpl::configure("base_url", null );
 raintpl::configure("tpl_dir", "themes/$theme/" );
@@ -27,6 +28,17 @@ $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
 $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "goback", $goback );
+
+// Validate Form Token
+$csrf = new csrf(); 
+
+if($csrf->check_valid('post') == false) 
+{
+    $tpl->assign( "error_msg", $errorFormToken);
+    $html = $tpl->draw( 'error', $return_string = true );
+    echo $html;
+    exit; 
+}
 
 // Image Verification Classic
 if($image_verify == 1)

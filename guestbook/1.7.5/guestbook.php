@@ -8,10 +8,16 @@ include("includes/config.php");
 include("language/$default_language");
 
 include("includes/rain.tpl.class.php");
+include("includes/csrf.class.php"); 
 
 raintpl::configure("base_url", null );
 raintpl::configure("tpl_dir", "themes/$theme/" );
 raintpl::configure("cache_dir", "cache/" );
+
+// Generate Token Id and Valid  
+$csrf = new csrf();
+$token_id = $csrf->get_token_id();
+$token_value = $csrf->get_token($token_id);
 
 //initialize a Rain TPL object
 $tpl = new RainTPL;
@@ -31,6 +37,8 @@ $tpl->assign( "yourMessagetxt", $yourMessagetxt );
 $tpl->assign( "submitbutton", $submitbutton );
 $tpl->assign( "image_verify", $image_verify );
 $tpl->assign( "currentyear", date("Y") );
+$tpl->assign( "tokenid", $token_id );
+$tpl->assign( "tokenvalue", $token_value );
 
 if ($image_verify == 1)
 {
