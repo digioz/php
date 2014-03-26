@@ -6,18 +6,13 @@ define('IN_GB', TRUE);
 
 session_start();
 
+$pageTitle = "Generate Language File";  
+
 include("login_check.php");
 include("includes/header.php");  
 
 ?>
-<html>
-<head><title>DigiOz Guestbook Administrative Interface</title></head>
-  <link rel="STYLESHEET" type="text/css" href="../style.css">
-<body>
-
-<br>
-<h2 align="center">Generate Language File</h2>
-<br><br><center>
+<center>
 <!-- End of Header Section -->
 <?php
 if (isset($_POST['Submit']))
@@ -49,7 +44,7 @@ if (isset($_POST['Submit']))
   $f25 = $_POST['f25'];
   
 
-echo "<textarea  cols=\"90\" rows=\"30\">";
+echo "<textarea  cols=\"80\" rows=\"30\">";
 echo '<?php';
 echo "\n";
 echo "".
