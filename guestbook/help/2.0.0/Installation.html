@@ -1,0 +1,109 @@
+﻿<html>
+	
+<head>
+	<title>Installation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="generator" content="HelpNDoc Personal Edition 4.2.0.299">
+	
+	<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="css/hnd.css" />
+	<!--[if lte IE 8]>
+		<link type="text/css" rel="stylesheet" media="all" href="css/ielte8.css" />
+	<![endif]-->
+	<style type="text/css">
+		#topic_header
+		{
+			background-color: #EFEFEF;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/hnd.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			if (top.frames.length == 0)
+			{
+				var sTopicUrl = top.location.href.substring(top.location.href.lastIndexOf("/") + 1, top.location.href.length);
+				top.location.href = "DigiOz Guestbook.html?" + sTopicUrl;
+			}
+			else if (top && top.FrameTOC && top.FrameTOC.SelectTocItem)
+			{
+				top.FrameTOC.SelectTocItem("Installation");
+			}
+		});
+	</script>
+	
+	</head>
+
+<body>
+
+<div id="topic_header">
+			<div id="topic_header_content">
+				<h1 id="topic_header_text">Installation</h1>
+				
+				<div id="topic_breadcrumb">
+					<a href="GettingStarted.html">Getting Started</a> &rsaquo;&rsaquo; </div>
+				</div>
+			<div id="topic_header_nav">
+				<a href="GettingStarted.html"><img src="img/arrow_up.png" alt="Parent"/></a>
+				
+				<a href="Gettinghelp.html"><img src="img/arrow_left.png" alt="Previous"/></a>
+				
+				<a href="Configuration.html"><img src="img/arrow_right.png" alt="Next"/></a>
+				
+				</div>
+			<div class="clear"></div>
+		</div>
+	<div id="topic_content">
+		
+<p></p>
+<p class="rvps3"><span class="rvts14">Installation</span></p>
+<p class="rvps3"><span class="rvts14"><br/></span></p>
+<p class="rvps3"><span class="rvts14"><br/></span></p>
+<p class="rvps3"><span class="rvts8">The following are the steps to install DigiOz Guestbook on your Website:</span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps3"><span class="rvts8">Download the Guestbook ZIP file from </span><a class="rvts13" href="http://www.digioz.com/downloads/php/guestbook.zip" target="_blank">http://www.digioz.com/downloads/php/guestbook.zip</a><span class="rvts8">. </span></li>
+<li class="rvps3"><span class="rvts8">Extract the ZIP file on your local machine. </span></li>
+</ol>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts14">Windows: </span><span class="rvts8">First Right-Click on the ZIP file and choose "Properties", then click on the "Unblock" button. Next, Right-Click on the ZIP file you just downloaded, and choose "Extract All ..." to extract all the files in the ZIP to your local directory. </span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts14">Unix/Linux: </span><span class="rvts8">First navigate to the directory you extracted the file to, then run the command "unzip guestbook.zip -d /tmp" to extract all the guestbook files to your machine's "tmp" directory. </span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps3"><span class="rvts8">Upload the guestbook files using an FTP Client Software to your Web Server. We recommend </span><span class="rvts14">FileZilla</span><span class="rvts8"> Free FTP Client Software, which you can download from </span><a class="rvts13" href="https://filezilla-project.org/download.php" target="_blank">https://filezilla-project.org/download.php</a><span class="rvts8">. </span></li>
+<li class="rvps3"><span class="rvts8">Using the FTP Client, Right-Click on the "cache" directory in the "guestbook" folder and choose "File permissions ...", then set the File Permission to "755" (Owner: Read, Write, Execute), Group permission (Read, Execute) and Public permission (Read, Execute). Repeat the same for the "data" directory, and all the files inside the data directory, except "index.html". </span></li>
+</ol>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps4"><img alt="" style="padding : 1px;" src="lib/NewItem.png"/></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<ol style="text-indent: 0px; margin-left: 24px; list-style-position: outside; list-style-type: decimal;">
+<li class="rvps3"><span class="rvts8">On your local machine open the file </span><span class="rvts14">config.php</span><span class="rvts8"> in the "includes" folder using Notepad or any simple Text Editor, and change the value for </span><span class="rvts14">$_Username</span><span class="rvts8"> and </span><span class="rvts14">$_Password</span><span class="rvts8"> to a different Username and Password value. This will be the Username and Password for your Guestbook's Administrative Area. </span></li>
+</ol>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts14">Before:</span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><img alt="" style="padding : 1px;" src="lib/NewItem26.png"/></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts14">After:</span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><img alt="" style="padding : 1px;" src="lib/NewItem2.png"/></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts8">Save your changes and upload it to your Webserver using your FTP Client, replacing the old config.php file in the "includes" folder. Please note that if you do not make this change you will leave your guestbook open to the public deleting all your entries!</span></p>
+<p class="rvps3"><span class="rvts8"><br/></span></p>
+<p class="rvps3"><span class="rvts8">This concludes the installation of the Guestbook. </span></p>
+<p></p>
+
+</div>
+	
+	<div id="topic_footer">
+
+			<div id="topic_footer_content">
+				Copyright &copy; DigiOz Multimedia, Inc. All Rights Reserved.</div>
+		</div>
+	</body>
+	
+</html>
+
