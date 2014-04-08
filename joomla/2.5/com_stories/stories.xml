@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
     <name>com_stories</name>
-    <creationDate>2014-03-14</creationDate>
+    <creationDate>2014-04-02</creationDate>
     <copyright>Copyright (C) DigiOz Multimedia, Inc. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>DigiOz Multimedia</author>
     <authorEmail>webmaster@gmail.com</authorEmail>
     <authorUrl>http://www.digioz.com</authorUrl>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>This Component is a Stories Publishing System Modeled after eFiction, to allow Authors and Publishers to publish their stories online. </description>
     
     <install> <!-- Runs on install -->
@@ -47,6 +47,8 @@
 
 			<menu link="option=com_stories&amp;view=ratings" view="ratings" img="components/com_stories/assets/images/s_ratings.png" alt="Stories/Ratings">COM_STORIES_TITLE_RATINGS</menu>
 
+			<menu link="option=com_stories&amp;view=chapters" view="chapters" img="components/com_stories/assets/images/s_chapters.png" alt="Stories/Chapters">COM_STORIES_TITLE_CHAPTERS</menu>
+
         </submenu>
         <files folder="administrator">
             <filename>access.xml</filename>
@@ -70,4 +72,4 @@
     </administration>
 </extension>
 <!-- Component built by the Joomla Component Creator -->
-<!-- http://www.notwebdesign.com/joomla-component-creator/ -->
+<!-- http://www.component-creator.com/ -->

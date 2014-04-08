@@ -70,7 +70,7 @@
 
        <field name="filter_categories" type="sql" class="inputbox"
             onchange="this.form.submit();"
-            query="SELECT 0 AS `id`, '- Please select categories -' AS `name` UNION SELECT `id`, `name` FROM `#__stories_category`" key_field="id" value_field="name"
+            query="SELECT 0 AS `id`, '- Please select categories -' AS `val` UNION SELECT `id`, `name` AS val FROM `#__stories_category`" key_field="id" value_field="val"
              /> 
 
  <field name="subcategories" type="foreignkey" class="inputbox"
@@ -79,7 +79,7 @@
 
        <field name="filter_subcategories" type="sql" class="inputbox"
             onchange="this.form.submit();"
-            query="SELECT 0 AS `id`, '- Please select subcategories -' AS `name` UNION SELECT `id`, `name` FROM `#__stories_subcategory`" key_field="id" value_field="name"
+            query="SELECT 0 AS `id`, '- Please select subcategories -' AS `val` UNION SELECT `id`, `name` AS val FROM `#__stories_subcategory`" key_field="id" value_field="val"
              /> 
 
        <field name="warnings" type="editor"

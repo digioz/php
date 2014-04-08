@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -74,12 +74,12 @@ class JFormFieldForeignKey extends JFormField {
             case 'list':
             default:
                 $options = array();
-
+                
                 //Iterate through all the results
                 foreach ($results as $result) {
                     $options[] = JHtml::_('select.option', $result->{$this->key_field}, $result->{$this->value_field});
                 }
-
+                
                 $value = $this->value;
 
                 //If the value is a string -> Only one result
@@ -92,6 +92,8 @@ class JFormFieldForeignKey extends JFormField {
                 //If the select is multiple
                 if ($this->multiple) {
                     $input_options.= 'multiple="multiple"';
+                } else {
+                    array_unshift( $options, JHtml::_('select.option', '', '') );
                 }
 
                 $html = JHtml::_('select.genericlist', $options, $this->name, $input_options, 'value', 'text', $value);

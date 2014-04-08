@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -39,6 +39,11 @@ class StoriesHelper
 			JText::_('COM_STORIES_TITLE_RATINGS'),
 			'index.php?option=com_stories&view=ratings',
 			$vName == 'ratings'
+		);
+		JSubMenuHelper::addEntry(
+			JText::_('COM_STORIES_TITLE_CHAPTERS'),
+			'index.php?option=com_stories&view=chapters',
+			$vName == 'chapters'
 		);
 
 	}
