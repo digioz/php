@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -100,19 +100,7 @@ $document->addStyleSheet('components/com_links/assets/css/links.css');
         </fieldset>
     </div>
 
-    <div class="clr"></div>
-
-<?php if (JFactory::getUser()->authorise('core.admin','links')): ?>
-	<div class="width-100 fltlft">
-		<?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-		<?php echo JHtml::_('sliders.panel', JText::_('ACL Configuration'), 'access-rules'); ?>
-		<fieldset class="panelform">
-			<?php echo $this->form->getLabel('rules'); ?>
-			<?php echo $this->form->getInput('rules'); ?>
-		</fieldset>
-		<?php echo JHtml::_('sliders.end'); ?>
-	</div>
-<?php endif; ?>
+    
 
     <input type="hidden" name="task" value="" />
     <?php echo JHtml::_('form.token'); ?>

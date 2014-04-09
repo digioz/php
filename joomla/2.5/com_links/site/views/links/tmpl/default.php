@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -24,13 +24,13 @@ defined('_JEXEC') or die;
 
             
 				<?php
-					if($item->state == 1 || ($item->state == 0 && JFactory::getUser()->authorise('core.edit.own',' com_links.link.'.$item->id))):
+					if($item->state == 1 || ($item->state == 0 && JFactory::getUser()->authorise('core.edit.own',' com_links'))):
 						$show = true;
 						?>
 							<li>
 								<a href="<?php echo JRoute::_('index.php?option=com_links&view=link&id=' . (int)$item->id); ?>"><?php echo $item->name; ?></a>
 								<?php
-									if(JFactory::getUser()->authorise('core.edit.state','com_links.link.'.$item->id)):
+									if(JFactory::getUser()->authorise('core.edit.state','com_links')):
 									?>
 										<a href="javascript:document.getElementById('form-link-state-<?php echo $item->id; ?>').submit()"><?php if($item->state == 1): echo JText::_("COM_LINKS_UNPUBLISH_ITEM"); else: echo JText::_("COM_LINKS_PUBLISH_ITEM"); endif; ?></a>
 										<form id="form-link-state-<?php echo $item->id ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_links&task=link.save'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
@@ -42,7 +42,7 @@ defined('_JEXEC') or die;
 										</form>
 									<?php
 									endif;
-									if(JFactory::getUser()->authorise('core.delete','com_links.link.'.$item->id)):
+									if(JFactory::getUser()->authorise('core.delete','com_links')):
 									?>
 										<a href="javascript:deleteItem(<?php echo $item->id; ?>);"><?php echo JText::_("COM_LINKS_DELETE_ITEM"); ?></a>
 										<form id="form-link-delete-<?php echo $item->id; ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_links&task=link.remove'); ?>" method="post" class="form-validate" enctype="multipart/form-data">

@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS `#__links_link` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 
-`asset_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-
 `name` VARCHAR(100)  NOT NULL ,
 `category` INT NOT NULL ,
 `url` VARCHAR(255)  NOT NULL ,

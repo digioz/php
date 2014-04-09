@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -50,7 +50,7 @@ class LinksTablelink extends JTable {
 			}
 		$input = JFactory::getApplication()->input;
 		$task = $input->getString('task', '');
-		if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_links.link.'.$array['id']) && $array['state'] == 1)){
+		if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_links') && $array['state'] == 1)){
 			$array['state'] = 0;
 		}
 

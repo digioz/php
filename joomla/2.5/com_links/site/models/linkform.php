@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -78,13 +78,8 @@ class LinksModelLinkForm extends JModelForm
                 
                 $user = JFactory::getUser();
                 $id = $table->id;
-                if($id){
-	$canEdit = $user->authorise('core.edit', 'com_links.link.'.$id) || $user->authorise('core.create', 'com_links.link.'.$id);
-}
-else{
-	$canEdit = $user->authorise('core.edit', 'com_links') || $user->authorise('core.create', 'com_links');
-}
-                if (!$canEdit && $user->authorise('core.edit.own', 'com_links.link.'.$id)) {
+                $canEdit = $user->authorise('core.edit', 'com_links') || $user->authorise('core.create', 'com_links');
+                if (!$canEdit && $user->authorise('core.edit.own', 'com_links')) {
                     $canEdit = $user->id == $table->created_by;
                 }
 
@@ -231,14 +226,14 @@ else{
 
         if($id) {
             //Check the user can edit this item
-            $authorised = $user->authorise('core.edit', 'com_links.link.'.$id) || $authorised = $user->authorise('core.edit.own', 'com_links.link.'.$id);
-            if($user->authorise('core.edit.state', 'com_links.link.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            $authorised = $user->authorise('core.edit', 'com_links') || $authorised = $user->authorise('core.edit.own', 'com_links');
+            if($user->authorise('core.edit.state', 'com_links') !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         } else {
             //Check the user can create new items in this section
             $authorised = $user->authorise('core.create', 'com_links');
-            if($user->authorise('core.edit.state', 'com_links.link.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            if($user->authorise('core.edit.state', 'com_links') !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         }
@@ -260,7 +255,7 @@ else{
      function delete($data)
     {
         $id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('link.id');
-        if(JFactory::getUser()->authorise('core.delete', 'com_links.link.'.$id) !== true){
+        if(JFactory::getUser()->authorise('core.delete', 'com_links') !== true){
             JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
             return false;
         }

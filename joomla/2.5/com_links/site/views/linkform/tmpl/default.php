@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.0
+ * @version     1.0.1
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -137,11 +137,7 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
 				<?php echo $this->form->getInput('description'); ?></li>
 				<input type="hidden" name="jform[timestamp]" value="<?php echo $this->item->timestamp; ?>" />
 				<?php $canState = false; ?>
-				<?php if($this->item->id): ?>
-					<?php $canState = $canState = JFactory::getUser()->authorise('core.edit.state','com_links.link'); ?>
-				<?php else: ?>
-					<?php $canState = JFactory::getUser()->authorise('core.edit.state','com_links.link.'.$this->item->id); ?>
-				<?php endif; ?>				<?php if(!$canState): ?>
+					<?php $canState = $canState = JFactory::getUser()->authorise('core.edit.state','com_links'); ?>				<?php if(!$canState): ?>
 					<li><?php echo $this->form->getLabel('state'); ?>
 					<?php
 						$state_string = 'Unpublish';
@@ -155,30 +151,7 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
 					<?php echo $this->form->getInput('state'); ?></li>
 				<?php endif; ?>				<li><?php echo $this->form->getLabel('created_by'); ?>
 				<?php echo $this->form->getInput('created_by'); ?></li>
-				<div class="width-100 fltlft" <?php if (!JFactory::getUser()->authorise('core.admin','links')): ?> style="display:none;" <?php endif; ?> >
-                <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-                <?php echo JHtml::_('sliders.panel', JText::_('ACL Configuration'), 'access-rules'); ?>
-                <fieldset class="panelform">
-                    <?php echo $this->form->getLabel('rules'); ?>
-                    <?php echo $this->form->getInput('rules'); ?>
-                </fieldset>
-                <?php echo JHtml::_('sliders.end'); ?>
-            </div>
-				<?php if (!JFactory::getUser()->authorise('core.admin','links')): ?>
-                <script type="text/javascript">
-                    jQuery.noConflict();
-                    jQuery('#rules select').each(function(){
-                       var option_selected = jQuery(this).find(':selected');
-                       var input = document.createElement("input");
-                       input.setAttribute("type", "hidden");
-                       input.setAttribute("name", jQuery(this).attr('name'));
-                       input.setAttribute("value", option_selected.val());
-                       console.log(input);
-                       document.getElementById("form-link").appendChild(input);
-                       jQuery(this).attr('disabled',true);
-                    });
-                </script>
-             <?php endif; ?>
+
         </ul>
 
         <div>

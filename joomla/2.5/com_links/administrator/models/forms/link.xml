@@ -22,7 +22,7 @@
 
        <field name="filter_category" type="sql" class="inputbox"
             onchange="this.form.submit();"
-            query="SELECT 0 AS `id`, '- Please select category -' AS `name` UNION SELECT `id`, `name` FROM `#__links_category`" key_field="id" value_field="name"
+            query="SELECT 0 AS `id`, '- Please select category -' AS `val` UNION SELECT `id`, `name` AS val FROM `#__links_category`" key_field="id" value_field="val"
              /> 
 
        <field name="url" type="text"
@@ -75,23 +75,7 @@
     </field> 
 
                         <field name="checked_out" type="hidden" filter="unset" />
-        <field name="checked_out_time" type="hidden" filter="unset" /> 
-
- </fieldset> 
-
- <fieldset 
-                        name="accesscontrol">
-                       <field name="asset_id" type="hidden" filter="unset" />
-                       <field name="rules"
-                            type="rules"
-                            label="JFIELD_RULES_LABEL"
-                            translate_label="false"
-                            filter="rules"
-                            validate="rules"
-                            class="inputbox"
-                            component="com_links"
-                            section="link"
-                        />
+        <field name="checked_out_time" type="hidden" filter="unset" />
 
 	</fieldset>
 
