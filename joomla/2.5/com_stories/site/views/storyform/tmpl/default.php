@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.2
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -132,11 +132,7 @@ js(document).ready(function(){
 				<li><?php echo $this->form->getLabel('summary'); ?>
 				<?php echo $this->form->getInput('summary'); ?></li>
 				<?php $canState = false; ?>
-				<?php if($this->item->id): ?>
-					<?php $canState = $canState = JFactory::getUser()->authorise('core.edit.state','com_stories.story'); ?>
-				<?php else: ?>
-					<?php $canState = JFactory::getUser()->authorise('core.edit.state','com_stories.story.'.$this->item->id); ?>
-				<?php endif; ?>				<?php if(!$canState): ?>
+					<?php $canState = $canState = JFactory::getUser()->authorise('core.edit.state','com_stories'); ?>				<?php if(!$canState): ?>
 					<li><?php echo $this->form->getLabel('state'); ?>
 					<?php
 						$state_string = 'Unpublish';
@@ -222,30 +218,7 @@ js(document).ready(function(){
 				<?php echo $this->form->getInput('storytext'); ?></li>
 				<li><?php echo $this->form->getLabel('endnotes'); ?>
 				<?php echo $this->form->getInput('endnotes'); ?></li>
-				<div class="width-100 fltlft" <?php if (!JFactory::getUser()->authorise('core.admin','stories')): ?> style="display:none;" <?php endif; ?> >
-                <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-                <?php echo JHtml::_('sliders.panel', JText::_('ACL Configuration'), 'access-rules'); ?>
-                <fieldset class="panelform">
-                    <?php echo $this->form->getLabel('rules'); ?>
-                    <?php echo $this->form->getInput('rules'); ?>
-                </fieldset>
-                <?php echo JHtml::_('sliders.end'); ?>
-            </div>
-				<?php if (!JFactory::getUser()->authorise('core.admin','stories')): ?>
-                <script type="text/javascript">
-                    jQuery.noConflict();
-                    jQuery('#rules select').each(function(){
-                       var option_selected = jQuery(this).find(':selected');
-                       var input = document.createElement("input");
-                       input.setAttribute("type", "hidden");
-                       input.setAttribute("name", jQuery(this).attr('name'));
-                       input.setAttribute("value", option_selected.val());
-                       console.log(input);
-                       document.getElementById("form-story").appendChild(input);
-                       jQuery(this).attr('disabled',true);
-                    });
-                </script>
-             <?php endif; ?>
+
         </ul>
 
         <div>

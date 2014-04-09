@@ -1,8 +1,6 @@
 CREATE TABLE IF NOT EXISTS `#__stories_story` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 
-`asset_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-
 `title` VARCHAR(255)  NOT NULL ,
 `author` VARCHAR(50)  NOT NULL ,
 `coauthors` VARCHAR(100)  NOT NULL ,

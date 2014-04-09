@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.2
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 //Load admin language file
 $lang = JFactory::getLanguage();
 $lang->load('com_stories', JPATH_ADMINISTRATOR);
-$canEdit = JFactory::getUser()->authorise('core.edit', 'com_stories.' . $this->item->id);
-if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_stories' . $this->item->id)) {
+$canEdit = JFactory::getUser()->authorise('core.edit', 'com_stories');
+if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_stories')) {
 	$canEdit = JFactory::getUser()->id == $this->item->created_by;
 }
 ?>
@@ -69,7 +69,7 @@ if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_stories' .
     <?php if($canEdit && $this->item->checked_out == 0): ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_stories&task=story.edit&id='.$this->item->id); ?>"><?php echo JText::_("COM_STORIES_EDIT_ITEM"); ?></a>
 	<?php endif; ?>
-								<?php if(JFactory::getUser()->authorise('core.delete','com_stories.story.'.$this->item->id)):
+								<?php if(JFactory::getUser()->authorise('core.delete','com_stories')):
 								?>
 									<a href="javascript:document.getElementById('form-story-delete-<?php echo $this->item->id ?>').submit()"><?php echo JText::_("COM_STORIES_DELETE_ITEM"); ?></a>
 									<form id="form-story-delete-<?php echo $this->item->id; ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_stories&task=story.remove'); ?>" method="post" class="form-validate" enctype="multipart/form-data">

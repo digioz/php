@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version     1.0.1
+ * @version     1.0.2
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -37,7 +37,7 @@ class StoriesTablestory extends JTable {
         
 		$input = JFactory::getApplication()->input;
 		$task = $input->getString('task', '');
-		if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_stories.story.'.$array['id']) && $array['state'] == 1)){
+		if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_stories') && $array['state'] == 1)){
 			$array['state'] = 0;
 		}
 

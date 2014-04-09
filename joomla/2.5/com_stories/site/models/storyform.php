@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.2
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -78,13 +78,8 @@ class StoriesModelStoryForm extends JModelForm
                 
                 $user = JFactory::getUser();
                 $id = $table->id;
-                if($id){
-	$canEdit = $user->authorise('core.edit', 'com_stories.story.'.$id) || $user->authorise('core.create', 'com_stories.story.'.$id);
-}
-else{
-	$canEdit = $user->authorise('core.edit', 'com_stories') || $user->authorise('core.create', 'com_stories');
-}
-                if (!$canEdit && $user->authorise('core.edit.own', 'com_stories.story.'.$id)) {
+                $canEdit = $user->authorise('core.edit', 'com_stories') || $user->authorise('core.create', 'com_stories');
+                if (!$canEdit && $user->authorise('core.edit.own', 'com_stories')) {
                     $canEdit = $user->id == $table->created_by;
                 }
 
@@ -231,14 +226,14 @@ else{
 
         if($id) {
             //Check the user can edit this item
-            $authorised = $user->authorise('core.edit', 'com_stories.story.'.$id) || $authorised = $user->authorise('core.edit.own', 'com_stories.story.'.$id);
-            if($user->authorise('core.edit.state', 'com_stories.story.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            $authorised = $user->authorise('core.edit', 'com_stories') || $authorised = $user->authorise('core.edit.own', 'com_stories');
+            if($user->authorise('core.edit.state', 'com_stories') !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         } else {
             //Check the user can create new items in this section
             $authorised = $user->authorise('core.create', 'com_stories');
-            if($user->authorise('core.edit.state', 'com_stories.story.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            if($user->authorise('core.edit.state', 'com_stories') !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         }
@@ -260,7 +255,7 @@ else{
      function delete($data)
     {
         $id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('story.id');
-        if(JFactory::getUser()->authorise('core.delete', 'com_stories.story.'.$id) !== true){
+        if(JFactory::getUser()->authorise('core.delete', 'com_stories') !== true){
             JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
             return false;
         }

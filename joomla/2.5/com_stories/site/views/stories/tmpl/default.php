@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.2
  * @package     com_stories
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -24,13 +24,13 @@ defined('_JEXEC') or die;
 
             
 				<?php
-					if($item->state == 1 || ($item->state == 0 && JFactory::getUser()->authorise('core.edit.own',' com_stories.story.'.$item->id))):
+					if($item->state == 1 || ($item->state == 0 && JFactory::getUser()->authorise('core.edit.own',' com_stories'))):
 						$show = true;
 						?>
 							<li>
 								<a href="<?php echo JRoute::_('index.php?option=com_stories&view=story&id=' . (int)$item->id); ?>"><?php echo $item->title; ?></a>
 								<?php
-									if(JFactory::getUser()->authorise('core.edit.state','com_stories.story.'.$item->id)):
+									if(JFactory::getUser()->authorise('core.edit.state','com_stories')):
 									?>
 										<a href="javascript:document.getElementById('form-story-state-<?php echo $item->id; ?>').submit()"><?php if($item->state == 1): echo JText::_("COM_STORIES_UNPUBLISH_ITEM"); else: echo JText::_("COM_STORIES_PUBLISH_ITEM"); endif; ?></a>
 										<form id="form-story-state-<?php echo $item->id ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_stories&task=story.save'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
@@ -42,7 +42,7 @@ defined('_JEXEC') or die;
 										</form>
 									<?php
 									endif;
-									if(JFactory::getUser()->authorise('core.delete','com_stories.story.'.$item->id)):
+									if(JFactory::getUser()->authorise('core.delete','com_stories')):
 									?>
 										<a href="javascript:deleteItem(<?php echo $item->id; ?>);"><?php echo JText::_("COM_STORIES_DELETE_ITEM"); ?></a>
 										<form id="form-story-delete-<?php echo $item->id; ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_stories&task=story.remove'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
