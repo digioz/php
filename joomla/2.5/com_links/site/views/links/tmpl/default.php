@@ -33,10 +33,10 @@ JHtml::stylesheet(JURI::base() . 'components/com_links/css/links.css', array(), 
 <p style="text-align: center;
 color: black;
 font-size: 18px;">Index - &nbsp;<a href="<?php echo JRoute::_('index.php?option=com_links&task=link.edit&id=0'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM")."Link"; ?></a></p>
-<div class="items">  
+<div class="items" style="background-color:#C0C0C0;width:725px;">  
 <?php $show = false; ?>
-		<?php $cat = $this->items['category']?>
-        <?php foreach ($this->items as $item) : ?>
+	<?php $cat = $this->items['category']?>
+	<?php foreach ($this->items as $item) : ?>
 		<?php 
 		if ($cat != $item->category){
 		?>
@@ -51,28 +51,22 @@ font-size: 18px;">Index - &nbsp;<a href="<?php echo JRoute::_('index.php?option=
 		}
 		?>
 		
-				<div class="linkname" style="background-color:#C0C0C0;">
-								
-						
-							<span class="linkspan"><?php echo $item->name; ?></span>
-								
-								
-								<a href="<?php echo JRoute::_('index.php?option=com_links&view=link&id=' . (int)$item->id); ?>" class="descli"><img src="<?php echo JURI::base() . 'components/com_links/images/description.jpg' ?>" alt="broken" /></a>
-								<a href="javascript:broken(<?php echo $item->id; ?>);" id="broken" class="brcli"><img src="<?php echo JURI::base() . 'components/com_links/images/broken.jpg' ?>" alt="broken" /></a>
-								</div>
-						
-						<form id="form-send-mail-<?php echo $item->id; ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_links&task=link.sendmail'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
-											<input type="hidden" name="jform[id]" value="<?php echo $item->id; ?>" />
-											<input type="hidden" name="jform[name]" value="<?php echo $item->name; ?>" />
-											<input type="hidden" name="option" value="com_links" />
-											<input type="hidden" name="task" value="link.sendmail" />
-											<?php echo JHtml::_('form.token'); ?>
-										</form>
-						
+		<div class="linkname">		
+			<span class="linkspan"><a href="<?php echo $item->url; ?>" target="_blank"><?php echo $item->name; ?></a></span>
+			<a href="<?php echo JRoute::_('index.php?option=com_links&view=link&id=' . (int)$item->id); ?>" class="descli"><img src="<?php echo JURI::base() . 'components/com_links/images/description.jpg' ?>" alt="broken" /></a>
+			<a href="javascript:broken(<?php echo $item->id; ?>);" id="broken" class="brcli"><img src="<?php echo JURI::base() . 'components/com_links/images/broken.jpg' ?>" alt="broken" /></a>
+		</div>
+				
+		<form id="form-send-mail-<?php echo $item->id; ?>" style="display:inline" action="<?php echo JRoute::_('index.php?option=com_links&task=link.sendmail'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
+			<input type="hidden" name="jform[id]" value="<?php echo $item->id; ?>" />
+			<input type="hidden" name="jform[name]" value="<?php echo $item->name; ?>" />
+			<input type="hidden" name="option" value="com_links" />
+			<input type="hidden" name="task" value="link.sendmail" />
+			<?php echo JHtml::_('form.token'); ?>
+		</form>
 
-<?php endforeach; ?>
-        
-    
+	<?php endforeach; ?>
+  
 </div>
 <?php if ($show): ?>
     <div class="paginations">
