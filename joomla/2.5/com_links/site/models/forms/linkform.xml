@@ -25,13 +25,13 @@
             query="SELECT 0 AS `id`, '- Please select category -' AS `name` UNION SELECT `id`, `name` FROM `#__links_category`" key_field="id" value_field="name"
              /> 
 
-       <field name="url" type="text"
+       <field name="url" type="text" validate="url" scheme="http,https,mailto"
                 
             label="COM_LINKS_FORM_LBL_LINK_URL"
             description="COM_LINKS_FORM_DESC_LINK_URL" 
                 
                 
-                 required="true" 
+            required="true" 
             menu_published="0"
             filter="url"
             size="100"

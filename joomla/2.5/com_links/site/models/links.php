@@ -82,10 +82,13 @@ class LinksModelLinks extends JModelList {
     
 		// Join over the foreign key 'category'
 		$query->select('#__links_category_1152660.name AS categories_name_1152660');
+		$query->order('categories_name_1152660');
 		$query->join('LEFT', '#__links_category AS #__links_category_1152660 ON #__links_category_1152660.id = a.category');
 		// Join over the created by field 'created_by'
 		$query->select('created_by.name AS created_by');
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
+		
+		$query->where('a.state = 1');
         
 
         // Filter by search in title

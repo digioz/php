@@ -78,6 +78,7 @@ $document->addStyleSheet('components/com_links/assets/css/links.css');
 				<?php echo $this->form->getInput('name'); ?></li>
 				<li><?php echo $this->form->getLabel('category'); ?>
 				<?php echo $this->form->getInput('category'); ?></li>
+				<li><input type="hidden" name="jform[timestamp]" value="<?php echo date('Y-m-d H:i:s'); ?>" /></li>
 
 			<?php
 				foreach((array)$this->item->category as $value): 
@@ -89,7 +90,7 @@ $document->addStyleSheet('components/com_links/assets/css/links.css');
 				<?php echo $this->form->getInput('url'); ?></li>
 				<li><?php echo $this->form->getLabel('description'); ?>
 				<?php echo $this->form->getInput('description'); ?></li>
-				<input type="hidden" name="jform[timestamp]" value="<?php echo $this->item->timestamp; ?>" />
+				<li><input type="hidden" name="jform[timestamp]" value="<?php echo date('Y-m-d H:i:s'); ?>" /></li>
 				<li><?php echo $this->form->getLabel('state'); ?>
 				<?php echo $this->form->getInput('state'); ?></li>
 				<li><?php echo $this->form->getLabel('created_by'); ?>

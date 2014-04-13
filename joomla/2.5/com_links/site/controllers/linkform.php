@@ -59,6 +59,21 @@ class LinksControllerLinkForm extends LinksController
 	 */
 	public function save()
 	{
+		
+		if(JFactory::getUser()->guest){
+		//Captcha
+		$post = JRequest::get('post');      
+		
+		JPluginHelper::importPlugin('captcha');
+		$dispatcher = JDispatcher::getInstance();
+		$res = $dispatcher->trigger('onCheckAnswer',$post['recaptcha_response_field']);
+		if(!$res[0]){
+
+			$this->setRedirect(JRoute::_('index.php?option=com_links&view=linkform&layout=edit&mesag=ic', false));
+			return false;	
+		}
+		}
+		
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
@@ -104,7 +119,6 @@ class LinksControllerLinkForm extends LinksController
 
 		// Attempt to save the data.
 		$return	= $model->save($data);
-
 		// Check for errors.
 		if ($return === false) {
 			// Save the data in the session.
@@ -116,11 +130,16 @@ class LinksControllerLinkForm extends LinksController
 			$this->setRedirect(JRoute::_('index.php?option=com_links&view=linkform&layout=edit&id='.$id, false));
 			return false;
 		}
-
+		
+		//For sending email
+		if ($return == 0) {
+            $model->sendmail();  
+        }
             
         // Check in the profile.
         if ($return) {
-            $model->checkin($return);
+            $model->sendmail();
+        	$model->checkin($return);  
         }
         
         // Clear the profile id from the session.
@@ -202,7 +221,7 @@ class LinksControllerLinkForm extends LinksController
 			$this->setRedirect(JRoute::_('index.php?option=com_links&view=link&layout=edit&id='.$id, false));
 			return false;
 		}
-
+		
             
         // Check in the profile.
         if ($return) {

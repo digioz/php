@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+
+.catnamelink{
+background: grey;
+color: #f2f2f2;
+height: 27px;
+text-align: center;
+padding-top: 6px;
+clear:both;
+width:722px;
+border-left:1px solid #c2c2c2;
+border-right:1px solid #c2c2c2;
+}
+
+.linkname{
+background: lightgrey;
+width: 350px;
+color: black;
+float: left;
+border-bottom:1px solid #c2c2c2;
+border-left:1px solid #c2c2c2;
+padding-left:10px;
+}
+.linkspan{
+position: absolute;
+padding-top:10px;
+}
+.descli{
+float: right;
+border-right: 1px solid #c2c2c2;
+padding: 3px 5px;
+}
+.brcli{
+float: right;
+border-left: 1px solid #c2c2c2;
+padding: 2px 5px;
+}
+.descli:hover{
+color:none !important;
+background:none !important;
+}
+.brcli:hover{
+color:none !important;
+background:none !important;
+}

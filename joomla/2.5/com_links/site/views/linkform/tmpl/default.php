@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @version     1.0.1
  * @package     com_links
@@ -12,6 +13,11 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JPluginHelper::importPlugin('captcha');
+
+$dispatcher = JDispatcher::getInstance();
+
+$dispatcher->trigger('onInit','dynamic_recaptcha_1');
 
 //Load admin language file
 $lang = JFactory::getLanguage();
@@ -46,11 +52,13 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
         height: 50px;
         width: 600px;
         float: left;
+		display:none;
     }
     .front-end-edit .toggle-editor {
         height: 50px;
         width: 120px;
         float: right;
+		display:none;
     }
 
     #jform_rules-lbl{
@@ -95,16 +103,43 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
             
         });
     });
-    
+
+   
+    	   
+    	
+</script>
+
+<script>
+// just for the demos, avoids form submit
+
+
+getScript('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',function() {
+    jQuery.noConflict();
+    var isValid = function isValid(form, field){
+        return $(form-link).valid({
+          rules: {
+        	jform_url: {
+              required: true,
+              url: true
+            }
+          }
+        });    
+    };
+});
 </script>
 
 <div class="link-edit front-end-edit">
     <?php if (!empty($this->item->id)): ?>
         <h1>Edit <?php echo $this->item->id; ?></h1>
     <?php else: ?>
-        <h1>Add</h1>
+        <h1>Add Link</h1>
     <?php endif; ?>
-
+	<?php if($_GET['mesag'])
+	{
+	echo "<h2 style='color:red;'>Invalid Captcha</h2>";
+	}
+	
+	?>
     <form id="form-link" action="<?php echo JRoute::_('index.php?option=com_links&task=link.save'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
         <ul>
             				<li><?php echo $this->form->getLabel('id'); ?>
@@ -134,26 +169,31 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
 			</script>				<li><?php echo $this->form->getLabel('url'); ?>
 				<?php echo $this->form->getInput('url'); ?></li>
 				<li><?php echo $this->form->getLabel('description'); ?>
+				
+				
 				<?php echo $this->form->getInput('description'); ?></li>
 				<input type="hidden" name="jform[timestamp]" value="<?php echo $this->item->timestamp; ?>" />
 				<?php $canState = false; ?>
 					<?php $canState = $canState = JFactory::getUser()->authorise('core.edit.state','com_links'); ?>				<?php if(!$canState): ?>
-					<li><?php echo $this->form->getLabel('state'); ?>
-					<?php
-						$state_string = 'Unpublish';
-						$state_value = 0;
-						if($this->item->state == 1):
-							$state_string = 'Publish';
-							$state_value = 1;
-						endif;
-						echo $state_string; ?></li>
-					<input type="hidden" name="jform[state]" value="<?php echo $state_value; ?>" />				<?php else: ?>					<li><?php echo $this->form->getLabel('state'); ?>
-					<?php echo $this->form->getInput('state'); ?></li>
-				<?php endif; ?>				<li><?php echo $this->form->getLabel('created_by'); ?>
-				<?php echo $this->form->getInput('created_by'); ?></li>
-
+					
+					<input type="hidden" name="jform[state]" value="<?php echo $state_value; ?>" />				<?php else: ?>					<li><?php //echo $this->form->getLabel('state'); ?>
+					<?php //echo $this->form->getInput('state'); ?></li>
+					<li>
+					
+					</li>
+					
+				<?php endif; ?>				<li><?php $this->form->getLabel('created_by'); ?>
+				<?php $this->form->getInput('created_by'); ?></li>
+			<li>
+			
+			
+			</li>
+        
+        
         </ul>
-
+        <?php if(JFactory::getUser()->guest){ ?>
+		<div id="dynamic_recaptcha_1"></div>
+		<?php }?>
         <div>
             <button type="submit" class="validate"><span><?php echo JText::_('JSUBMIT'); ?></span></button>
             <?php echo JText::_('or'); ?>
@@ -164,4 +204,6 @@ $lang->load('com_links', JPATH_ADMINISTRATOR);
             <?php echo JHtml::_('form.token'); ?>
         </div>
     </form>
+    
+    
 </div>
