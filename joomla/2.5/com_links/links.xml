@@ -7,7 +7,7 @@
     <author>DigiOz Multimedia</author>
     <authorEmail>webmaster@digioz.com</authorEmail>
     <authorUrl>http://www.digioz.com</authorUrl>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>A simple link component for listing the URL of other websites on your site</description>
     
     <install> <!-- Runs on install -->
