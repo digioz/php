@@ -149,7 +149,7 @@ class LinksControllerLink extends LinksController {
 			  LEFT JOIN #__user_usergroup_map 
 			  ON #__users.id=#__user_usergroup_map.user_id
 			  LEFT JOIN #__usergroups ON #__user_usergroup_map.group_id = #__usergroups.id
-			  WHERE #__usergroups.title = 'Administrator'
+			  WHERE #__usergroups.title = 'Administrator' OR #__usergroups.title = 'Super Users'
 	" ;
 	
 	$db->setQuery($query);
