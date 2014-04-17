@@ -21,9 +21,14 @@ if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_links')) {
 }
 ?>
 
-<p style="text-align: center;
-color: black;
-font-size: 18px;"><a href="<?php echo JRoute::_('index.php?option=com_links&view=links'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_INDEX_TEXT"); ?></a> - <?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?></p>
+<p style="text-align: center;color: black;font-size: 18px;">
+	<a href="<?php echo JRoute::_('index.php?option=com_links&view=links'); ?>">
+		<?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_INDEX_TEXT"); ?>
+	</a> - 
+	<a href="<?php echo JRoute::_('index.php?option=com_links&task=link.edit&id=0'); ?>">
+		<?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?>
+	</a>
+</p>
 
 <?php if ($this->item) : ?>
 
