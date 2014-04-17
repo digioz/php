@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(!defined('IN_GB')) {
    die('Direct access not permitted');
