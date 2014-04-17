@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.3
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -8,6 +8,9 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+
+// Add styles
+JHtml::stylesheet(JURI::base() . 'components/com_links/css/links.css', array(), true);
 
 //Load admin language file
 $lang = JFactory::getLanguage();
@@ -17,37 +20,39 @@ if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_links')) {
 	$canEdit = JFactory::getUser()->id == $this->item->created_by;
 }
 ?>
+
+<p style="text-align: center;
+color: black;
+font-size: 18px;"><a href="<?php echo JRoute::_('index.php?option=com_links&view=links'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_INDEX_TEXT"); ?></a> - <?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?></p>
+
 <?php if ($this->item) : ?>
 
+<div class="items" style="background-color:#E5E5E5;width:725px;">
+<div class="catnamelink"><?php echo JText::_('COM_LINKS_FORM_DESC_DETAILS_PUBLIC'); ?></div>
     <div class="item_fields">
 
-        <ul class="fields_list">
+        <table style="width:725px;">
 
-            			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_ID'); ?>:
-			<?php echo $this->item->id; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_NAME'); ?>:
-			<?php echo $this->item->name; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CATEGORY'); ?>:
-			<?php echo $this->item->category; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_URL'); ?>:
-			<?php echo $this->item->url; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_DESCRIPTION'); ?>:
-			<?php echo $this->item->description; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_TIMESTAMP'); ?>:
-			<?php echo $this->item->timestamp; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_ORDERING'); ?>:
-			<?php echo $this->item->ordering; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_STATE'); ?>:
-			<?php echo $this->item->state; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CHECKED_OUT'); ?>:
-			<?php echo $this->item->checked_out; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CHECKED_OUT_TIME'); ?>:
-			<?php echo $this->item->checked_out_time; ?></li>
-			<li><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CREATED_BY'); ?>:
-			<?php echo $this->item->created_by; ?></li>
+            <tr><td style="width: 150px;"><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_ID'); ?>:</b></td><td><?php echo $this->item->id; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_NAME'); ?>:</b></td><td>
+			<?php echo $this->item->name; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CATEGORY'); ?>:</b></td><td>
+			<?php echo $this->item->category; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_URL'); ?>:</b></td><td>
+			<a href="<?php echo $this->item->url; ?>" target="_blank"><?php echo $this->item->url; ?></a></td></tr>
+			<tr><td style="vertical-align:top;"><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_DESCRIPTION'); ?>:</b></td><td>
+			<?php echo $this->item->description; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_TIMESTAMP'); ?>:</b></td><td>
+			<?php echo $this->item->timestamp; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_ORDERING'); ?>:</b></td><td>
+			<?php echo $this->item->ordering; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_STATE'); ?>:</b></td><td>
+			<?php echo $this->item->state; ?></td></tr>
+			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_CREATED_BY'); ?>:</b></td><td>
+			<?php echo $this->item->created_by; ?></td></tr>
 
 
-        </ul>
+        </table>
 
     </div>
     <?php if($canEdit && $this->item->checked_out == 0): ?>
@@ -65,6 +70,7 @@ if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_links')) {
 								<?php
 								endif;
 							?>
+</div>
 <?php
 else:
     echo JText::_('COM_LINKS_ITEM_NOT_LOADED');

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     1.0.1
+ * @version     1.0.3
  * @package     com_links
  * @copyright   Copyright (C) DigiOz Multimedia, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -32,7 +32,7 @@ JHtml::stylesheet(JURI::base() . 'components/com_links/css/links.css', array(), 
 ?>
 <p style="text-align: center;
 color: black;
-font-size: 18px;">Index - &nbsp;<a href="<?php echo JRoute::_('index.php?option=com_links&task=link.edit&id=0'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM")."Link"; ?></a></p>
+font-size: 18px;"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_INDEX_TEXT"); ?> - &nbsp;<a href="<?php echo JRoute::_('index.php?option=com_links&task=link.edit&id=0'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?></a></p>
 <div class="items" style="background-color:#C0C0C0;width:725px;">  
 <?php $show = false; ?>
 	<?php $cat = $this->items['category']?>
