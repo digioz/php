@@ -33,7 +33,7 @@ JHtml::stylesheet(JURI::base() . 'components/com_links/css/links.css', array(), 
 <p style="text-align: center;
 color: black;
 font-size: 18px;"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_INDEX_TEXT"); ?> - &nbsp;<a href="<?php echo JRoute::_('index.php?option=com_links&task=link.edit&id=0'); ?>"><?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?></a></p>
-<div class="items" style="background-color:#C0C0C0;width:725px;">  
+<div class="items">  
 <?php $show = false; ?>
 	<?php $cat = $this->items['category']?>
 	<?php foreach ($this->items as $item) : ?>

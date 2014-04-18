@@ -32,11 +32,11 @@ if (!$canEdit && JFactory::getUser()->authorise('core.edit.own', 'com_links')) {
 
 <?php if ($this->item) : ?>
 
-<div class="items" style="background-color:#E5E5E5;width:725px;">
+<div class="items" style="background-color:#EFEFEF;width:100%;">
 <div class="catnamelink"><?php echo JText::_('COM_LINKS_FORM_DESC_DETAILS_PUBLIC'); ?></div>
     <div class="item_fields">
 
-        <table style="width:725px;">
+        <table style="width:100%">
 
             <tr><td style="width: 150px;"><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_ID'); ?>:</b></td><td><?php echo $this->item->id; ?></td></tr>
 			<tr><td><b><?php echo JText::_('COM_LINKS_FORM_LBL_LINK_NAME'); ?>:</b></td><td>

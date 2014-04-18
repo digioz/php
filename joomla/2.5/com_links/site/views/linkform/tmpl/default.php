@@ -88,8 +88,8 @@ getScript('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',function(
 	<?php echo JText::_("COM_LINKS_ADD_ITEM_LINK_ADD_TEXT"); ?>
 </p>
 
-<div class="items" style="background-color:#E5E5E5;width:750px;">
-<div class="catnamelink" style="width:750px;"><?php echo JText::_('COM_LINKS_ADD_ITEM_LINK_ADD_TEXT'); ?></div>
+<div class="items" style="background-color:#EFEFEF;width:100%;">
+<div class="catnamelink" style="width:100%;"><?php echo JText::_('COM_LINKS_ADD_ITEM_LINK_ADD_TEXT'); ?></div>
 	<div>
 		<?php if (!empty($this->item->id)): ?>
 			<h1>Edit <?php echo $this->item->id; ?></h1>

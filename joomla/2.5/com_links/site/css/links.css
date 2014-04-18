@@ -8,14 +8,14 @@ text-align: center;
 padding-top: 2px;
 clear:both;
 font-weight: bold;
-width:722px;
+width:99%;
 border-left:1px solid #c2c2c2;
 border-right:1px solid #c2c2c2;
 }
 
 .linkname{
-background: lightgrey;
-width: 350px;
+background: #EFEFEF;
+width: 48%;
 color: black;
 float: left;
 border-bottom:1px solid #c2c2c2;
@@ -93,3 +93,15 @@ background:none !important;
     fieldset.radio label{
         width: 50px !important;
     }
+	
+	.toggle-editor {
+		display: none;
+	}
+	
+	.image {
+		display: none;
+	}
+	
+	.article {
+		display: none;
+	}
