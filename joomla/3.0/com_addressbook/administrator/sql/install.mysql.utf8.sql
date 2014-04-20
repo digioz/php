@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS `#__addressbook_address` (
+`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+
+`firstname` VARCHAR(50)  NOT NULL ,
+`middlename` VARCHAR(50)  NOT NULL ,
+`lastname` VARCHAR(50)  NOT NULL ,
+`company` VARCHAR(100)  NOT NULL ,
+`address` VARCHAR(100)  NOT NULL ,
+`address2` VARCHAR(100)  NOT NULL ,
+`city` VARCHAR(50)  NOT NULL ,
+`statename` VARCHAR(50)  NOT NULL ,
+`country` VARCHAR(50)  NOT NULL ,
+`email` VARCHAR(255)  NOT NULL ,
+`website` TEXT NOT NULL ,
+`twitter` VARCHAR(100)  NOT NULL ,
+`facebook` VARCHAR(200)  NOT NULL ,
+`linkedin` VARCHAR(200)  NOT NULL ,
+`birthdate` DATE NOT NULL ,
+`workphone` VARCHAR(100)  NOT NULL ,
+`homephone` VARCHAR(100)  NOT NULL ,
+`mobilephone` VARCHAR(100)  NOT NULL ,
+`fax` VARCHAR(100)  NOT NULL ,
+`checked_out` INT(11)  NOT NULL ,
+`ordering` INT(11)  NOT NULL ,
+`state` TINYINT(1)  NOT NULL ,
+`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+`created_by` INT(11)  NOT NULL ,
+`notes` TEXT NOT NULL ,
+PRIMARY KEY (`id`)
+) DEFAULT COLLATE=utf8_general_ci;
+
