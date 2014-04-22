@@ -1,0 +1,107 @@
+@CHARSET "ISO-8859-1";
+
+.catnamelink{
+background: grey;
+color: #f2f2f2;
+height: 22px;
+text-align: center;
+padding-top: 2px;
+clear:both;
+font-weight: bold;
+width:99%;
+border-left:1px solid #c2c2c2;
+border-right:1px solid #c2c2c2;
+}
+
+.linkname{
+background: #EFEFEF;
+width: 48%;
+color: black;
+float: left;
+border-bottom:1px solid #c2c2c2;
+border-left:1px solid #c2c2c2;
+padding-left:10px;
+}
+.linkspan{
+position: absolute;
+padding-top:10px;
+}
+.descli{
+float: right;
+border-right: 1px solid #c2c2c2;
+padding: 3px 5px;
+}
+.brcli{
+float: right;
+border-left: 1px solid #c2c2c2;
+padding: 2px 5px;
+}
+.descli:hover{
+color:none !important;
+background:none !important;
+}
+.brcli:hover{
+color:none !important;
+background:none !important;
+}
+
+// Add form public
+
+    .front-end-edit ul {
+        padding: 0 !important;
+    }
+    .front-end-edit li {
+        list-style: none;
+        margin-bottom: 6px !important;
+    }
+    .front-end-edit label {
+        margin-right: 10px;
+        display: block;
+        float: left;
+        text-align: center;
+        width: 200px !important;
+    }
+    .front-end-edit .radio label {
+        float: none;
+    }
+    .front-end-edit .readonly {
+        border: none !important;
+        color: #666;
+    }    
+    .front-end-edit #editor-xtd-buttons {
+        height: 50px;
+        width: 600px;
+        float: left;
+		display:none;
+    }
+    .front-end-edit .toggle-editor {
+        height: 50px;
+        width: 120px;
+        float: right;
+		display:none;
+    }
+
+    #jform_rules-lbl{
+        display:none;
+    }
+
+    #access-rules a:hover{
+        background:#f5f5f5 url('../images/slider_minus.png') right  top no-repeat;
+        color: #444;
+    }
+
+    fieldset.radio label{
+        width: 50px !important;
+    }
+	
+	.toggle-editor {
+		display: none;
+	}
+	
+	.image {
+		display: none;
+	}
+	
+	.article {
+		display: none;
+	}

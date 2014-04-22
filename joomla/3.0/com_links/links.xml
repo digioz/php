@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>com_links</name>
+    <creationDate>2014-04-11</creationDate>
+    <copyright>Copyright (C) DigiOz Multimedia, Inc. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>DigiOz Multimedia</author>
+    <authorEmail>webmaster@digioz.com</authorEmail>
+    <authorUrl>http://www.digioz.com</authorUrl>
+    <version>1.0.3</version>
+    <description>A simple link component for listing the URL of other websites on your site</description>
+    
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>links.php</filename>
+        <filename>controller.php</filename>
+        <filename>router.php</filename>
+        <folder>views</folder>
+		<folder>css</folder>
+		<folder>images</folder>
+        <folder>models</folder>
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+    </files>
+    <languages folder="site">
+        
+			<language tag="en-GB">language/en-GB.com_links.ini</language>
+    </languages>
+    <administration>
+        <menu img="components/com_links/assets/images/s_com_links.png" >COM_LINKS</menu>
+        <submenu>
+            
+			<menu link="option=com_links&amp;view=links" view="links" img="components/com_links/assets/images/s_links.png" alt="Links/Links">COM_LINKS_TITLE_LINKS</menu>
+
+			<menu link="option=com_links&amp;view=categories" view="categories" img="components/com_links/assets/images/s_categories.png" alt="Links/Categories">COM_LINKS_TITLE_CATEGORIES</menu>
+
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>links.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+            
+			<language tag="en-GB">language/en-GB.com_links.ini</language>
+			<language tag="en-GB">language/en-GB.com_links.sys.ini</language>
+        </languages>
+    </administration>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.component-creator.com/ -->
