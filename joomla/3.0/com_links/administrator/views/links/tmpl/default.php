@@ -11,8 +11,11 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.tooltip');
-JHTML::_('script','system/multiselect.js',false,true);
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
 // Import CSS
 $document = JFactory::getDocument();
 $document->addStyleSheet('components/com_links/assets/css/links.css');
@@ -25,17 +28,70 @@ $canOrder	= $user->authorise('core.edit.state', 'com_links');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 
+<script type="text/javascript">
+	Joomla.orderTable = function() {
+		table = document.getElementById("sortTable");
+		direction = document.getElementById("directionTable");
+		order = table.options[table.selectedIndex].value;
+		if (order != '<?php echo $listOrder; ?>') {
+			dirn = 'asc';
+		} else {
+			dirn = direction.options[direction.selectedIndex].value;
+		}
+		Joomla.tableOrdering(order, dirn, '');
+	}
+</script>
+
+<?php
+//Joomla Component Creator code to allow adding non select list filters
+if (!empty($this->extra_sidebar)) {
+    $this->sidebar .= $this->extra_sidebar;
+}
+?>
+
 <form action="<?php echo JRoute::_('index.php?option=com_links&view=links'); ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter-bar">
-		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('Search'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+
+<?php if(!empty($this->sidebar)): ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+
+	<div id="filter-bar" class="btn-toolbar">
+		<div class="filter-search btn-group pull-left">
+			<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('JSEARCH_FILTER'); ?>" />
+		</div>
+		
+		<div class="btn-group pull-left">
+			<button class="btn hasTooltip" type="submit" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+			<button class="btn hasTooltip" type="button" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+		</div>
+		
+		<div class="btn-group pull-right hidden-phone">
+			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+		</div>
+		<div class="btn-group pull-right hidden-phone">
+			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
+			<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
+				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
+				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
+			</select>
+		</div>
+		<div class="btn-group pull-right">
+			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
+			<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
+				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
+			</select>
 		</div>
 		
         
-		<div class='filter-select fltrt'>
+		<div class='filter-select pull-left'>
 			<?php //Filter for the field category
 			$selected_category = JRequest::getVar('filter_category');
 			jimport('joomla.form.form');
@@ -45,7 +101,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 			?>
 		</div>
 
-		<div class='filter-select fltrt'>
+		<div class='filter-select pull-left'>
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true);?>
@@ -53,10 +109,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 		</div>
 
 
-	</fieldset>
-	<div class="clr"> </div>
+	</div>
+	<div class="clearfix"> </div>
 
-	<table class="adminlist">
+		<div class="clearfix"> </div>
+		<table class="table table-striped" id="adminlist">
 		<thead>
 			<tr>
 				<th width="1%">

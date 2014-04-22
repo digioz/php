@@ -167,8 +167,8 @@ class LinksModelLinkForm extends JModelForm
 	$mailer = JFactory::getMailer();
 	$config = JFactory::getConfig();
 	$sender = array( 
-    $config->getValue( 'config.mailfrom' ),
-    $config->getValue( 'config.fromname' ) );
+    $config->get( 'config.mailfrom' ),
+    $config->get( 'config.fromname' ) );
  
 	$mailer->setSender($sender);
 	$mailer->addRecipient($to);
