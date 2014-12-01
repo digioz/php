@@ -61,12 +61,6 @@ if (filesize($filename) == 0)
     exit;
 }
 
-    // Write header of search page
-    $html = $tpl->draw( 'header', $return_string = true );
-    echo $html;
-
-    echo "<center><h3>$msgresultofsearch: <u><i>$search</i></u>:</h3><br></center>"; 
-
     // Read all entries and put in array
     $datain = fread($handle, filesize($filename));
     fclose($handle);
@@ -99,6 +93,14 @@ if (filesize($filename) == 0)
         echo $html;
         exit;
     }
+
+    // Write header of search page
+    $html = $tpl->draw( 'header', $return_string = true );
+    echo $html;
+
+    echo "<center><h3>$msgresultofsearch: <u><i>$search</i></u>:</h3><br></center>"; 
+
+
 
     // Display Search Results
 
