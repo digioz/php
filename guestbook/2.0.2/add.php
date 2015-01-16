@@ -73,6 +73,29 @@ if ($image_verify == 2)
     } 
 }
 
+// Image Verification Recaptcha V2
+if ($image_verify == 3)
+{
+    require_once('includes/recaptcha2.php');
+    $privatekey = $recaptcha_private_key;
+    $reCaptcha = new ReCaptcha($privatekey);
+    
+    if ($_POST["g-recaptcha-response"]) {
+        $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
+    }
+    
+    echo $resp;
+    
+    if ($resp == null || $resp->success = false) {
+        // The CAPTCHA was entered incorrectly
+        $tpl->assign( "error_msg", $errorImageVerification);
+        $html = $tpl->draw( 'error', $return_string = true );
+        echo $html;
+        exit;
+    }
+        
+}
+
 // Checking to see if the visitor has already posted --------------------
 
 if ($gbflood == 1)

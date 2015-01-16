@@ -52,6 +52,21 @@ if ($image_verify == 2)
 	$tpl->assign( "captcha2", recaptcha_get_html($publickey));
 }
 
+if ($image_verify == 3)
+{
+	require_once('includes/recaptcha2.php');
+	$publickey = $recaptcha_public_key;
+    
+    $lang = "en";
+    $resp = null;
+    $error = null;
+    $reCaptcha = new ReCaptcha($publickey); 
+    //$reCaptchaHtml = "";    
+    
+	$tpl->assign( "captcha3", $publickey);
+    $tpl->assign("captchalang", $lang);
+}
+
 $html = $tpl->draw( 'guestbook', $return_string = true );
 
 // and then draw the output

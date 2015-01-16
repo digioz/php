@@ -96,6 +96,14 @@ function bbcode(text) {
 					{$captcha2}
 					</td></tr>
 				 {/if}
+				 
+				 {if condition="$image_verify == 3"}
+					<tr><td><p><b><font size="2">Verify:</font></b></p></td><td>
+					<div class="g-recaptcha" data-sitekey="{$captcha3}"></div>
+					<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$captchalang}"></script>
+				   </td></tr>
+				 {/if}
+				 
 				<tr>
 					<td>
 						<p><b><font size="2">{$yourMessagetxt}</font></b></p>

@@ -42,7 +42,7 @@ $default_language   = "language.php";
 
 // Image Verification Feature -------------------------------------------------------
 
-$image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha.
+$image_verify       = 3;      // Set to 1 for simple, or 2 for Recaptcha.
 							  // If you select 2, you have to set the Recaptcha 
 							  // public and private keys below as well
 							  // Do Image Verification to prevent spam post
