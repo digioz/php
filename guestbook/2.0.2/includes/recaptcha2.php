@@ -84,6 +84,43 @@ class ReCaptcha
         $req=substr($req, 0, strlen($req)-1);
         return $req;
     }
+    
+    /**
+    * Fetches a remote server page using curl
+    * 
+    * @param string $url url to the remote server
+    */
+    
+    private function _file_get_contents_curl($url) 
+    {
+        try
+        {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+            curl_setopt($ch, CURLOPT_URL, $url);
+            $data = curl_exec($ch);
+            
+            //echo curl_getinfo($ch) . '<br/>';
+            //echo curl_errno($ch) . '<br/>';
+            //echo curl_error($ch) . '<br/>';
+            
+            curl_close($ch);
+
+            return $data;        
+        }
+        catch (Exception $e)
+        {
+            trigger_error(sprintf(
+            'Curl failed with error #%d: %s',
+            $e->getCode(), $e->getMessage()),
+            E_USER_ERROR);
+            
+            return FALSE;
+        }
+
+    }
 
     /**
      * Submits an HTTP GET to a reCAPTCHA server.
@@ -96,7 +133,10 @@ class ReCaptcha
     private function _submitHTTPGet($path, $data)
     {
         $req = $this->_encodeQS($data);
-        $response = file_get_contents($path . $req);
+        //$response = file_get_contents($path . $req);
+
+        $response = $this->_file_get_contents_curl($path . $req);
+
         return $response;
     }
 

@@ -84,9 +84,7 @@ if ($image_verify == 3)
         $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"], $_POST["g-recaptcha-response"]);
     }
     
-    echo $resp;
-    
-    if ($resp == null || $resp->success = false) {
+    if ($resp == null || $resp->success == false) {
         // The CAPTCHA was entered incorrectly
         $tpl->assign( "error_msg", $errorImageVerification);
         $html = $tpl->draw( 'error', $return_string = true );

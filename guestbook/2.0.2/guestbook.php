@@ -58,10 +58,7 @@ if ($image_verify == 3)
 	$publickey = $recaptcha_public_key;
     
     $lang = "en";
-    $resp = null;
-    $error = null;
-    $reCaptcha = new ReCaptcha($publickey); 
-    //$reCaptchaHtml = "";    
+    $reCaptcha = new ReCaptcha($publickey);    
     
 	$tpl->assign( "captcha3", $publickey);
     $tpl->assign("captchalang", $lang);
