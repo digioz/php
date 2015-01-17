@@ -42,7 +42,7 @@ $default_language   = "language.php";
 
 // Image Verification Feature -------------------------------------------------------
 
-$image_verify       = 3;      // Set to 1 for simple, or 2 for Recaptcha.
+$image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha.
 							  // If you select 2, you have to set the Recaptcha 
 							  // public and private keys below as well
 							  // Do Image Verification to prevent spam post
@@ -52,8 +52,8 @@ $image_verify       = 3;      // Set to 1 for simple, or 2 for Recaptcha.
                               // However, image verification is the MOST effective
                               // way of getting rid of spam, so we highly recommend it.
 
-$recaptcha_public_key = "6LfOmAATAAAAACoy3_L-qRcbuAdRj6ybZtcA7mel";	  // Recaptcha Public Key obtained from google.com/recaptcha
-$recaptcha_private_key = "6LfOmAATAAAAALj6dOAt6Op6c6raHB9BtjXmUGSR";  // Recaptcha Private Key obtained from google.com/recaptcha
+$recaptcha_public_key = "";	  // Recaptcha Public Key obtained from google.com/recaptcha
+$recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/recaptcha
                               
 // Admin Interface Username ---------------------------------------------------------
 
