@@ -42,15 +42,15 @@ $default_language   = "language.php";
 
 // Image Verification Feature -------------------------------------------------------
 
-$image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha.
-							  // If you select 2, you have to set the Recaptcha 
+$image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha Version 1.0
+							  // or set to 3 for Recaptcha Version 2.0. 
+							  // If you select 2 or 3, you have to set the Recaptcha 
 							  // public and private keys below as well
 							  // Do Image Verification to prevent spam post
-                              // This option requires your PHP to have been
-                              // compiled with GD 2.0.x or higher library so
-                              // it may not work with all server environments.
-                              // However, image verification is the MOST effective
-                              // way of getting rid of spam, so we highly recommend it.
+                              // Option 1 requires your PHP to have been
+                              // compiled with GD 2.0.x or higher. Option 3 requires
+							  // for your PHP to support CURL in order to communicate
+							  // the image verification answer to Google and verify it.
 
 $recaptcha_public_key = "";	  // Recaptcha Public Key obtained from google.com/recaptcha
 $recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/recaptcha
