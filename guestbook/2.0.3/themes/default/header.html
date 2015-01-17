@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>{$title}</title>
+  <link rel="STYLESHEET" type="text/css" href="style.css">
+  <link rel="STYLESHEET" type="text/css" href="font-awesome.css">
+</head>
+<body>
+	<center>
+	<a href="list.php?page=1&order=asc"><img src="images/logo.png" alt="{$headingtitletxt}"></a>
+	<br><br>
+	<form action="search.php" method="post">
+		<input type="text" name="search_term" size="50" maxlength="50" id="field" placeholder="Search">
+		<input type=submit value="{$searchbuttontxt}">
+	</form>
+	<br>
+	
+	<nav>
+	<ul>
+		<li><a href="guestbook.php"><i class="fa fa-pencil"></i>&nbsp;<b>{$addentrytxt}</b></a></li>
+		<li><a href="list.php?page=1&amp;order=asc"><i class="fa fa-align-center"></i>&nbsp;{$viewguestbooktxt}</a></li><li>
+		</li><li><a href="list.php?page=1&amp;order=asc"><i class="fa fa-chevron-down"></i>&nbsp;{$newpostfirsttxt}</a></li>
+		<li><a href="list.php?page=1&amp;order=desc"><i class="fa fa-chevron-up"></i>&nbsp;{$newpostlasttxt}</a></li>
+	</ul>
+</nav>
+<br>
+<br>

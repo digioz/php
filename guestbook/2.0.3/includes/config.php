@@ -6,7 +6,7 @@ if(!defined('IN_GB')) {
 
 // Version of this Guestbook ---------------------------------------------------------
 
-$gb_version = "2.0.2";
+$gb_version = "2.0.3";
 
 // Theme directory -------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ $image_verify       = 3;      // Set to 1 for simple, or 2 for Recaptcha.
                               // However, image verification is the MOST effective
                               // way of getting rid of spam, so we highly recommend it.
 
-$recaptcha_public_key = "6LfOmAATAAAAACoy3_L-qRcbuAdRj6ybZtcA7mel";	  // Recaptcha Public Key obtained from google.com/recaptcha
-$recaptcha_private_key = "6LfOmAATAAAAALj6dOAt6Op6c6raHB9BtjXmUGSR";  // Recaptcha Private Key obtained from google.com/recaptcha
+$recaptcha_public_key = "";	  // Recaptcha Public Key obtained from google.com/recaptcha
+$recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/recaptcha
                               
 // Admin Interface Username ---------------------------------------------------------
 
