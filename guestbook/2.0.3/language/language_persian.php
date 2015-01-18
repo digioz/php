@@ -39,5 +39,6 @@ $msgnosearchterm		= "کلمه جستجو را بنویسید";
 $msgresultofsearch		= "نتیچه جستجو شما";
 $msgnomatchfound		= "جستچو پیامی پیدا نکرد";
 $errorFormToken			= "رمز وارد شده اشتباه بود";
+$errorSFS				= ".شما مسدود شده است IP";
 
 ?>

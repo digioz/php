@@ -60,6 +60,11 @@ $recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/
 $_Username         = "admin";
 $_Password         = "admin";
 
+// Stop Forum Spam Settings ---------------------------------------------------------
+
+$stop_forum_spam_enabled 	= "0";
+$stop_forum_spam_key 		= "";
+
 // Flood protection setting ---------------------------------------------------------
 
 $gbflood            = 0;      // Set "1" to prevent flooding, "0" to disable it

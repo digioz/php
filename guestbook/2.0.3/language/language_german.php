@@ -39,5 +39,6 @@ $msgnosearchterm		= "Bitte geben Sie einen Suchbegriff ein und versuchen Sie es 
 $msgresultofsearch		= "Das Ergebnis Ihrer Suche";
 $msgnomatchfound		= "Kein Suchergebnis gefunden.";
 $errorFormToken			= "Ungültige Formular Security Token erkannt.";
+$errorSFS				= "Ihre IP hat sich als Spammer im Stop-Forum Spam-Datenbank identifiziert. Sie können keine Nachricht im Gästebuch zu schreiben.";
 
 ?>

@@ -94,6 +94,25 @@ if ($image_verify == 3)
         
 }
 
+// Check Stop Forum Spam if enabled -------------------------------------
+
+if ($stop_forum_spam_enabled == 1)
+{
+	require_once('includes/stopforumspam.php');
+	$stopforumspamkey = $stop_forum_spam_key;
+	$sfs = new StopForumSpam();
+	$sfsargs = array('email' => $_POST['youremail'], 'ip' => $sfs->getUserIP());
+	$sfsspamcheck = $sfs->is_spammer( $sfsargs );
+	
+	if ($sfsspamcheck['spammer'] == true) {
+        // User is in the Spam Database
+        $tpl->assign( "error_msg", $errorSFS);
+        $html = $tpl->draw( 'error', $return_string = true );
+        echo $html;
+        exit;
+    }
+}
+
 // Checking to see if the visitor has already posted --------------------
 
 if ($gbflood == 1)

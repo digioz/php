@@ -39,5 +39,6 @@ $msgnosearchterm			= "Skriv in ett sökord och försök igen.";
 $msgresultofsearch			= "Resultatet av din sökning";
 $msgnomatchfound			= "Inga sökresultat hittades.";
 $errorFormToken				= "Ogiltig Form Security Token upptäckt.";
+$errorSFS					= "Din IP har identifierats som en spammare i stopp Forum Spam Database. Det är inte tillåtet att posta ett meddelande i gästboken.";
 
 ?>

@@ -39,5 +39,6 @@ $msgnosearchterm		= "Please enter a search term and try again.";
 $msgresultofsearch		= "The result of your search";
 $msgnomatchfound		= "No match found.";
 $errorFormToken			= "Invalid Form Security Token Detected.";
+$errorSFS				= "Your IP has been identified as a spammer in the Stop Forum Spam Database. You are not permitted to post a message in this guestbook.";
 
 ?>
