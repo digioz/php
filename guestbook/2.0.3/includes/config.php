@@ -62,8 +62,8 @@ $_Password         = "admin";
 
 // Stop Forum Spam Settings ---------------------------------------------------------
 
-$stop_forum_spam_enabled 	= "0";
-$stop_forum_spam_key 		= "";
+$stop_forum_spam_enabled 	= "1";
+$stop_forum_spam_key 		= "svnu68kbogxyd5";
 
 // Flood protection setting ---------------------------------------------------------
 
