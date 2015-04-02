@@ -132,10 +132,12 @@ else
 			$tpl->assign( "listnametxt", $listnametxt);
 			$tpl->assign( "listemailtxt", $listemailtxt);
 			$tpl->assign( "listMessagetxt", $listMessagetxt);
+            $tpl->assign( "listcountrytxt", $listcountrytxt);
 			$tpl->assign( "outputdate", $lines[$i]->gbDate);
 			$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
 			$tpl->assign( "outputemail", $lines[$i]->gbEmail);
 			$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
+            $tpl->assign( "outputcountry", $lines[$i]->gbCountry);
 			
 			$html = $tpl->draw( 'list', $return_string = true );
 			echo $html;

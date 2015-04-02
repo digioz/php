@@ -142,6 +142,7 @@ if ($referersKey == 1)
 $yourname = $_POST['yourname'];
 $youremail = $_POST['youremail'];
 $yourmessage = $_POST['yourmessage'];
+$yourcountry = $_POST['yourcountry'];
 $date = date("D m/j/y g:iA");
 
 // Name Validation Section -----------------------------
@@ -250,6 +251,7 @@ if (!isset($error))
 
 	$yourname    = clean_message(stripslashes($yourname));
 	$yourmessage = clean_message(stripslashes($yourmessage));
+    $yourcountry = clean_message(stripslashes($yourcountry));
 
 	// Call for filtering bad words -------------------------------------------------------------------
 
@@ -261,7 +263,7 @@ if (!isset($error))
    // Write the verified guestbook entry to file ----------------------------------------------------
 
    $a = new gbClass();
-   $a->setGBVars($date,$yourname,$youremail,$yourmessage);
+   $a->setGBVars($date,$yourname,$youremail,$yourmessage,$yourcountry);
    @ $fp = fopen("data/list.txt","a");
    flock($fp, 2);
  
@@ -283,14 +285,17 @@ if (!isset($error))
    $tpl->assign( "yournametxt", $yournametxt);
    $tpl->assign( "youremailtxt", $youremailtxt);
    $tpl->assign( "yourMessagetxt", $yourMessagetxt);
+   $tpl->assign( "yourCountrytxt", $yourCountrytxt);
    
    $temp1 = stripslashes($yourname);
    $temp2 = stripslashes($youremail);
    $temp3 = stripslashes($yourmessage);
+   $temp4 = stripslashes($yourcountry);
    
    $tpl->assign( "temp1", $temp1);
    $tpl->assign( "temp2", $temp2);
    $tpl->assign( "temp3", smiley_face($temp3));
+   $tpl->assign( "temp4", $temp4);
    
    $tpl->assign("result1", $result1);
    $tpl->assign("entryDate", $date);

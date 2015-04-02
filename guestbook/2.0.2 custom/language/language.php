@@ -2,7 +2,8 @@
 
 $yournametxt           	= "Your Name:";
 $youremailtxt			= "Your Email:";
-$yourMessagetxt 		= "Your Message:";
+$yourMessagetxt 		= "Your Message:"; 
+$yourCountrytxt         = "Your Country:";   
 $submitbutton 			= "Submit Guestbook Entry";
 $headingtitletxt 		= "Guestbook";
 $addentrytxt 			= "Add Entry";
@@ -25,6 +26,7 @@ $listnametxt			= "From";
 $listemailtxt			= "Email";
 $listMessagetxt			= "Message";
 $listDatetxt			= "Date";
+$listcountrytxt         = "Country";
 $searchlabeltxt			= "Enter Search <b>WORD</b>:";
 $searchbuttontxt		= "Find Now!";
 $errorImageVerification = "Wrong Image Verification Code Entered!<br />Please go back and enter it again.";

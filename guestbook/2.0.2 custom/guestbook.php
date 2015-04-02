@@ -34,6 +34,7 @@ $tpl->assign( "searchbuttontxt", $searchbuttontxt );
 $tpl->assign( "yournametxt", $yournametxt );
 $tpl->assign( "youremailtxt", $youremailtxt );
 $tpl->assign( "yourMessagetxt", $yourMessagetxt );
+$tpl->assign( "yourCountrytxt", $yourCountrytxt );
 $tpl->assign( "submitbutton", $submitbutton );
 $tpl->assign( "image_verify", $image_verify );
 $tpl->assign( "currentyear", date("Y") );
