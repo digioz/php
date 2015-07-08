@@ -39,6 +39,6 @@ $msgnosearchterm		= "Prosím, zadajte hľadaný výraz a skúste to znova.";
 $msgresultofsearch		= "Výsledok vyhľadávania";
 $msgnomatchfound		= "Pre hľadaný výraz nebola nájdená žiadna zhoda.";
 $errorFormToken			= "Bol zistený neplatný formát ochranného kľúča.";
-$errorSFS				= "Vaša IP bol identifikovaný ako spammer do databázy Zastaviť Forum Spam. Nie ste dovolené písať správy v tomto návštevnej knihe.";
+$errorSFS				= "Vaša IP bola identifikovaná ako spammer a pridaná do databázy Stop Fórum Spam. Nemáte povolené písať správy do tejto Knihy návštev.";
 
 ?>
