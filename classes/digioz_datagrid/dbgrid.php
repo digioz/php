@@ -45,7 +45,7 @@ class dbGrid extends dbClass
         $this->tableWidth = "100%";
         $this->perPage = "10";
         $this->start = "0";
-        $this->end = $this->end = strval($this->start) + strval($this->perPage);
+        $this->end = strval($this->start) + strval($this->perPage);
         $this->showHeader = 1;
         $this->customHeader = "";
 	}
