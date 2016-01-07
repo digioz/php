@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="3.0" type="template" client="site">
+  <name>DigiOz Bootstrap</name>
+  <version>1.0</version>
+  <creationDate>01/07/2016</creationDate>
+  <author>DigiOz Multimedia</author>
+  <authorEmail>support@digioz.com</authorEmail>
+  <copyright>Copyright (C) 2016 DigiOz Multimedia</copyright>
+  <description>A basic Bootstrap 3 template for Joomla 3.x.</description>
+  <files>
+    <filename>index.php</filename>
+    <folder>css</folder>
+    <folder>js</folder>
+    <folder>images</folder>
+  </files>
+  <positions>
+        <position>debug</position>
+        <position>position-0</position>
+        <position>position-1</position>
+        <position>position-2</position>
+        <position>position-3</position>
+        <position>position-4</position>
+        <position>position-5</position>
+        <position>position-6</position>
+        <position>position-7</position>
+        <position>position-8</position>
+        <position>position-9</position>
+        <position>position-10</position>
+        <position>position-11</position>
+        <position>position-12</position>
+        <position>position-13</position>
+        <position>position-14</position>
+		<position>header</position>
+		<position>footer</position>
+  </positions>
+<config>
+</config>
+</extension>

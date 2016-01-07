@@ -1,0 +1,22 @@
+.main_container {
+    width:940px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.mid_container {
+    margin:20px 0px;
+}
+.main_content_area {
+    float:left;
+    width:700px;
+}
+.right_sidebar {
+    float:right;
+    width: 220px;
+}
+.main_content_area,
+.right_sidebar,
+.footer,
+.header {
+    border:1px solid #bbb;
+}
