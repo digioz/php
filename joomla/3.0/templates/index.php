@@ -24,7 +24,6 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
     <div class='container'>
         <!-- header -->
         <div class='row'>
-                <div>Header</div>
 				<jdoc:include type="modules" name="position-1" style="none" />
 				<jdoc:include type="modules" name="position-3" style="xhtml" />
 				<jdoc:include type="modules" name="position-2" style="none" />
@@ -33,16 +32,19 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
         <!-- mid container - includes main content area and right sidebar -->
         <div class='row'>
 			<!-- left sidebar -->
+			<?php if ($this->countModules('position-4')) : ?>
 			<div class='col-sm-3'>
 				<div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">&nbsp;</h3>
-                </div>
-                <div class="panel-body">
-                    <jdoc:include type="modules" name="position-4" style="well" />
-                </div>
+					<div class="panel-heading">
+						<h3 class="panel-title">&nbsp;</h3>
+					</div>
+					<div class="panel-body">
+						<jdoc:include type="modules" name="position-4" style="well" />
+					</div>
+				</div>
             </div>
-            </div>
+			<?php endif; ?>
+			
             <!-- main content area -->
             <div class='col-sm-6'>
 				<div class="panel panel-default">
@@ -54,9 +56,24 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 						<jdoc:include type="component" />
 					</div>
 				</div>
-
             </div>
-            <!-- right sidebar -->
+			
+            <!-- search box -->
+			<?php if ($this->countModules('position-0')) : ?>
+			<div class='col-sm-3'>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">&nbsp;</h3>
+					</div>
+					<div class="panel-body">
+						<jdoc:include type="modules" name="position-0" style="well" />
+					</div>
+				</div>
+            </div>
+			<?php endif; ?>
+			
+			<!-- right sidebar -->
+			<?php if ($this->countModules('position-7')) : ?>
             <div class='col-sm-3'>
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -67,6 +84,7 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 					</div>
 				</div>
             </div>
+			<?php endif; ?>
         </div>
         <!-- footer -->
         <div class='row'>
