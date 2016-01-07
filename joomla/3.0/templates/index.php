@@ -24,6 +24,7 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
     <div class='container'>
         <!-- header -->
         <div class='row'>
+				<jdoc:include type="modules" name="header" style="none" />
 				<jdoc:include type="modules" name="position-1" style="none" />
 				<jdoc:include type="modules" name="position-3" style="xhtml" />
 				<jdoc:include type="modules" name="position-2" style="none" />
@@ -87,9 +88,26 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 			<?php endif; ?>
         </div>
         <!-- footer -->
+		<?php if ($this->countModules('footer')) : ?>
         <div class='row'>
-                <div class='span12'>Footer</div>
+			<div class='span12'>
+				<jdoc:include type="modules" name="footer" style="none" />
+				<br />
+				<div class="sm-3"><a href="http://www.digioz.com" target="_blank">Template by DigiOz Multimedia.</a></div>
+			</div>
         </div>
+		<?php endif; ?>
+		
+		<div class='row'>
+			<div class='span12'>
+				<center>
+					<span style="font-size:10px;font-style: italic;"><a href="http://www.digioz.com" target="_blank">Template by DigiOz Multimedia.</a></span>
+				</center>
+			</div>
+        </div>
+		
+		<p>&nbsp;</p>
+
     </div>
 </body>
 </html>
