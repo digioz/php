@@ -33,6 +33,7 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 		  </div>
 		  <div class="navbar-collapse collapse">
 			<jdoc:include type="modules" name="position-1" style="none" />
+			<jdoc:include type="modules" name="menuload" style="none" />
 		  </div><!--/.nav-collapse -->
 		</div>
 	</nav>
@@ -45,6 +46,7 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 			
 			<jdoc:include type="modules" name="position-3" style="xhtml" />
 			<jdoc:include type="modules" name="position-2" style="none" />
+			<jdoc:include type="modules" name="breadcrumbsload" style="none" />
         </div>
 		
 		<p>&nbsp;</p>
@@ -61,14 +63,14 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
         <!-- mid container - includes main content and left and right navs -->
         <div class='row'>
 			<!-- left sidebar -->
-			<?php if ($this->countModules('position-4')) : ?>
+			<?php if ($this->countModules('position-7')) : ?>
 			<div class="col-sm-2">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">&nbsp;</h3>
 					</div>
 					<div class="panel-body">
-						<jdoc:include type="modules" name="position-4" style="well" />
+						<jdoc:include type="modules" name="position-7" style="well" />
 					</div>
 				</div>
             </div>
@@ -102,14 +104,14 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
 			<?php endif; ?>
 			
 			<!-- right sidebar -->
-			<?php if ($this->countModules('position-7')) : ?>
+			<?php if ($this->countModules('position-4')) : ?>
             <div class="col-sm-2">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">&nbsp;</h3>
 					</div>
 					<div class="panel-body">
-						<jdoc:include type="modules" name="position-7" style="well" />
+						<jdoc:include type="modules" name="position-4" style="well" />
 					</div>
 				</div>
             </div>

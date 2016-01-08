@@ -34,6 +34,8 @@
 		<position>header</position>
 		<position>footer</position>
 		<position>banner</position>
+		<position>menuload</position>
+		<position>breadcrumbsload</position>
   </positions>
 <config>
 </config>
