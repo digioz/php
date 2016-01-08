@@ -33,6 +33,7 @@
         <position>position-14</position>
 		<position>header</position>
 		<position>footer</position>
+		<position>banner</position>
   </positions>
 <config>
 </config>
