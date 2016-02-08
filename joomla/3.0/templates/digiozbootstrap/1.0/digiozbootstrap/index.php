@@ -263,8 +263,6 @@ $doc->addScript('templates/' . $this->template . '/js/main.js', 'text/javascript
         <div class='row'>
 			<div class='span12'>
 				<jdoc:include type="modules" name="footer" style="none" />
-				<br />
-				<div class="sm-3"><a href="http://www.digioz.com" target="_blank">Template by DigiOz Multimedia.</a></div>
 			</div>
         </div>
 		<?php endif; ?>
