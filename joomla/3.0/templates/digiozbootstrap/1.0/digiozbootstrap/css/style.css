@@ -20,3 +20,12 @@
 .header {
     border:1px solid #bbb;
 }
+
+#member-registration, #user-registration {	
+	width: 500px;	
+	float:left;	text-align: left;
+}
+
+#member-registration .control-label, #user-registration .control-label {	
+	text-align:left;
+}
