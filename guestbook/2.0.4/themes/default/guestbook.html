@@ -27,6 +27,15 @@ function bbcode(text) {
 	}
 }
 
+{if condition="$gbAllowAttachments == 1"}
+		$(document).ready(function(){
+			$('.add_more').click(function(e){
+				e.preventDefault();
+				$(this).before("<input name='file[]' type='file'/><br />");
+			});
+		});
+{/if}
+
 </script>
 <div class="message">
 <table width="500" cellspacing="0" cellpadding="5"><tr><td></td></tr><tr><td>
@@ -70,9 +79,8 @@ function bbcode(text) {
 </center>
 <!-- Smiley List Stops Here -->
 
-
 <br>
-<form name="post" action="add.php" method="post">
+<form name="post" action="add.php" method="post" enctype="multipart/form-data">
 			<table border="0" cellpadding="0" cellspacing="2">
 				<input type="hidden" name="{$tokenid}" value="{$tokenvalue}" />
 				<tr>
@@ -103,7 +111,13 @@ function bbcode(text) {
 					<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$captchalang}"></script>
 				   </td></tr>
 				 {/if}
-				 
+
+				 {if condition="$gbAllowAttachments == 1"}
+				    <tr><td><p><b><font size="2">Attachments:</font></b></p></td><td>
+						<input name="file[]" type="file" /><br />
+                        <button class="add_more">Add More Files</button><br />
+					</td></tr>
+				 {/if}
 				<tr>
 					<td>
 						<p><b><font size="2">{$yourMessagetxt}</font></b></p>

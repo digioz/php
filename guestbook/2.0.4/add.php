@@ -276,6 +276,40 @@ if (!isset($error))
 	{
 		$yourmessage = swapBadWords($yourmessage);
 	}
+
+	// Attachment processing ------------------------------------------------
+
+	if (count($_FILES['file']['name']) > 0)
+	{
+		$yourmessage .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
+	}
+
+	for($i=0; $i<count($_FILES['file']['name']); $i++)
+	{
+		$target_path = "uploads/";
+		$ext = explode('.', basename( $_FILES['file']['name'][$i]));
+		$fileext = $ext[count($ext)-1];
+		$filename = md5(uniqid()) . "." . $fileext;
+		$target_path = $target_path . $filename;
+
+		if (in_array($fileext, $attach_ext))
+		{
+			if(move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) {
+				$yourmessage .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
+			} else{
+				echo "There was an error uploading the file" . $_FILES['file']['name'][$i] . ", please try again! <br />";
+			}
+		}
+		else 
+		{
+			echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";
+		}
+	}
+
+	if (count($_FILES['file']['name']) > 0)
+	{
+		$yourmessage .= "</ul>";
+	}
     
    // Write the verified guestbook entry to file ----------------------------------------------------
 

@@ -27,6 +27,15 @@ function bbcode(text) {
 	}
 }
 
+{if condition="$gbAllowAttachments == 1"}
+		$(document).ready(function(){
+			$('.add_more').click(function(e){
+				e.preventDefault();
+				$(this).before("<input name='file[]' type='file'/><br />");
+			});
+		});
+{/if}
+
 </script>
 
 <table bgcolor=#EFEFEF bordercolor=#C0C0C0 border=1 width=500 cellspacing=0 cellpadding=10><tr><td background="themes/{$theme}/images/toolbar.jpg" height="20"></td></tr><tr><td>
@@ -102,6 +111,13 @@ function bbcode(text) {
 					<div class="g-recaptcha" data-sitekey="{$captcha3}"></div>
 					<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$captchalang}"></script>
 				   </td></tr>
+				 {/if}
+
+				 {if condition="$gbAllowAttachments == 1"}
+				    <tr><td><p><b><font size="2">Attachments:</font></b></p></td><td>
+						<input name="file[]" type="file" /><br />
+                        <button class="add_more">Add More Files</button><br />
+					</td></tr>
 				 {/if}
 				<tr>
 					<td>

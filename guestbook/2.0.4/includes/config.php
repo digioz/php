@@ -80,6 +80,17 @@ $gbIPLogKey         = 1;      // Set "1" to log IP of Visitor for each post "0" 
 
 $banIPKey           = 0;      // Set "1" to block posting of banned IP or "0" to disable
 
+// Attachment Settings -------------------------------------------------------------
+
+$gbAllowAttachments = 1;
+
+$attach_ext = array();
+$attach_ext[] = 'jpg';
+$attach_ext[] = 'png';
+$attach_ext[] = 'gif';
+$attach_ext[] = 'pdf';
+$attach_ext[] = 'txt';
+
 // ---------------------------------------------------------------------------------
 // Bellow you can list known IP addresses you would like to block. -----------------
 // We have given you a list of known spammers bellow. Feel free --------------------

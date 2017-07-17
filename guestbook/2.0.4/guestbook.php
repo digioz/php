@@ -39,6 +39,7 @@ $tpl->assign( "image_verify", $image_verify );
 $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "tokenid", $token_id );
 $tpl->assign( "tokenvalue", $token_value );
+$tpl->assign( "gbAllowAttachments", $gbAllowAttachments );
 
 if ($image_verify == 1)
 {
