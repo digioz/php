@@ -281,7 +281,8 @@ if (!isset($error))
 
 	if (count($_FILES['file']['name']) > 0)
 	{
-		$yourmessage .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
+		$attachment_text .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
+		$yourmessage .= "<br /><br />";
 	}
 
 	for($i=0; $i<count($_FILES['file']['name']); $i++)
@@ -295,7 +296,13 @@ if (!isset($error))
 		if (in_array($fileext, $attach_ext))
 		{
 			if(move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) {
-				$yourmessage .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
+				$attachment_text .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
+
+				if ($gbDisplayImageInBody == 1 && in_array($fileext, $attach_img))
+				{
+					$yourmessage .= "<a href=\"$target_path\" target=\"_blank\"><img src=\"$target_path\" style=\"width:120px;\" /></a>&nbsp;&nbsp;";
+				}
+
 			} else{
 				echo "There was an error uploading the file" . $_FILES['file']['name'][$i] . ", please try again! <br />";
 			}
@@ -308,8 +315,10 @@ if (!isset($error))
 
 	if (count($_FILES['file']['name']) > 0)
 	{
-		$yourmessage .= "</ul>";
+		$attachment_text .= "</ul>";
 	}
+
+	$yourmessage .= $attachment_text;
     
    // Write the verified guestbook entry to file ----------------------------------------------------
 

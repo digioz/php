@@ -83,13 +83,19 @@ $banIPKey           = 0;      // Set "1" to block posting of banned IP or "0" to
 // Attachment Settings -------------------------------------------------------------
 
 $gbAllowAttachments = 1;
+$gbDisplayImageInBody = 1;
 
-$attach_ext = array();
+$attach_ext = array();  // List of file extensions that are allowed as attachments
 $attach_ext[] = 'jpg';
 $attach_ext[] = 'png';
 $attach_ext[] = 'gif';
 $attach_ext[] = 'pdf';
 $attach_ext[] = 'txt';
+
+$attach_img = array();  // List of file extensions to show as image in the body of message
+$attach_img[] = 'jpg';
+$attach_img[] = 'png';
+$attach_img[] = 'gif';
 
 // ---------------------------------------------------------------------------------
 // Bellow you can list known IP addresses you would like to block. -----------------
