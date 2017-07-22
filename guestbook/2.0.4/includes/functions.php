@@ -188,6 +188,7 @@ function check_referer($referers)
 function spamDetect($string)
 {
 	global $gbSpam;
+	global $cSpam = 0;
 
 	// Count the number of array element of the bad word array
 	$nSpam = sizeof($gbSpam);
