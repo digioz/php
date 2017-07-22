@@ -279,47 +279,67 @@ if (!isset($error))
 
 	// Attachment processing ------------------------------------------------
 
-	if (count($_FILES['file']['name']) > 0)
+	if ($gbAllowAttachments == 1)
 	{
-		$attachment_text .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
-		$yourmessage .= "<br /><br />";
-	}
+		$attachment_text = "";
+		$attachment_upload_count_success = 0;
+		
+			/*if (count($_FILES['file']['name']) > 0)
+			{
+				$attachment_text .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
+				$yourmessage .= "<br /><br />";
+			}*/
 
-	for($i=0; $i<count($_FILES['file']['name']); $i++)
-	{
-		$target_path = "uploads/";
-		$ext = explode('.', basename( $_FILES['file']['name'][$i]));
-		$fileext = $ext[count($ext)-1];
-		$filename = md5(uniqid()) . "." . $fileext;
-		$target_path = $target_path . $filename;
-
-		if (in_array($fileext, $attach_ext))
+		for($i=0; $i<count($_FILES['file']['name']); $i++)
 		{
-			if(move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) {
-				$attachment_text .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
+			$target_path = "uploads/";
+			$ext = explode('.', basename( $_FILES['file']['name'][$i]));
+			$fileext = $ext[count($ext)-1];
+			$filename = md5(uniqid()) . "." . $fileext;
+			$target_path = $target_path . $filename;
 
-				if ($gbDisplayImageInBody == 1 && in_array($fileext, $attach_img))
+			if (in_array($fileext, $attach_ext))
+			{
+				if(move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) 
 				{
-					$yourmessage .= "<a href=\"$target_path\" target=\"_blank\"><img src=\"$target_path\" style=\"width:120px;\" /></a>&nbsp;&nbsp;";
-				}
+					$attachment_text .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
 
-			} else{
-				echo "There was an error uploading the file" . $_FILES['file']['name'][$i] . ", please try again! <br />";
+					if ($gbDisplayImageInBody == 1 && in_array($fileext, $attach_img))
+					{
+						if ($attachment_upload_count_success == 0)
+						{
+							$yourmessage .= "<br /><br />";
+						}
+						
+						$yourmessage .= "<a href=\"$target_path\" target=\"_blank\"><img src=\"$target_path\" style=\"width:120px;\" /></a>&nbsp;&nbsp;";
+					}
+					
+					$attachment_upload_count_success++;
+				} 
+				else
+				{
+					echo "There was an error uploading the file" . $_FILES['file']['name'][$i] . ", please try again! <br />";
+				}
+			}
+			else 
+			{
+				echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";
 			}
 		}
-		else 
+
+		if (count($_FILES['file']['name']) > 0)
 		{
-			echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";
+			$attachment_text .= "</ul>";
 		}
+
+		if ($attachment_upload_count_success > 0)
+		{
+			$yourmessage .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
+		}
+		
+		$yourmessage .= $attachment_text;				
 	}
 
-	if (count($_FILES['file']['name']) > 0)
-	{
-		$attachment_text .= "</ul>";
-	}
-
-	$yourmessage .= $attachment_text;
-    
    // Write the verified guestbook entry to file ----------------------------------------------------
 
    $a = new gbClass();
