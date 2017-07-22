@@ -22,7 +22,7 @@ if ($page == "") { $page = 1; }
 if ($order == "") { $order = "asc"; }
 
 $currentPage = $page;
-
+$totalpages = 0;
 if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
 {
     // Check page value ------------------------------------------------------------------
