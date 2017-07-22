@@ -25,13 +25,13 @@ $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
 $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "goback", $goback );
-
+if(!isset($_GET['page'])) $_GET['page'] = 0;
 $search = sanitize_html_string($_POST['search_term']);
 $pageNum = sanitize_int($_GET['page'],0,9000);
 
 // Set Search Variables 
 if ($search == "")
-{
+{   if(!isset($_GET['search_term'])) $_GET['search_term'] = '';
     $search = sanitize_html_string($_GET['search_term']);
 }
 
