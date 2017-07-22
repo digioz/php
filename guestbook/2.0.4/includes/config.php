@@ -83,7 +83,7 @@ $banIPKey           = 0;      // Set "1" to block posting of banned IP or "0" to
 // Attachment Settings -------------------------------------------------------------
 
 $gbAllowAttachments = 0;	  // Flag to enable file upload
-$gbDisplayImageInBody = 1;
+$gbDisplayImageInBody = 1;	  // Only works if Attachments are Allowed
 
 $attach_ext = array();  	  // List of file extensions that are allowed as attachments
 $attach_ext[] = 'jpg';

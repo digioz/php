@@ -82,7 +82,7 @@ elseif ($lg == 3)
        if($email_optional == 1){ echo "Yes"; }else{ echo "No"; }
        echo "</b></font></center></td></tr>";
   echo "<tr><td>Name Field Optional:</td><td><center><font color=blue><b>";
-       if($$name_optional == 1){ echo "Yes"; }else{ echo "No"; }
+       if($name_optional == 1){ echo "Yes"; }else{ echo "No"; }
        echo "</b></font></center></td></tr>";
   echo "<tr><td>Message Field Optional:</td><td><center><font color=blue><b>";
        if($message_optional == 1){ echo "Yes"; }else{ echo "No"; }
@@ -126,7 +126,24 @@ elseif ($lg == 3)
   echo "<tr><td>Keyword based Spam Block:</td><td><center><font color=blue><b>";
        if($gbSpamKey == 1){ echo "Yes"; }else{ echo "No"; }
        echo "</b></font></center></td></tr>";
-       
+  echo "<tr><td>Allow Attachments:</td><td><center><font color=blue><b>";
+       if($gbAllowAttachments == 1){ echo "Yes"; }else{ echo "No"; }
+       echo "</b></font></center></td></tr>"; 
+  echo "<tr><td>Show Attachment Inline:</td><td><center><font color=blue><b>";
+       if($gbDisplayImageInBody == 1){ echo "Yes"; }else{ echo "No"; }
+       echo "</b></font></center></td></tr>";
+  echo "<tr><td>Attachment File Types Allowed:</td><td><center><font color=blue><b>";
+       foreach($attach_ext as $value1)
+       {
+         echo $value1."<br>";
+       }
+       echo "</b></font></center></td></tr>"; 
+  echo "<tr><td>Files to Attach Inline:</td><td><center><font color=blue><b>";
+       foreach($attach_img as $value1)
+       {
+         echo $value1."<br>";
+       }
+       echo "</b></font></center></td></tr>";    	   
   echo "<tr><td>IP Ban List (if option is 'YES' above):</td><td><center><font color=blue><b>";
        foreach($banned_ip as $value1)
        {
