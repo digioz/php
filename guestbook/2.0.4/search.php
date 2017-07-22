@@ -66,6 +66,7 @@ if (filesize($filename) == 0)
     fclose($handle);
     $out = explode("<!-- E -->", $datain);
     array_pop($out);
+	$search_results = [];
   
 
     // Search array "out" for user search term and put matches in array search_results
