@@ -11,7 +11,7 @@ session_start();
 include("../includes/config.php");
 
 // If the form was submitted -------------------------------------------
-
+$error = '';
 if (isset($_POST['Submitted'])) 
 {
     // If the username and password match up, then continue...
@@ -27,7 +27,7 @@ if (isset($_POST['Submitted']))
         $error = "<center><div style=\"color:red;\">Invalid Login Information Entered.</div></center>";
     } 
 } 
-
+if (!isset($_SESSION['Logged_In'])) $_SESSION['Logged_In'] = 'False';
 // If they are NOT logged in then show the form to login... 
 if ($_SESSION['Logged_In'] != "True") {
 
