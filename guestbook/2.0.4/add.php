@@ -161,7 +161,7 @@ if ($referersKey == 1)
 $yourname = $_POST['yourname'];
 $youremail = $_POST['youremail'];
 $yourmessage = $_POST['yourmessage'];
-$date = date("D m/j/y g:iA");
+$date = date($date_time_format);
 
 // Name Validation Section -----------------------------
 

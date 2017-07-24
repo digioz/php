@@ -12,6 +12,10 @@ $gb_version = "2.0.4";
 
 $theme = "default";
 
+// Date Format Settings --------------------------------------------------------------
+
+$date_time_format = "D m/j/y g:iA";
+
 // Variables for making a field optional in form -------------------------------------
 
 $email_optional     = 0;      // Set "1" for optional email, "0" to make it required
