@@ -165,6 +165,8 @@ $date = date("D m/j/y g:iA");
 
 // Name Validation Section -----------------------------
 
+$error = "";
+
 if ($name_optional != 1)
 {
 	if (strlen($yourname) > 40)                 // Check Name Length
@@ -207,7 +209,7 @@ if ($message_optional != 1)
 
 // Exit Program if there is an error --------------------
 
-if (isset($error))
+if (strlen($error) > 0)
 {
 	$z="1";
 	$tpl->assign( "error_msg", $error);
@@ -216,7 +218,7 @@ if (isset($error))
 	exit;
 }
 
-if (!isset($error))
+if (strlen($error) == 0)
 {
 	include("includes/sanitize.php"); 
 	   
@@ -283,12 +285,7 @@ if (!isset($error))
 	{
 		$attachment_text = "";
 		$attachment_upload_count_success = 0;
-		
-			/*if (count($_FILES['file']['name']) > 0)
-			{
-				$attachment_text .= "<hr><b style=\"font-size:10px;\">Attachments:</b><br /><ul>";
-				$yourmessage .= "<br /><br />";
-			}*/
+		$i = 0;
 
 		for($i=0; $i<count($_FILES['file']['name']); $i++)
 		{

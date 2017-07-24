@@ -38,10 +38,19 @@ function bbcode(text) {
 
 </script>
 <div class="message">
-<table width="500" cellspacing="0" cellpadding="5"><tr><td></td></tr><tr><td>
+<table><tr><td></td></tr><tr><td>
 <!-- Smiley List Starts Here -->
 <center>
-<table width="150" cellspacing="0" cellpadding="5">
+	<table style="min-width:320px; max-width:500px;">
+		<tr>
+			<td style="text-align:center;">
+				<div class="panel panel-primary" style="width:600px;">
+					<div class="panel-heading">
+						<h3 class="panel-title">&nbsp;</h3>
+					</div>
+					<div class="panel-body">
+				<center>
+				<table width="150" cellspacing="0" cellpadding="5">
 				<tr align="center" valign="middle">
 				  <td><a href="javascript:emoticon(':D')"><img src="../../images/icon_biggrin.gif" border="0" alt="Very Happy" title="Very Happy"></a></td>
 				  <td><a href="javascript:emoticon(':)')"><img src="../../images/icon_smile.gif" border="0" alt="Smile" title="Smile"></a></td>
@@ -66,79 +75,83 @@ function bbcode(text) {
 				  <td><a href="javascript:emoticon(':idea:')"><img src="../../images/icon_idea.gif" border="0" alt="Idea" title="Idea"></a></td>
 				  <td><a href="javascript:emoticon(':arrow:')"><img src="../../images/icon_arrow.gif" border="0" alt="Arrow" title="Arrow"></a></td>
 				</tr>
-</table>
-</center><center>
-<table width="100" border="0" cellspacing="0" cellpadding="5">
-				<tr align="center" valign="middle">
-				<td><input type="button" class="button" value=" Bold " style="font-weight:bold; width: 50px" onClick="javascript:bbcode('[b] [/b]')"></td>
-				<td><input type="button" class="button" value=" Underline " style="font-weight:bold; width: 80px" onClick="javascript:bbcode('[u] [/u]')"></td>
-				<td><input type="button" class="button" value=" Italic " style="font-weight:bold; width: 50px" onClick="javascript:bbcode('[i] [/i]')"></td>
-				<td><input type="button" class="button" value=" Center " style="font-weight:bold; width: 70px" onClick="javascript:bbcode('[center] [/center]')"></td>
-				</tr>
-</table>
-</center>
+				</table>
+				</center><center>
+				<table width="100" border="0" cellspacing="0" cellpadding="5">
+								<tr align="center" valign="middle">
+								<td><input type="button" class="btn btn-default" value=" Bold " style="font-weight:bold; width: 50px" onClick="javascript:bbcode('[b] [/b]')"></td>
+								<td><input type="button" class="btn btn-default" value=" Underline " style="font-weight:bold; width: 80px" onClick="javascript:bbcode('[u] [/u]')"></td>
+								<td><input type="button" class="btn btn-default" value=" Italic " style="font-weight:bold; width: 50px" onClick="javascript:bbcode('[i] [/i]')"></td>
+								<td><input type="button" class="btn btn-default" value=" Center " style="font-weight:bold; width: 70px" onClick="javascript:bbcode('[center] [/center]')"></td>
+								</tr>
+				</table>
+		</center>
 <!-- Smiley List Stops Here -->
 
 
 <br>
-<form name="post" action="add.php" method="post">
-			<table border="0" cellpadding="0" cellspacing="2">
-				<input type="hidden" name="{$tokenid}" value="{$tokenvalue}" />
-				<tr>
-					<td>
-						<p><b><font size="2">{$yournametxt}</font></b></p>
-					</td>
-					<td><input type="text" name="yourname" size="20"></td>
-				</tr>
-				<tr>
-					<td>
-						<p><b><font size="2">{$youremailtxt}</font></b></p>
-					</td>
-					<td><input type="text" name="youremail" size="20" value=""></td>
-				</tr>
-				{if condition="$image_verify == 1"}
-				   <tr><td><p><b><font size="2">Verify:</font></b></p></td><td><input type="text" name="txtNumber" size="20" value="">{$captcha1}</td></tr>
-				{/if}
-				
-				 {if condition="$image_verify == 2"}
-					<tr><td><p><b><font size="2">Verify:</font></b></p></td><td>
-					{$captcha2}
-					</td></tr>
-				 {/if}
-				 
-				 {if condition="$image_verify == 3"}
-					<tr><td><p><b><font size="2">Verify:</font></b></p></td><td>
-					<div class="g-recaptcha" data-sitekey="{$captcha3}"></div>
-					<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$captchalang}"></script>
-				   </td></tr>
-				 {/if}
-				 
-				 {if condition="$gbAllowAttachments == 1"}
-				    <tr><td><p><b><font size="2">Attachments:</font></b></p></td><td>
-						<input name="file[]" type="file" /><br />
-                        <button class="add_more">Add More Files</button><br />
-					</td></tr>
-				 {/if}
-				<tr>
-					<td>
-						<p><b><font size="2">{$yourMessagetxt}</font></b></p>
-					</td>
-					<td>
-						<div align="right">
-							<textarea name="yourmessage" cols="45" rows="10"></textarea></div>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<div align="right">
-							<input type="submit" name="ok" value="{$submitbutton}">
-					</td>
-				</tr>
-			</table>
-		</form>
+<form name="post" action="add.php" method="post" enctype="multipart/form-data">
+		<table style="width:600px;">
+			<input type="hidden" name="{$tokenid}" value="{$tokenvalue}" />
+			<tr>
+				<td>
+					<p><b><font size="2">{$yournametxt}</font></b></p>
+				</td>
+				<td><input class="form-control" type="text" name="yourname"></td>
+			</tr>
+			<tr>
+				<td>
+					<p><b><font size="2">{$youremailtxt}</font></b></p>
+				</td>
+				<td><input class="form-control" type="text" name="youremail" value=""></td>
+			</tr>
+			{if condition="$image_verify == 1"}
+			   <tr><td><p><b><font size="2">Verify:</font></b></p></td><td><input type="text" name="txtNumber" value="">{$captcha1}</td></tr>
+			{/if}
+			
+			 {if condition="$image_verify == 2"}
+				<tr><td><p><b><font size="2">Verify:</font></b></p></td><td>
+				{$captcha2}
+				</td></tr>
+			 {/if}
+			 
+			 {if condition="$image_verify == 3"}
+				<tr><td><p><b><font size="2">Verify:</font></b></p></td><td>
+				<div class="g-recaptcha" data-sitekey="{$captcha3}"></div>
+				<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl={$captchalang}"></script>
+			   </td></tr>
+			 {/if}
+			 
+			 {if condition="$gbAllowAttachments == 1"}
+				<tr><td><p><b><font size="2">Attachments:</font></b></p></td><td>
+					<input name="file[]" type="file" /><br />
+					<button class="add_more btn btn-default">Add More Files</button><br />
+				</td></tr>
+			 {/if}
+			<tr>
+				<td>
+					<p><b><font size="2">{$yourMessagetxt}</font></b></p>
+				</td>
+				<td>
+						<textarea class="form-control" name="yourmessage" rows="10"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<div style="width:500px;float:right;">
+						<input  class="btn btn-primary" type="submit" name="ok" value="{$submitbutton}">
+				</td>
+			</tr>
+		</table>
+	</form>
 		
 </td></tr></table><!-- End of toolbar table -->
+					</div>
+				</div>	
+			</td>
+		</tr>
+	</table>
 </div>
 
 {include="footer"}

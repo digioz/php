@@ -20,5 +20,52 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 380px;
+}
+
+/* Pagination */
+
+.pagination{
+	margin: 5px auto;
+	padding: 12px 0;
+	text-align: center;
+}
+
+.pagination a{ 
+	border:solid 1px #428BCA; 
+	background-color: #428BCA;
+	color: #FFFFFF;  
+	margin-right:2px; 
+}
+
+.pagination span{ 
+	border:solid 1px #ddd; 
+	margin-right:2px; 
+}
+
+.pagination .active{
+	border:solid 1px #3775A8; 
+	color:#000; 
+	font-weight:bold;  
+}
+
+.pagination a:link, .pagination a:visited{
+	padding:6px 10px; 
+	text-decoration:none; 
+}
+
+.pagination span{ 
+	color:#428BCA; 
+	padding:6px 10px; 
+	text-decoration:none; 
+}
+
+.pagination a:hover{ 
+	border:solid 1px #b2b2b2; 
+	background-color: #3775A8;
+}
+
+.pagination  .current{ 
+	border:solid 1px #b2b2b2; 
+	background-color: #3775A8;
 }
