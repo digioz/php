@@ -101,13 +101,15 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
     <?php
     for ($i=$end-1; $i>$start-2; $i--)
     {
+		// Convert to local date time
+		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
     ?>
         
     <tbody>
         <tr>
             <td><?php echo $lines[$i]->gbFrom; ?></td>
             <td><a href="mailto:<?php echo $lines[$i]->gbEmail; ?>"><?php echo $lines[$i]->gbEmail; ?></a></td>
-            <td><?php echo $lines[$i]->gbDate; ?></td>
+            <td><?php echo $date_format_locale ?></td>
             <td>
                 <!--<a href="#" class="table-icon edit" title="Edit"></a>
                 <a href="#" class="table-icon archive" title="Archive"></a>-->

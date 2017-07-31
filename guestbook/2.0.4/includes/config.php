@@ -14,7 +14,8 @@ $theme = "default";
 
 // Date Format Settings --------------------------------------------------------------
 
-$date_time_format = "D m/j/y g:iA";
+$timezone_offset = -5;
+$date_time_format = "D m/j/y g:i A";
 
 // Variables for making a field optional in form -------------------------------------
 

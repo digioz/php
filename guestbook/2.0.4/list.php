@@ -128,17 +128,20 @@ else
 
 	for ($i=$end-1; $i>$start-2; $i--)
 	{
-			$tpl->assign( "listDatetxt", $listDatetxt);
-			$tpl->assign( "listnametxt", $listnametxt);
-			$tpl->assign( "listemailtxt", $listemailtxt);
-			$tpl->assign( "listMessagetxt", $listMessagetxt);
-			$tpl->assign( "outputdate", $lines[$i]->gbDate);
-			$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
-			$tpl->assign( "outputemail", $lines[$i]->gbEmail);
-			$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
-			
-			$html = $tpl->draw( 'list', $return_string = true );
-			echo $html;
+		// Convert to local date time
+		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
+		
+		$tpl->assign( "listDatetxt", $listDatetxt);
+		$tpl->assign( "listnametxt", $listnametxt);
+		$tpl->assign( "listemailtxt", $listemailtxt);
+		$tpl->assign( "listMessagetxt", $listMessagetxt);
+		$tpl->assign( "outputdate", $date_format_locale);
+		$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
+		$tpl->assign( "outputemail", $lines[$i]->gbEmail);
+		$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
+		
+		$html = $tpl->draw( 'list', $return_string = true );
+		echo $html;
 	}
 
     echo "<center>";

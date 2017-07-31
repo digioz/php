@@ -132,9 +132,7 @@ if ($gbflood == 1)
         // Set cookie for flood protection --------------------------------------------------------------
         $cookie = setcookie('entry','<br><br><center><font color=red><b>'.$msgfloodprotection.'</b></font><br><br></center>',time() + (120)); // Todo: Test on Linux Server
     }
-
 }
-
 
 // Check for Banned IP if Option is set ---------------------------------
 
@@ -161,7 +159,8 @@ if ($referersKey == 1)
 $yourname = $_POST['yourname'];
 $youremail = $_POST['youremail'];
 $yourmessage = $_POST['yourmessage'];
-$date = date($date_time_format);
+$timestamp = date_create();
+$date = date_timestamp_get($timestamp);
 
 // Name Validation Section -----------------------------
 
@@ -359,6 +358,8 @@ if (strlen($error) == 0)
 
    // Give Confirmation that the Guestbook Entry was written -----------------------------------------
    
+   $date_format_locale = gmdate($date_time_format, $date + 3600 * ($timezone_offset + date("I")));
+   
    $tpl->assign( "yournametxt", $yournametxt);
    $tpl->assign( "youremailtxt", $youremailtxt);
    $tpl->assign( "yourMessagetxt", $yourMessagetxt);
@@ -372,7 +373,7 @@ if (strlen($error) == 0)
    $tpl->assign( "temp3", smiley_face($temp3));
    
    $tpl->assign("result1", $result1);
-   $tpl->assign("entryDate", $date);
+   $tpl->assign("entryDate", $date_format_locale);
    $tpl->assign("result2", $result2); 
    
     $html = $tpl->draw( 'add', $return_string = true );
