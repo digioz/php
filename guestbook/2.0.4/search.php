@@ -4,13 +4,25 @@ define('IN_GB', TRUE);
 
 include("includes/gb.class.php");
 include("includes/config.php");
-include("language/$default_language");
+
+$selected_language_session = $default_language[2];
+
+if (isset($_SESSION["language_selected_file"]))
+{
+	$selected_language_session = $_SESSION["language_selected_file"];
+}
+
+include("language/$selected_language_session");
 include("includes/rain.tpl.class.php");
 include("includes/sanitize.php");       
 
 raintpl::configure("base_url", null );
 raintpl::configure("tpl_dir", "themes/$theme/" );
 raintpl::configure("cache_dir", "cache/" );
+
+// Construct the language select array
+$lang_select_array = array();
+$lang_select_array = getLanguageArray($language_array);
 
 //initialize a Rain TPL object
 $tpl = new RainTPL;
@@ -25,6 +37,9 @@ $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
 $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "goback", $goback );
+$tpl->assign("langCode", $default_language[1]);
+$tpl->assign("langCharSet", $default_language[4]);
+
 if(!isset($_GET['page'])) $_GET['page'] = 0;
 $search = sanitize_html_string($_POST['search_term']);
 $pageNum = sanitize_int($_GET['page'],0,9000);
@@ -138,14 +153,25 @@ if (filesize($filename) == 0)
     // Display search page results using our start and end points defined.
     for($i=$start; $i<=$end; $i++)
     {
+		// Convert to local date time
+		$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
+		
+		if ($dst_auto_detect == 0)
+		{
+			$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset));
+		}
+		
        $tpl->assign( "listDatetxt", $listDatetxt);
         $tpl->assign( "listnametxt", $listnametxt);
         $tpl->assign( "listemailtxt", $listemailtxt);
         $tpl->assign( "listMessagetxt", $listMessagetxt);
-        $tpl->assign( "outputdate", $search_results[$i]->gbDate);
+        $tpl->assign( "outputdate", $date_format_locale);
         $tpl->assign( "outputfrom", $search_results[$i]->gbFrom);
         $tpl->assign( "outputemail", $search_results[$i]->gbEmail);
         $tpl->assign( "outputmessage", $search_results[$i]->gbMessage);
+		$tpl->assign("langCode", $default_language[1]);
+		$tpl->assign("langCharSet", $default_language[4]);
+		$tpl->assign("lang_select_array", $lang_select_array);
         
         $html = $tpl->draw( 'list', $return_string = true );
         echo $html;

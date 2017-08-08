@@ -5,9 +5,9 @@ if(!defined('IN_GB')) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="<?php $default_language[1] ?>">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-type" content="text/html; charset=<?php $default_language[4]; ?>" />
 <title>SimpleAdmin</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/navi.css" media="screen" />

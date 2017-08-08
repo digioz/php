@@ -9,6 +9,7 @@ session_start();
 $pageTitle = "Generate Language File";  
 
 include("login_check.php");
+include("../includes/config.php");
 include("includes/header.php");  
 
 ?>

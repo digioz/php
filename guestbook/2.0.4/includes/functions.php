@@ -211,5 +211,23 @@ function spamDetect($string)
 	}
 }
 
+// Function to create the installed language array ---------------------------
+
+function getLanguageArray($language_array)
+{
+	$lang_select_array = array();
+	$lang_count = 0;
+	$lang_count = count($language_array); 
+
+	$lang_select_array[] = "Select Language";
+
+	for($i=0; $i<$lang_count; $i++)
+	{
+		$lang_select_array[] = $language_array[$i][0];
+	}
+	
+	return $lang_select_array;
+}
+
 ?>
 

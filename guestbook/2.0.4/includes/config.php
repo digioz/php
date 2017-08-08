@@ -10,12 +10,14 @@ $gb_version = "2.0.4";
 
 // Theme directory -------------------------------------------------------------------
 
-$theme = "default";
+$theme = "default";			  // Set to the name of the directory in "theme" folder
 
 // Date Format Settings --------------------------------------------------------------
 
-$timezone_offset = -5;
+$timezone_offset = -5;		  // Number of hours to offset from UTC Time Zone
+							  // Change the format to the date format for your region
 $date_time_format = "D m/j/y g:i A";
+$dst_auto_detect = 0; 		  // Set "1" to auto detect, "0" to disable
 
 // Variables for making a field optional in form -------------------------------------
 
@@ -43,7 +45,26 @@ $total_records_per_page	= 10;	// determines how many messages show per page in l
 
 // Variable for choosing language file name -----------------------------------------
 
-$default_language   = "language.php";
+								// Set the default language from the list below 
+$default_language = array("English", "en", "language.php", "en_US", "UTF-8");
+// $default_language = array("Norwegian", "no", "language_norwegian.php", "no_NO", "UTF-8");
+
+$allow_user_language_select = 1;	// Allow the user to select a language 
+									// The array below is a list of languages that 
+									// the users will be able to select from. If 
+									// adding a new language make sure to add the 
+									// file listed below to the languages directory first
+$language_array = array();
+$language_array[] = array("English", "en", "language.php", "en_US", "UTF-8");
+$language_array[] = array("Czech", "cs", "language_czech.php", "cs_CZ", "ISO-8859-2");
+$language_array[] = array("Dutch", "nl", "language_dutch.php", "nl_NL", "UTF-8");
+$language_array[] = array("German", "de", "language_german.php", "de_DE", "ISO-8859-1");
+$language_array[] = array("Greek", "el", "language_greek.php", "el_GR", "UTF-8");
+$language_array[] = array("Hungarian", "hu", "language_hungarian.php", "hu_HU", "ISO-8859-2");
+$language_array[] = array("Persian", "fa", "language_persian.php", "fa_IR", "UTF-8");
+$language_array[] = array("Slovak", "sk", "language_slovak.php", "sk_SK", "ISO-8859-2");
+$language_array[] = array("Swedish", "sw", "language_swedish.php", "en_KE", "UTF-8");
+$language_array[] = array("Norwegian", "no", "language_norwegian.php", "no_NO", "UTF-8");
 
 // Image Verification Feature -------------------------------------------------------
 

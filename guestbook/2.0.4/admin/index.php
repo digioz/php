@@ -9,11 +9,10 @@ session_start();
 $pageTitle = "Home";  
 
 include("login_check.php");
-include("includes/header.php");
-
-include("../includes/gb.class.php");
 include("../includes/config.php");
-include("../language/$default_language");
+include("includes/header.php");
+include("../includes/gb.class.php");
+include("../language/$default_language[2]");
 
 $page = isset($_GET['page']) ? $_GET['page'] : "";
 $order= isset($_GET['order']) ? $_GET['order'] : "";
@@ -103,6 +102,11 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
     {
 		// Convert to local date time
 		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
+		
+		if ($dst_auto_detect == 0)
+		{
+			$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset));
+		}
     ?>
         
     <tbody>

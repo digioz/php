@@ -22,6 +22,7 @@ else if ($lg == "3")
 	$pageTitle = "Guestbook Settings"; 
 }
 
+include("../includes/config.php");
 include("includes/header.php");  
 ?>
 
@@ -94,7 +95,7 @@ elseif ($lg == 3)
        if($notify_admin_email == 1){ echo "Yes"; }else{ echo "No"; }
        echo "</b></font></center></td></tr>";
   echo "<tr><td>Default Language:</td><td><center><font color=blue><b>";
-       echo $default_language;
+       echo $default_language[0];
        echo "</b></font></center></td></tr>";
     echo "<tr><td>Image Verification:</td><td><center><font color=blue><b>";
        if($image_verify == 1){ echo "Yes"; }else{ echo "No"; }

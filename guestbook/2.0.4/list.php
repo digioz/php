@@ -6,13 +6,24 @@ session_start();
 
 include("includes/gb.class.php");
 include("includes/config.php");
-include("language/$default_language");
 
+$selected_language_session = $default_language[2];
+
+if (isset($_SESSION["language_selected_file"]))
+{
+	$selected_language_session = $_SESSION["language_selected_file"];
+}
+
+include("language/$selected_language_session");
 include("includes/rain.tpl.class.php");
 
 raintpl::configure("base_url", null );
 raintpl::configure("tpl_dir", "themes/$theme/" );
 raintpl::configure("cache_dir", "cache/" );
+
+// Construct the language select array
+$lang_select_array = array();
+$lang_select_array = getLanguageArray($language_array);
 
 //initialize a Rain TPL object
 $tpl = new RainTPL;
@@ -27,6 +38,8 @@ $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
 $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "goback", $goback );
+$tpl->assign("langCode", $default_language[1]);
+$tpl->assign("langCharSet", $default_language[4]);
 
 $page = $_GET['page'];
 $order= $_GET['order'];
@@ -131,6 +144,11 @@ else
 		// Convert to local date time
 		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
 		
+		if ($dst_auto_detect == 0)
+		{
+			$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset));
+		}
+		
 		$tpl->assign( "listDatetxt", $listDatetxt);
 		$tpl->assign( "listnametxt", $listnametxt);
 		$tpl->assign( "listemailtxt", $listemailtxt);
@@ -139,6 +157,9 @@ else
 		$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
 		$tpl->assign( "outputemail", $lines[$i]->gbEmail);
 		$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
+		$tpl->assign("langCode", $default_language[1]);
+		$tpl->assign("langCharSet", $default_language[4]);
+		$tpl->assign("lang_select_array", $lang_select_array);
 		
 		$html = $tpl->draw( 'list', $return_string = true );
 		echo $html;
