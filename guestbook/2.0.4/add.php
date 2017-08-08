@@ -42,6 +42,7 @@ $tpl->assign("currentyear", date("Y"));
 $tpl->assign("goback", $goback);
 $tpl->assign("langCode", $default_language[1]);
 $tpl->assign("langCharSet", $default_language[4]);
+$tpl->assign("lang_select_array", $lang_select_array);
 
 // Validate Form Token
 $csrf = new csrf();

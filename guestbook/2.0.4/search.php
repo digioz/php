@@ -39,6 +39,7 @@ $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "goback", $goback );
 $tpl->assign("langCode", $default_language[1]);
 $tpl->assign("langCharSet", $default_language[4]);
+$tpl->assign("lang_select_array", $lang_select_array);
 
 if(!isset($_GET['page'])) $_GET['page'] = 0;
 $search = sanitize_html_string($_POST['search_term']);
