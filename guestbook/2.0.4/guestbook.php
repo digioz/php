@@ -7,10 +7,16 @@ include("includes/gb.class.php");
 include("includes/config.php");
 
 $selected_language_session = $default_language[2];
+$selected_language_session_code = $default_language[1];
 
 if (isset($_SESSION["language_selected_file"]))
 {
 	$selected_language_session = $_SESSION["language_selected_file"];
+}
+
+if (isset($_SESSION["language_selected_code"]))
+{
+	$selected_language_session_code = $_SESSION["language_selected_code"];
 }
 
 include("language/$selected_language_session");
@@ -55,6 +61,7 @@ $tpl->assign( "gbAllowAttachments", $gbAllowAttachments );
 $tpl->assign("langCode", $default_language[1]);
 $tpl->assign("langCharSet", $default_language[4]);
 $tpl->assign("lang_select_array", $lang_select_array);
+$tpl->assign("captchalang", $selected_language_session_code);
 
 if ($image_verify == 1)
 {
@@ -72,12 +79,11 @@ if ($image_verify == 3)
 {
 	require_once('includes/recaptcha2.php');
 	$publickey = $recaptcha_public_key;
-    
-    $lang = "en";
+	
     $reCaptcha = new ReCaptcha($publickey);    
     
 	$tpl->assign( "captcha3", $publickey);
-    $tpl->assign("captchalang", $lang);
+    $tpl->assign("captchalang", $selected_language_session_code);
 }
 
 $html = $tpl->draw( 'guestbook', $return_string = true );

@@ -10,6 +10,7 @@ if (isset($_POST['language_selected']))
 {
 	$tmp_selected_lang = $_POST['language_selected'];
 	$tmp_selected_file = "";
+	$tmp_selected_lang_code = "en";
 	
 	if ($tmp_selected_lang != "" && $tmp_selected_lang != "Select Language")
 	{
@@ -24,7 +25,9 @@ if (isset($_POST['language_selected']))
 			if ($language_array[$i][0] == $tmp_selected_lang)
 			{
 				$tmp_selected_file = $language_array[$i][2];
+				$tmp_selected_lang_code = $language_array[$i][1];
 				$_SESSION["language_selected_file"] = $tmp_selected_file;
+				$_SESSION["language_selected_code"] = $tmp_selected_lang_code;
 			}
 		}
 	}
