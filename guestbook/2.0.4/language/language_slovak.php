@@ -40,5 +40,6 @@ $msgresultofsearch		= "Výsledok vyhľadávania";
 $msgnomatchfound		= "Pre hľadaný výraz nebola nájdená žiadna zhoda.";
 $errorFormToken			= "Bol zistený neplatný formát ochranného kľúča.";
 $errorSFS				= "Vaša IP bola identifikovaná ako spammer a pridaná do databázy Stop Fórum Spam. Nemáte povolené písať správy do tejto Knihy návštev.";
+$hideemailtxt			= "Skryť e-mail";
 
 ?>

@@ -58,10 +58,12 @@ $tpl->assign( "currentyear", date("Y") );
 $tpl->assign( "tokenid", $token_id );
 $tpl->assign( "tokenvalue", $token_value );
 $tpl->assign( "gbAllowAttachments", $gbAllowAttachments );
-$tpl->assign("langCode", $default_language[1]);
-$tpl->assign("langCharSet", $default_language[4]);
-$tpl->assign("lang_select_array", $lang_select_array);
-$tpl->assign("captchalang", $selected_language_session_code);
+$tpl->assign( "langCode", $default_language[1]);
+$tpl->assign( "langCharSet", $default_language[4]);
+$tpl->assign( "lang_select_array", $lang_select_array);
+$tpl->assign( "captchalang", $selected_language_session_code);
+$tpl->assign( "hideemailtxt", $hideemailtxt );
+$tpl->assign( "let_user_hide_email", $let_user_hide_email );
 
 if ($image_verify == 1)
 {

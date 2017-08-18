@@ -175,11 +175,22 @@ if ($referersKey == 1)
 
 // Re-assigning the variables passed by posted form ---------------------
 
+$hideemail = false;
+
 $yourname    = $_POST['yourname'];
 $youremail   = $_POST['youremail'];
 $yourmessage = $_POST['yourmessage'];
 $timestamp   = date_create();
 $date        = date_timestamp_get($timestamp);
+
+if ($let_user_hide_email == "1")
+{
+	if (isset($_POST['hideemail']) && $_POST['hideemail'] == "hideemail")
+	{
+		echo "Hide Email: ".$_POST['hideemail']."<br/>";
+		$hideemail	 = true;
+	}
+}
 
 // Name Validation Section -----------------------------
 
@@ -361,7 +372,7 @@ if (strlen($error) == 0)
     // Write the verified guestbook entry to file ----------------------------------------------------
     
     $a = new gbClass();
-    $a->setGBVars($date, $yourname, $youremail, $yourmessage);
+    $a->setGBVars($date, $yourname, $youremail, $yourmessage, $hideemail);
     @$fp = fopen("data/list.txt", "a");
     flock($fp, 2);
     
@@ -390,7 +401,7 @@ if (strlen($error) == 0)
     $tpl->assign("yournametxt", $yournametxt);
     $tpl->assign("youremailtxt", $youremailtxt);
     $tpl->assign("yourMessagetxt", $yourMessagetxt);
-	$tpl->assign("lang_select_array", $lang_select_array);
+	$tpl->assign("lang_select_array", $lang_select_array);	
     
     $temp1 = stripslashes($yourname);
     $temp2 = stripslashes($youremail);

@@ -9,7 +9,10 @@
 					<div class="panel-body">
 					<b>{$listDatetxt}</b>: {$outputdate}<br />
 					<b>{$listnametxt}</b>: {$outputfrom}<br />
-					<b>{$listemailtxt}</b>: <a href="mailto:{$outputemail}">{$outputemail}</a><br /><br />
+					{if condition="$outputhideemail == false"}
+						<b>{$listemailtxt}</b>: <a href="mailto:{$outputemail}">{$outputemail}</a><br />
+					{/if}
+					<br />
 					<b>{$listMessagetxt}</b>: {$outputmessage}
 					</div>
 				</div>	

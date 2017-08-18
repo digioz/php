@@ -170,9 +170,10 @@ if (filesize($filename) == 0)
         $tpl->assign( "outputfrom", $search_results[$i]->gbFrom);
         $tpl->assign( "outputemail", $search_results[$i]->gbEmail);
         $tpl->assign( "outputmessage", $search_results[$i]->gbMessage);
-		$tpl->assign("langCode", $default_language[1]);
-		$tpl->assign("langCharSet", $default_language[4]);
-		$tpl->assign("lang_select_array", $lang_select_array);
+		$tpl->assign( "langCode", $default_language[1]);
+		$tpl->assign( "langCharSet", $default_language[4]);
+		$tpl->assign( "lang_select_array", $lang_select_array);
+		$tpl->assign( "outputhideemail", $search_results[$i]->gbHideEmail); 
         
         $html = $tpl->draw( 'list', $return_string = true );
         echo $html;

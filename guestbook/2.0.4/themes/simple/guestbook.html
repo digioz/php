@@ -96,6 +96,16 @@ function bbcode(text) {
 					</td>
 					<td><input type="text" name="youremail" size="20" value=""></td>
 				</tr>
+				
+				{if condition="$let_user_hide_email == 1"}
+				<tr>
+					<td>
+						<p><b><font size="2">{$hideemailtxt}</font></b></p>
+					</td>
+					<td><input type="checkbox" name="hideemail" value="hideemail"></td>
+				</tr>
+				{/if}
+				
 				{if condition="$image_verify == 1"}
 				   <tr><td><p><b><font size="2">Verify:</font></b></p></td><td><input type="text" name="txtNumber" size="20" value="">{$captcha1}</td></tr>
 				{/if}

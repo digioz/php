@@ -39,6 +39,7 @@ $msgnosearchterm		= "Adjon meg egy keresési kifejezést, és próbálja újra."
 $msgresultofsearch		= "A keresés eredménye";
 $msgnomatchfound		= "Nincs keresési eredmény";
 $errorFormToken			= "Érvénytelen biztonsági védelmi kulcs.";
-$errorSFS			= "Az Ön IP címe spamküldőként volt azonosítva, és bekerül a Stop Fórum Spam adatbázisba. <br> Ön nem küldhet üzeneteket ebbe a vendégkönyvbe.";
+$errorSFS				= "Az Ön IP címe spamküldőként volt azonosítva, és bekerül a Stop Fórum Spam adatbázisba. <br> Ön nem küldhet üzeneteket ebbe a vendégkönyvbe.";
+$hideemailtxt			= "E-mail elrejtése";
 
 ?>

@@ -14,15 +14,17 @@ class gbClass
      var $gbFrom;
      var $gbEmail;
      var $gbMessage;
+	 var $gbHideEmail;
 
      // Set the Guestbook Entry Field Variables -------
 
-     function setGBVars($a,$b,$c,$d)
+     function setGBVars($a,$b,$c,$d,$e)
      {
         $this->gbDate = $a;
         $this->gbFrom = stripslashes($b);
         $this->gbEmail = $c;
         $this->gbMessage = smiley_face(stripslashes($d));
+		$this->gbHideEmail = $e;
      }
 }
 

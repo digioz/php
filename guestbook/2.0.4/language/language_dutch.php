@@ -40,4 +40,6 @@ $msgresultofsearch		= "Het resultaat van uw zoekopdracht";
 $msgnomatchfound		= "Geen match gevonden.";
 $errorFormToken			= "Ongeldige Vorm beveiligingssleutel gedetecteerd.";
 $errorSFS				= "Uw IP is geïdentificeerd als een spammer in de Stop Forum Spam Database Het is niet toegestaan om een bericht in dit gastenboek plaatsen.";
+$hideemailtxt			= "Verberg Email";
+
 ?>

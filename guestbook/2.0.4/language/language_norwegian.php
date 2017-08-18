@@ -40,5 +40,6 @@ $msgresultofsearch		= "Resultatet av søket ditt";
 $msgnomatchfound		= "Ingen match funnet.";
 $errorFormToken			= "Ugyldig skjermbeskyttelsesteknisk detektert.";
 $errorSFS				= "Din IP er identifisert som en spammer i Stop Forum Spam Database. Du har ikke lov til å legge inn en melding i denne gjesteboken.";
+$hideemailtxt			= "Skjul e-post";
 
 ?>

@@ -21,9 +21,10 @@ $dst_auto_detect = 0; 		  // Set "1" to auto detect, "0" to disable
 
 // Variables for making a field optional in form -------------------------------------
 
-$email_optional     = 0;      // Set "1" for optional email, "0" to make it required
-$name_optional      = 0;      // Set "1" for optional name, "0" to make it required
-$message_optional   = 0;      // Set "1" for optional message, "0" for required
+$email_optional      = 0;     // Set "1" for optional email, "0" to make it required
+$name_optional       = 0;     // Set "1" for optional name, "0" to make it required
+$message_optional    = 0;     // Set "1" for optional message, "0" for required
+$let_user_hide_email = 1;	  // Set "1" to let users hide their own emails
 
 // Variables for notifying administrator when a new message is posted ----------------
 

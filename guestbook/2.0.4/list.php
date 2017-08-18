@@ -158,9 +158,10 @@ else
 		$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
 		$tpl->assign( "outputemail", $lines[$i]->gbEmail);
 		$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
-		$tpl->assign("langCode", $default_language[1]);
-		$tpl->assign("langCharSet", $default_language[4]);
-		$tpl->assign("lang_select_array", $lang_select_array);
+		$tpl->assign( "langCode", $default_language[1]);
+		$tpl->assign( "langCharSet", $default_language[4]);
+		$tpl->assign( "lang_select_array", $lang_select_array);
+		$tpl->assign( "outputhideemail", $lines[$i]->gbHideEmail); 
 		
 		$html = $tpl->draw( 'list', $return_string = true );
 		echo $html;
