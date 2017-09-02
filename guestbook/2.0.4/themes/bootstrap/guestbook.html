@@ -97,13 +97,13 @@ function bbcode(text) {
 				<td>
 					<p><b><font size="2">{$yournametxt}</font></b></p>
 				</td>
-				<td><input class="form-control" type="text" name="yourname"></td>
+				<td><input class="form-control" type="text" name="yourname" value="{$loginname}"></td>
 			</tr>
 			<tr>
 				<td>
 					<p><b><font size="2">{$youremailtxt}</font></b></p>
 				</td>
-				<td><input class="form-control" type="text" name="youremail" value=""></td>
+				<td><input class="form-control" type="text" name="youremail" value="{$loginemail}"></td>
 			</tr>
 			
 			{if condition="$let_user_hide_email == 1"}

@@ -41,5 +41,22 @@ $msgnomatchfound		= "Geen match gevonden.";
 $errorFormToken			= "Ongeldige Vorm beveiligingssleutel gedetecteerd.";
 $errorSFS				= "Uw IP is geïdentificeerd als een spammer in de Stop Forum Spam Database Het is niet toegestaan om een bericht in dit gastenboek plaatsen.";
 $hideemailtxt			= "Verberg Email";
+$logintxt				= "Log in";
+$logouttxt				= "Uitloggen";
+$registertxt			= "Registreren";
+$emailtxt				= "E-mail";
+$passwordtxt			= "Wachtwoord";
+$passwordconfirmtxt		= "bevestig wachtwoord";
+$nametxt				= "Naam";
+$addresstxt				= "Adres";
+$citytxt				= "stad";
+$statetxt				= "Staat";
+$ziptxt					= "ritssluiting";
+$countrytxt				= "land";
+$phonetxt				= "Telefoon";
+$error9					= "Kan niet registreren door een fout.";
+$error10				= "Wachtwoord en wachtwoord bevestigen komen niet overeen.";
+$info1					= "U bent succesvol ingelogd.";
+$error11				= "Kan je niet inloggen. Probeer het later nog eens.";
 
 ?>

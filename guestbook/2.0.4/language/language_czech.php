@@ -41,5 +41,22 @@ $msgnomatchfound		= "Pro hledaný výraz nebyla nalezena žádná shoda.";
 $errorFormToken			= "Byl zjištěn neplatný formát ochranného klíče.";
 $errorSFS				= "Vaše IP byla identifikována jako spammer v databázi Stop Forum Spam. Nemáte povoleno publikovat zprávu v této knize návštěv.";
 $hideemailtxt			= "Skrýt e-mail";
+$logintxt				= "Přihlásit se";
+$logouttxt				= "Odhlásit se";
+$registertxt			= "Registrovat";
+$emailtxt				= "E-mailem";
+$passwordtxt			= "Heslo";
+$passwordconfirmtxt		= "Potvrďte heslo";
+$nametxt				= "název";
+$addresstxt				= "Adresa";
+$citytxt				= "Město";
+$statetxt				= "Stát";
+$ziptxt					= "Zip";
+$countrytxt				= "Země";
+$phonetxt				= "Telefon";
+$error9					= "Nelze se zaregistrovat kvůli chybě.";
+$error10				= "Heslo a Heslo Potvrdit neodpovídají.";
+$info1					= "Byl jste úspěšně přihlášeni.";
+$error11				= "Nemohu se přihlásit. Zkuste to prosím později.";
 
 ?>

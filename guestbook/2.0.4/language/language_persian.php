@@ -41,5 +41,22 @@ $msgnomatchfound		= "جستچو پیامی پیدا نکرد";
 $errorFormToken			= "رمز وارد شده اشتباه بود";
 $errorSFS				= ".شما مسدود شده است IP";
 $hideemailtxt			= "مخفی کردن ایمیل";
+$logintxt				= "ورود";
+$logouttxt				= "خروج از سیستم";
+$registertxt			= "ثبت نام";
+$emailtxt				= "پست الکترونیک";
+$passwordtxt			= "کلمه عبور";
+$passwordconfirmtxt		= "رمز عبور را تایید کنید";
+$nametxt				= "نام";
+$addresstxt				= "نشانی";
+$citytxt				= "شهر";
+$statetxt				= "دولت";
+$ziptxt					= "زیپ";
+$countrytxt				= "کشور";
+$phonetxt				= "تلفن";
+$error9					= "دلیل خطا در ثبت نام امکان پذیر نیست";
+$error10				= "رمز عبور و رمز عبور تایید نمیشود";
+$info1					= "شما با موفقیت وارد سیستم شده اید.";
+$error11				= "شما نمیتوانید وارد سیستم شوید. لطفا بعدا دوباره امتحان کنید.";
 
 ?>

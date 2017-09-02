@@ -41,5 +41,22 @@ $msgnomatchfound		= "No match found.";
 $errorFormToken			= "Invalid Form Security Token Detected.";
 $errorSFS				= "Your IP has been identified as a spammer in the Stop Forum Spam Database. You are not permitted to post a message in this guestbook.";
 $hideemailtxt			= "Hide Email";
+$logintxt				= "Login";
+$logouttxt				= "Logout";
+$registertxt			= "Register";
+$emailtxt				= "Email";
+$passwordtxt			= "Password";
+$passwordconfirmtxt		= "Confirm Password";
+$nametxt				= "Name";
+$addresstxt				= "Address";
+$citytxt				= "City";
+$statetxt				= "State";
+$ziptxt					= "Zip";
+$countrytxt				= "Country";
+$phonetxt				= "Phone";
+$error9					= "Unable to Register due to an error.";
+$error10				= "Password and Password Confirm do not match.";
+$info1					= "You have been logged in successfully.";
+$error11				= "Unable to log you in. Please try again later.";
 
 ?>

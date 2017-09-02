@@ -4,9 +4,8 @@ define('IN_GB', TRUE);
 session_start();
 
 include("includes/functions.php");
-include("includes/gb.class.php");
-include("includes/config.php");
 include("includes/user.class.php");
+include("includes/config.php");
 
 $selected_language_session = $default_language[2];
 $selected_language_session_code = $default_language[1];
@@ -34,21 +33,18 @@ raintpl::configure("cache_dir", "cache/" );
 $lang_select_array = array();
 $lang_select_array = getLanguageArray($language_array);
 
-// Check if logged in
-$user_login_email = "";
-$user_login_name = "";
-
-if (isset($_SESSION["login_email"]))
-{
-	$user_login_email = $_SESSION["login_email"];
-	$user_object = getUserByEmail($user_login_email);
-	$user_login_name = $user_object->name;
-}
-
 // Generate Token Id and Valid  
 $csrf = new csrf();
 $token_id = $csrf->get_token_id();
 $token_value = $csrf->get_token($token_id);
+
+// Check if logged in
+$user_login_email = "";
+
+if (isset($_SESSION["login_email"]))
+{
+	$user_login_email = $_SESSION["login_email"];
+}
 
 //initialize a Rain TPL object
 $tpl = new RainTPL;
@@ -62,51 +58,64 @@ $tpl->assign( "newpostfirsttxt", $newpostfirsttxt );
 $tpl->assign( "newpostlasttxt", $newpostlasttxt );
 $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
-$tpl->assign( "yournametxt", $yournametxt );
-$tpl->assign( "youremailtxt", $youremailtxt );
-$tpl->assign( "yourMessagetxt", $yourMessagetxt );
 $tpl->assign( "submitbutton", $submitbutton );
 $tpl->assign( "image_verify", $image_verify );
 $tpl->assign( "currentyear", date("Y") );
-$tpl->assign( "tokenid", $token_id );
-$tpl->assign( "tokenvalue", $token_value );
-$tpl->assign( "gbAllowAttachments", $gbAllowAttachments );
 $tpl->assign( "langCode", $default_language[1]);
 $tpl->assign( "langCharSet", $default_language[4]);
 $tpl->assign( "lang_select_array", $lang_select_array);
 $tpl->assign( "captchalang", $selected_language_session_code);
-$tpl->assign( "hideemailtxt", $hideemailtxt );
-$tpl->assign( "let_user_hide_email", $let_user_hide_email );
 $tpl->assign( "logintxt", $logintxt );
 $tpl->assign( "logouttxt", $logouttxt );
 $tpl->assign( "registertxt", $registertxt );
+$tpl->assign("goback", $goback);
+$tpl->assign( "emailtxt", $emailtxt );
+$tpl->assign( "passwordtxt", $passwordtxt );
+$tpl->assign( "passwordconfirmtxt", $passwordconfirmtxt );
 $tpl->assign( "loginemail", $user_login_email );
-$tpl->assign( "loginname", $user_login_name );
 
-if ($image_verify == 1)
-{
-	$tpl->assign( "captcha1", "<img src=\"includes/random.php\">");
-}
-
-if ($image_verify == 2)
-{
-	require_once('includes/recaptchalib.php');
-	$publickey = $recaptcha_public_key;
-	$tpl->assign( "captcha2", recaptcha_get_html($publickey));
-}
-
-if ($image_verify == 3)
-{
-	require_once('includes/recaptcha2.php');
-	$publickey = $recaptcha_public_key;
+// Process Registration
+if (isset($_POST['submit']))
+{	
+	$email = $_POST['email'];
+	$password = $_POST['password'];
 	
-    $reCaptcha = new ReCaptcha($publickey);    
-    
-	$tpl->assign( "captcha3", $publickey);
-    $tpl->assign("captchalang", $selected_language_session_code);
+	// Validate Email format
+	if (checkmail($email) != 1) 
+	{
+        $tpl->assign("error_msg", $error3);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+		exit;
+    }
+
+	$allUsers = array();
+	$allUsers = getAllUsers();
+	
+	$userLoggingIn = getUserByEmail($email);
+	$msg = "";
+	
+	if (isset($userLoggingIn))
+	{
+		$_SESSION["login_email"] = $email;
+		$_SESSION["user_object"] = $userLoggingIn;
+		
+		$tpl->assign("info_msg", $info1);
+		$tpl->assign( "loginemail", $user_login_email );
+		$html = $tpl->draw('info', $return_string = true);
+		echo $html;
+	}
+	else
+	{
+		$tpl->assign("error_msg", $error11);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+	}
+
+	exit;
 }
 
-$html = $tpl->draw( 'guestbook', $return_string = true );
+$html = $tpl->draw( 'login', $return_string = true );
 
 // and then draw the output
 echo $html;

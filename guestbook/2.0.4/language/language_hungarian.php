@@ -41,5 +41,22 @@ $msgnomatchfound		= "Nincs keresési eredmény";
 $errorFormToken			= "Érvénytelen biztonsági védelmi kulcs.";
 $errorSFS				= "Az Ön IP címe spamküldőként volt azonosítva, és bekerül a Stop Fórum Spam adatbázisba. <br> Ön nem küldhet üzeneteket ebbe a vendégkönyvbe.";
 $hideemailtxt			= "E-mail elrejtése";
+$logintxt				= "Belépek";
+$logouttxt				= "Kilépés";
+$registertxt			= "Regisztráció";
+$emailtxt				= "Email";
+$passwordtxt			= "Jelszó";
+$passwordconfirmtxt		= "Jelszó megerősítése";
+$nametxt				= "Név";
+$addresstxt				= "Cím";
+$citytxt				= "Város";
+$statetxt				= "Állapot";
+$ziptxt					= "Postai irányítószám";
+$countrytxt				= "Ország";
+$phonetxt				= "Telefon";
+$error9					= "Nem sikerült regisztrálni a hiba miatt.";
+$error10				= "A jelszó és a jelszó megerősítése nem egyezik.";
+$info1					= "Ön sikeresen bejelentkezett.";
+$error11				= "Nem lehet bejelentkezni. Próbálja újra később.";
 
 ?>

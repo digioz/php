@@ -8,6 +8,22 @@
   <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
+	<div class="topcorner" style="width:98%;text-align:right;margin-right:50px;">
+		<a href="register.php" style="color:#000000;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
+		
+			{if condition="$loginemail == ''"}
+				<a style="color:#000000;" href="login.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logintxt}
+				</a>
+			{else}
+				<a style="color:#000000;" href="logout.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logouttxt}
+				</a>
+			{/if}
+	</div>
+	
+	<p>&nbsp;</p>
+	
 	<center>
 	<a href="list.php?page=1&order=asc"><img src="images/logo.png" alt="{$headingtitletxt}"></a>
 	<br><br>

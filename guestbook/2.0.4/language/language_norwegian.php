@@ -41,5 +41,22 @@ $msgnomatchfound		= "Ingen match funnet.";
 $errorFormToken			= "Ugyldig skjermbeskyttelsesteknisk detektert.";
 $errorSFS				= "Din IP er identifisert som en spammer i Stop Forum Spam Database. Du har ikke lov til å legge inn en melding i denne gjesteboken.";
 $hideemailtxt			= "Skjul e-post";
+$logintxt				= "Logg Inn";
+$logouttxt				= "Logg ut";
+$registertxt			= "Registrere";
+$emailtxt				= "e-post";
+$passwordtxt			= "Passord";
+$passwordconfirmtxt		= "bekreft passord";
+$nametxt				= "Navn";
+$addresstxt				= "Adresse";
+$citytxt				= "By";
+$statetxt				= "Stat";
+$ziptxt					= "Glidelås";
+$countrytxt				= "Land";
+$phonetxt				= "telefon";
+$error9					= "Kan ikke registrere på grunn av en feil.";
+$error10				= "Passord og passord Bekreft samsvarer ikke.";
+$info1					= "Du har blitt logget inn med hell.";
+$error11				= "Kan ikke logge deg på. Prøv igjen senere.";
 
 ?>

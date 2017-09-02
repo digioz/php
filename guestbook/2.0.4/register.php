@@ -4,9 +4,8 @@ define('IN_GB', TRUE);
 session_start();
 
 include("includes/functions.php");
-include("includes/gb.class.php");
-include("includes/config.php");
 include("includes/user.class.php");
+include("includes/config.php");
 
 $selected_language_session = $default_language[2];
 $selected_language_session_code = $default_language[1];
@@ -36,13 +35,10 @@ $lang_select_array = getLanguageArray($language_array);
 
 // Check if logged in
 $user_login_email = "";
-$user_login_name = "";
 
 if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
-	$user_object = getUserByEmail($user_login_email);
-	$user_login_name = $user_object->name;
 }
 
 // Generate Token Id and Valid  
@@ -62,51 +58,90 @@ $tpl->assign( "newpostfirsttxt", $newpostfirsttxt );
 $tpl->assign( "newpostlasttxt", $newpostlasttxt );
 $tpl->assign( "searchlabeltxt", $searchlabeltxt );
 $tpl->assign( "searchbuttontxt", $searchbuttontxt );
-$tpl->assign( "yournametxt", $yournametxt );
-$tpl->assign( "youremailtxt", $youremailtxt );
-$tpl->assign( "yourMessagetxt", $yourMessagetxt );
 $tpl->assign( "submitbutton", $submitbutton );
 $tpl->assign( "image_verify", $image_verify );
 $tpl->assign( "currentyear", date("Y") );
-$tpl->assign( "tokenid", $token_id );
-$tpl->assign( "tokenvalue", $token_value );
-$tpl->assign( "gbAllowAttachments", $gbAllowAttachments );
 $tpl->assign( "langCode", $default_language[1]);
 $tpl->assign( "langCharSet", $default_language[4]);
 $tpl->assign( "lang_select_array", $lang_select_array);
 $tpl->assign( "captchalang", $selected_language_session_code);
-$tpl->assign( "hideemailtxt", $hideemailtxt );
-$tpl->assign( "let_user_hide_email", $let_user_hide_email );
 $tpl->assign( "logintxt", $logintxt );
 $tpl->assign( "logouttxt", $logouttxt );
 $tpl->assign( "registertxt", $registertxt );
+$tpl->assign( "goback", $goback);
+$tpl->assign( "emailtxt", $emailtxt );
+$tpl->assign( "passwordtxt", $passwordtxt );
+$tpl->assign( "passwordconfirmtxt", $passwordconfirmtxt );
+$tpl->assign( "nametxt", $nametxt );
+$tpl->assign( "addresstxt", $addresstxt );
+$tpl->assign( "citytxt", $citytxt );
+$tpl->assign( "statetxt", $statetxt );
+$tpl->assign( "ziptxt", $ziptxt );
+$tpl->assign( "countrytxt", $countrytxt );
+$tpl->assign( "phonetxt", $phonetxt );
 $tpl->assign( "loginemail", $user_login_email );
-$tpl->assign( "loginname", $user_login_name );
 
-if ($image_verify == 1)
-{
-	$tpl->assign( "captcha1", "<img src=\"includes/random.php\">");
-}
-
-if ($image_verify == 2)
-{
-	require_once('includes/recaptchalib.php');
-	$publickey = $recaptcha_public_key;
-	$tpl->assign( "captcha2", recaptcha_get_html($publickey));
-}
-
-if ($image_verify == 3)
-{
-	require_once('includes/recaptcha2.php');
-	$publickey = $recaptcha_public_key;
+// Process Registration
+if (isset($_POST['submit']))
+{	
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$passwordConfirm = $_POST['passwordconfirm'];
+	$address = $_POST['address'];
+	$city = $_POST['city'];
+	$state = $_POST['state'];
+	$zip = $_POST['zip'];
+	$country = $_POST['country'];
+	$phone = $_POST['phone'];
 	
-    $reCaptcha = new ReCaptcha($publickey);    
+	if ($password != $passwordConfirm)
+	{
+		$tpl->assign("error_msg", $error10);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+        exit;
+	}
+	
+	$password = encryptPassword($password, $login_salt);
+	
+	/*
+	echo "Name: " . $name . "<br>";
+	echo "Email: " . $email . "<br>";
+	echo "Password: " . $password . "<br>";
+	echo "Password Confirm: " . $passwordConfirm . "<br>";
+	echo "Address: " . $address . "<br>";
+	echo "City: " . $city . "<br>";
+	echo "State: " . $state . "<br>";
+	echo "Zip: " . $zip . "<br>";
+	echo "Country: " . $country . "<br>";
+	echo "Phone: " . $phone . "<br>";
+	*/
+	
+	$u = new userClass();
+	$u->setUserVars($email, $password, $name, $address, $city, $state, $zip, $country, $phone);
+	
+	@$fp = fopen("data/users.txt", "a");
+    flock($fp, 2);
     
-	$tpl->assign( "captcha3", $publickey);
-    $tpl->assign("captchalang", $selected_language_session_code);
+    if (!$fp) 
+	{
+        $tpl->assign("error_msg", $error9 . " - " . $error8);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+        exit;
+    }
+    
+    $data = serialize($u) . "<!-- E -->";
+    fwrite($fp, $data);
+    flock($fp, 3);
+    fclose($fp);
+	
+	exit;
 }
 
-$html = $tpl->draw( 'guestbook', $return_string = true );
+// Show registration form if not posting back
+$html = $tpl->draw( 'register', $return_string = true );
 
 // and then draw the output
 echo $html;

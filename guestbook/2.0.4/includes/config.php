@@ -10,7 +10,7 @@ $gb_version = "2.0.4";
 
 // Theme directory -------------------------------------------------------------------
 
-$theme = "default";			  // Set to the name of the directory in "theme" folder
+$theme = "default";		  	  // Set to the name of the directory in "theme" folder
 
 // Date Format Settings --------------------------------------------------------------
 
@@ -86,6 +86,10 @@ $recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/
 
 $_Username         = "admin";
 $_Password         = "admin";
+
+// User Login Settings --------------------------------------------------------------
+							  // We recommend that you change the logion salt value
+$login_salt		   = "WfQCAgS3uISXDK7Azw";
 
 // Stop Forum Spam Settings ---------------------------------------------------------
 

@@ -2,6 +2,9 @@
 
 define('IN_GB', TRUE); 
 
+session_start();
+
+include("includes/functions.php");
 include("includes/gb.class.php");
 include("includes/config.php");
 
@@ -24,6 +27,14 @@ raintpl::configure("cache_dir", "cache/" );
 $lang_select_array = array();
 $lang_select_array = getLanguageArray($language_array);
 
+// Check if logged in
+$user_login_email = "";
+
+if (isset($_SESSION["login_email"]))
+{
+	$user_login_email = $_SESSION["login_email"];
+}
+
 //initialize a Rain TPL object
 $tpl = new RainTPL;
 $tpl->assign( "theme", $theme );
@@ -40,6 +51,10 @@ $tpl->assign( "goback", $goback );
 $tpl->assign("langCode", $default_language[1]);
 $tpl->assign("langCharSet", $default_language[4]);
 $tpl->assign("lang_select_array", $lang_select_array);
+$tpl->assign( "logintxt", $logintxt );
+$tpl->assign( "logouttxt", $logouttxt );
+$tpl->assign( "registertxt", $registertxt );
+$tpl->assign( "loginemail", $user_login_email );
 
 if(!isset($_GET['page'])) $_GET['page'] = 0;
 $search = sanitize_html_string($_POST['search_term']);
@@ -174,6 +189,7 @@ if (filesize($filename) == 0)
 		$tpl->assign( "langCharSet", $default_language[4]);
 		$tpl->assign( "lang_select_array", $lang_select_array);
 		$tpl->assign( "outputhideemail", $search_results[$i]->gbHideEmail); 
+		$tpl->assign( "loginemail", $user_login_email );
         
         $html = $tpl->draw( 'list', $return_string = true );
         echo $html;

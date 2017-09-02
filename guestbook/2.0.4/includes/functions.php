@@ -229,5 +229,67 @@ function getLanguageArray($language_array)
 	return $lang_select_array;
 }
 
+function encryptPassword($password, $salt)
+{
+	$hash = crypt($password, $salt);
+	
+	return $hash;
+}
+
+function validateLogin($username, $password, $storedHash, $salt)
+{
+	$result = false;
+	
+	$hashAttempt = encryptPassword($password, $salt);
+	
+	if ( hash_equals($hashAttempt, $storedHash) ) 
+	{
+		$result = true;
+	}
+	
+	return $result;
+}
+
+function getAllUsers()
+{
+	$filename = "data/users.txt";
+	$handle = fopen($filename, "r");
+
+	$datain = fread($handle, filesize($filename));
+	fclose($handle);
+	$out = explode("<!-- E -->", $datain);
+
+	$outCount = count($out) - 1;
+
+	for ($i=0; $i<=$outCount; $i++)
+	{
+		$lines[$i] = unserialize($out[$i]);
+	}
+	
+	return $lines;
+}
+
+function getUserByEmail($email)
+{
+	$users = getAllUsers();
+	
+	foreach ($users as &$user) 
+	{		
+		if ($user->email == $email)
+		{	
+			return $user;
+		}
+		
+		return null;
+	}
+}
+
+
+
+
+
+
+
+
 ?>
 

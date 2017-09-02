@@ -41,5 +41,22 @@ $msgnomatchfound			= "Inga sökresultat hittades.";
 $errorFormToken				= "Ogiltig Form Security Token upptäckt.";
 $errorSFS					= "Din IP har identifierats som en spammare i stopp Forum Spam Database. Det är inte tillåtet att posta ett meddelande i gästboken.";
 $hideemailtxt				= "Dölj e-post";
+$logintxt					= "Logga in";
+$logouttxt					= "Logga ut";
+$registertxt				= "Registrera";
+$emailtxt					= "E-post";
+$passwordtxt				= "Lösenord";
+$passwordconfirmtxt			= "Bekräfta lösenord";
+$nametxt					= "namn";
+$addresstxt					= "Adress";
+$citytxt					= "Stad";
+$statetxt					= "stat";
+$ziptxt						= "Blixtlås";
+$countrytxt					= "Land";
+$phonetxt					= "Telefon";
+$error9						= "Kan inte registrera på grund av ett fel.";
+$error10					= "Lösenordet och lösenordet Bekräfta matchar inte.";
+$info1						= "Du har loggats in med framgång.";
+$error11					= "Det går inte att logga in. Vänligen försök igen senare.";
 
 ?>

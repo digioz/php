@@ -41,5 +41,22 @@ $msgnomatchfound		= "Kein Suchergebnis gefunden.";
 $errorFormToken			= "Ungültige Formular Security Token erkannt.";
 $errorSFS				= "Ihre IP hat sich als Spammer im Stop-Forum Spam-Datenbank identifiziert. Sie können keine Nachricht im Gästebuch zu schreiben.";
 $hideemailtxt			= "E-Mail verstecken";
+$logintxt				= "Anmeldung";
+$logouttxt				= "Ausloggen";
+$registertxt			= "Neu registrieren";
+$emailtxt				= "Email";
+$passwordtxt			= "Passwort";
+$passwordconfirmtxt		= "Bestätige das Passwort";
+$nametxt				= "Name";
+$addresstxt				= "Adresse";
+$citytxt				= "Stadt";
+$statetxt				= "Bundesland";
+$ziptxt					= "Reißverschluss";
+$countrytxt				= "Land";
+$phonetxt				= "Telefon";
+$error9					= "Kann aufgrund eines Fehlers nicht registriert werden.";
+$error10				= "Kennwort und Kennwort bestätigen nicht übereinstimmen.";
+$info1					= "Sie sind erfolgreich angemeldet.";
+$error11				= "Sie können sich nicht einloggen. Bitte versuchen Sie es später noch einmal.";
 
 ?>

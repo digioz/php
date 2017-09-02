@@ -41,5 +41,22 @@ $msgnomatchfound		= "Pre hľadaný výraz nebola nájdená žiadna zhoda.";
 $errorFormToken			= "Bol zistený neplatný formát ochranného kľúča.";
 $errorSFS				= "Vaša IP bola identifikovaná ako spammer a pridaná do databázy Stop Fórum Spam. Nemáte povolené písať správy do tejto Knihy návštev.";
 $hideemailtxt			= "Skryť e-mail";
+$logintxt				= "Prihlásiť sa";
+$logouttxt				= "Odhlásiť sa";
+$registertxt			= "Registrovať";
+$emailtxt				= "e-mail";
+$passwordtxt			= "heslo";
+$passwordconfirmtxt		= "Potvrď heslo";
+$nametxt				= "názov";
+$addresstxt				= "adresa";
+$citytxt				= "veľkomesto";
+$statetxt				= "stáť";
+$ziptxt					= "zips";
+$countrytxt				= "Krajina";
+$phonetxt				= "telefón";
+$error9					= "Nepodarilo sa zaregistrovať kvôli chybe.";
+$error10				= "Potvrdenie hesla a hesla sa nezhoduje.";
+$info1					= "Boli ste úspešne prihlásení.";
+$error11				= "Nemôžem sa prihlásiť. Skúste to znova neskôr.";
 
 ?>

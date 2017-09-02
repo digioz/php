@@ -6,8 +6,6 @@ if(!defined('IN_GB')) {
 
 // Guestbook Entry Object Class to be Serialized and Stored ---------------
 
-include("functions.php");
-
 class gbClass
 {
      var $gbDate;
