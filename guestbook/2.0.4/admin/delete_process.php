@@ -6,12 +6,13 @@ define('IN_GB', TRUE);
 
 session_start();
 
-include("login_check.php");
-include("includes/header.php"); 
+$pageTitle = "Delete Guestbook Entry"; 
 
-include("../includes/gb.class.php");
+include("login_check.php");
 include("../includes/config.php");
-include("../language/$default_language");
+include("includes/header.php"); 
+include("../includes/functions.php");
+include("../includes/gb.class.php");
 
 $order= isset($_GET['order']) ? $_GET['order'] : "";
 

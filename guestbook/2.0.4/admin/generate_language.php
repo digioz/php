@@ -59,6 +59,23 @@ if (isset($_POST['Submit']))
   $f39 = $_POST['f39'];
   $f40 = $_POST['f40'];
   $f41 = $_POST['f41'];
+  $f42 = $_POST['f42'];
+  $f43 = $_POST['f43'];
+  $f44 = $_POST['f44'];
+  $f45 = $_POST['f45'];
+  $f46 = $_POST['f46'];
+  $f47 = $_POST['f47'];
+  $f48 = $_POST['f48'];
+  $f49 = $_POST['f49'];
+  $f50 = $_POST['f50'];
+  $f51 = $_POST['f51'];
+  $f52 = $_POST['f52'];
+  $f53 = $_POST['f53'];
+  $f54 = $_POST['f54'];
+  $f55 = $_POST['f55'];
+  $f56 = $_POST['f56'];
+  $f57 = $_POST['f57'];
+  $f58 = $_POST['f58'];  
   
 
 echo "<textarea  cols=\"80\" rows=\"30\">";
@@ -105,7 +122,24 @@ echo "".
 "\$msgnomatchfound		= '$f38';\n".
 "\$errorFormToken		= '$f39';\n".	
 "\$errorSFS				= '$f40';\n".
-"\$hideemailtxt			= '$f41';\n";
+"\$hideemailtxt			= '$f41';\n".
+"\$logintxt		= '$f42';\n".
+"\$logouttxt		= '$f43';\n".
+"\$registertxt		= '$f44';\n".
+"\$emailtxt		= '$f45';\n".
+"\$passwordtxt		= '$f46';\n".
+"\$passwordconfirmtxt		= '$f47';\n".
+"\$nametxt		= '$f48';\n".
+"\$addresstxt		= '$f49';\n".
+"\$citytxt		= '$f50';\n".
+"\$statetxt		= '$f51';\n".
+"\$ziptxt		= '$f52';\n".
+"\$countrytxt		= '$f53';\n".
+"\$phonetxt		= '$f54';\n".
+"\$error9		= '$f55';\n".
+"\$error10		= '$f56';\n".
+"\$info1		= '$f57';\n".
+"\$error11		= '$f58';\n";
 
 echo '?>';
 echo "\n";
@@ -286,6 +320,74 @@ be added to future versions of the guestbook. </p>
 <tr>
     <td> Hide Email </td>
     <td> <input type="textbox" name="f41" size="50">
+</tr>
+<tr>
+    <td> Login </td>
+    <td> <input type="textbox" name="f42" size="50">
+</tr>
+<tr>
+    <td> Logout </td>
+    <td> <input type="textbox" name="f43" size="50">
+</tr>
+<tr>
+    <td> Register </td>
+    <td> <input type="textbox" name="f44" size="50">
+</tr>
+<tr>
+    <td> Email </td>
+    <td> <input type="textbox" name="f45" size="50">
+</tr>
+<tr>
+    <td> Password </td>
+    <td> <input type="textbox" name="f46" size="50">
+</tr>
+<tr>
+    <td> Confirm Password </td>
+    <td> <input type="textbox" name="f47" size="50">
+</tr>
+<tr>
+    <td> Name </td>
+    <td> <input type="textbox" name="f48" size="50">
+</tr>
+<tr>
+    <td> Address </td>
+    <td> <input type="textbox" name="f49" size="50">
+</tr>
+<tr>
+    <td> City </td>
+    <td> <input type="textbox" name="f50" size="50">
+</tr>
+<tr>
+    <td> State </td>
+    <td> <input type="textbox" name="f51" size="50">
+</tr>
+<tr>
+    <td> Zip </td>
+    <td> <input type="textbox" name="f52" size="50">
+</tr>
+<tr>
+    <td> Country </td>
+    <td> <input type="textbox" name="f53" size="50">
+</tr>
+<tr>
+    <td> Phone </td>
+    <td> <input type="textbox" name="f54" size="50">
+</tr>
+<tr>
+    <td> Unable to Register due to an error </td>
+    <td> <input type="textbox" name="f55" size="50">
+</tr>
+<tr>
+    <td> Password and Password Confirm do not match </td>
+    <td> <input type="textbox" name="f56" size="50">
+</tr>
+<tr>
+    <td> You have been logged in successfully </td>
+    <td> <input type="textbox" name="f57" size="50">
+</tr>
+<tr>
+    <td> Unable to log you in. Please try again later. </td>
+    <td> <input type="textbox" name="f58" size="50">
 </tr>
 
 <tr>
