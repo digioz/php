@@ -45,6 +45,11 @@ if (isset($_SESSION["login_email"]))
 	$user_login_name = $user_object->name;
 }
 
+if ($login_required == "1" && $user_login_email == "")
+{
+	header( 'Location: login.php' ) ;
+}
+
 // Generate Token Id and Valid  
 $csrf = new csrf();
 $token_id = $csrf->get_token_id();

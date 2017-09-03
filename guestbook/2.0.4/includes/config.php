@@ -89,7 +89,8 @@ $_Password         = "admin";
 
 // User Login Settings --------------------------------------------------------------
 							  // We recommend that you change the logion salt value
-$login_salt		   = "WfQCAgS3uISXDK7Azw";
+$login_salt		   	= "WfQCAgS3uISXDK7Azw";
+$login_required	 	= "0";
 
 // Stop Forum Spam Settings ---------------------------------------------------------
 
