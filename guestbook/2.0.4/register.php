@@ -137,6 +137,15 @@ if (isset($_POST['submit']))
     flock($fp, 3);
     fclose($fp);
 	
+	$userLoggingIn = getUserByEmail($email);
+	$_SESSION["login_email"] = $email;
+	$_SESSION["user_object"] = $userLoggingIn;
+	
+	$tpl->assign("info_msg", $info1);
+	$tpl->assign( "loginemail", $user_login_email );
+	$html = $tpl->draw('info', $return_string = true);
+	echo $html;
+	
 	exit;
 }
 
