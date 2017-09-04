@@ -4,9 +4,10 @@ define('IN_GB', TRUE);
 
 session_start();
 
+include("includes/config.php");
 include("includes/functions.php");
 include("includes/gb.class.php");
-include("includes/config.php");
+include("includes/user.class.php");
 
 $selected_language_session = $default_language[2];
 
@@ -30,10 +31,13 @@ $lang_select_array = getLanguageArray($language_array);
 
 // Check if logged in
 $user_login_email = "";
+$userid = "";
 
 if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
+	$user_login_object = getUserByEmail($user_login_email);
+	$userid = $user_login_object->id;
 }
 
 //initialize a Rain TPL object
@@ -385,7 +389,7 @@ if (strlen($error) == 0)
     // Write the verified guestbook entry to file ----------------------------------------------------
     
     $a = new gbClass();
-    $a->setGBVars($date, $yourname, $youremail, $yourmessage, $hideemail);
+    $a->setGBVars($date, $yourname, $youremail, $yourmessage, $hideemail, $userid);
     @$fp = fopen("data/list.txt", "a");
     flock($fp, 2);
     

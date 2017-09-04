@@ -9,6 +9,7 @@ if(!defined('IN_GB')) {
 class gbClass
 {
 	var $id;
+	var $gbUserId;
 	var $gbDate;
 	var $gbFrom;
 	var $gbEmail;
@@ -17,14 +18,15 @@ class gbClass
 
 	// Set the Guestbook Entry Field Variables -------
 
-	function setGBVars($a,$b,$c,$d,$e)
+	function setGBVars($gbdate,$gbfrom,$gbemail,$gbmessage,$gbhideemail, $gbuserid)
 	{
 		$this->id = getGUID();
-		$this->gbDate = $a;
-		$this->gbFrom = stripslashes($b);
-		$this->gbEmail = $c;
-		$this->gbMessage = smiley_face(stripslashes($d));
-		$this->gbHideEmail = $e;
+		$this->gbDate = $gbdate;
+		$this->gbFrom = stripslashes($gbfrom);
+		$this->gbEmail = $gbemail;
+		$this->gbMessage = smiley_face(stripslashes($gbmessage));
+		$this->gbHideEmail = $gbhideemail;
+		$this->gbUserId = $gbuserid;
 	}
 }
 

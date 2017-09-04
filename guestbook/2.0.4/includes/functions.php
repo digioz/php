@@ -284,6 +284,21 @@ function getUserByEmail($email)
 	}
 }
 
+function getUserById($id)
+{
+	$users = getAllUsers();
+	
+	foreach ($users as &$user) 
+	{		
+		if ($user->id == $id)
+		{	
+			return $user;
+		}
+		
+		return null;
+	}
+}
+
 function getGUID(){
     if (function_exists('com_create_guid'))
 	{
