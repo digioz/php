@@ -58,5 +58,9 @@ $error9					= "Nem sikerült regisztrálni a hiba miatt.";
 $error10				= "A jelszó és a jelszó megerősítése nem egyezik.";
 $info1					= "Ön sikeresen bejelentkezett.";
 $error11				= "Nem lehet bejelentkezni. Próbálja újra később.";
+$warning1				= "Biztosan törölni szeretné ezt az üzenetet?";
+$info2					= "Beállítások";
+$info3					= "Mentés";
+$info4					= "Üzenetek kezelése";
 
 ?>

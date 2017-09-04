@@ -73,6 +73,9 @@ $tpl->assign( "emailtxt", $emailtxt );
 $tpl->assign( "passwordtxt", $passwordtxt );
 $tpl->assign( "passwordconfirmtxt", $passwordconfirmtxt );
 $tpl->assign( "loginemail", $user_login_email );
+$tpl->assign( "info2", $info2 );
+$tpl->assign( "loginusermanageposts", $login_allow_post_delete );
+$tpl->assign( "info4", $info4 );
 
 // Process Registration
 if (isset($_POST['submit']))
@@ -89,7 +92,6 @@ if (isset($_POST['submit']))
 		exit;
     }
 
-	$allUsers = array();
 	$allUsers = getAllUsers();
 	
 	$userLoggingIn = getUserByEmail($email);

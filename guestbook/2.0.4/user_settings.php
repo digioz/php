@@ -39,6 +39,12 @@ $user_login_email = "";
 if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
+	$user_login_object = getUserByEmail($user_login_email);
+	$userid = $user_login_object->id;
+}
+else
+{
+	header( 'Location: index.php' ) ;
 }
 
 // Generate Token Id and Valid  
@@ -81,34 +87,44 @@ $tpl->assign( "countrytxt", $countrytxt );
 $tpl->assign( "phonetxt", $phonetxt );
 $tpl->assign( "loginemail", $user_login_email );
 $tpl->assign( "info2", $info2 );
+$tpl->assign( "info3", $info3 );
 $tpl->assign( "loginusermanageposts", $login_allow_post_delete );
 $tpl->assign( "info4", $info4 );
 
+$tpl->assign("user_name", $user_login_object->name);
+$tpl->assign("user_email", $user_login_object->email);
+$tpl->assign("user_address", $user_login_object->address);
+$tpl->assign("user_city", $user_login_object->city);
+$tpl->assign("user_state", $user_login_object->state);
+$tpl->assign("user_zip", $user_login_object->zip);
+$tpl->assign("user_country", $user_login_object->country);
+$tpl->assign("user_phone", $user_login_object->phone);
+
+
 // Process Registration
 if (isset($_POST['submit']))
-{
-	$name = "";
-	$email = "";
-	$password = "";
-	$passwordConfirm = "";
-	$address = "";
-	$city = "";
-	$state = "";
-	$zip = "";
-	$country = "";
-	$phone = "";
-
-	$name = trim($_POST['name'])?:'';
-	$email = trim($_POST['email'])?:'';
-	$password = trim($_POST['password'])?:'';
-	$passwordConfirm = trim($_POST['passwordconfirm'])?:'';
-	$address = trim($_POST['address'])?:'';
-	$city = trim($_POST['city'])?:'';
-	$state = trim($_POST['state'])?:'';
-	$zip = trim($_POST['zip'])?:'';
-	$country = trim($_POST['country'])?:'';
-	$phone = trim($_POST['phone'])?:'';
-
+{	
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$passwordConfirm = $_POST['passwordconfirm'];
+	$address = $_POST['address'];
+	$city = $_POST['city'];
+	$state = $_POST['state'];
+	$zip = $_POST['zip'];
+	$country = $_POST['country'];
+	$phone = $_POST['phone'];
+	
+	if ($password != $passwordConfirm)
+	{
+		$tpl->assign("error_msg", $error10);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+        exit;
+	}
+	
+	
+	
 	/*
 	echo "Name: " . $name . "<br>";
 	echo "Email: " . $email . "<br>";
@@ -120,23 +136,39 @@ if (isset($_POST['submit']))
 	echo "Zip: " . $zip . "<br>";
 	echo "Country: " . $country . "<br>";
 	echo "Phone: " . $phone . "<br>";
-	exit; 
 	*/
 	
-	if ($password != $passwordConfirm)
+	$users = getAllUsers();
+	$user_current = getUserByEmail($user_login_email);
+	$data_updated = "";
+	
+	foreach ($users as &$user)
 	{
-		$tpl->assign("error_msg", $error10);
-        $html = $tpl->draw('error', $return_string = true);
-        echo $html;
-        exit;
+		if ($user != null)
+		{
+			if ($user->id == $user_current->id)
+			{
+				$user->name = $name;
+				$user->email = $email;
+				$user->address = $address;
+				$user->city = $city;
+				$user->state = $state;
+				$user->zip = $zip;
+				$user->country = $country;
+				$user->phone = $phone;
+				
+				if (strlen($password) > 0)
+				{
+					$password = encryptPassword($password, $login_salt);
+					$user->password = $password;
+				}
+			}
+
+			$data_updated .= serialize($user) . "<!-- E -->";
+		}
 	}
 	
-	$password = encryptPassword($password, $login_salt);
-
-	$u = new userClass();
-	$u->setUserVars($email, $password, $name, $address, $city, $state, $zip, $country, $phone);
-	
-	@$fp = fopen("data/users.txt", "a");
+	@$fp = fopen("data/users.txt", "w");
     flock($fp, 2);
     
     if (!$fp) 
@@ -147,8 +179,7 @@ if (isset($_POST['submit']))
         exit;
     }
     
-    $data = serialize($u) . "<!-- E -->";
-    fwrite($fp, $data);
+    fwrite($fp, $data_updated);
     flock($fp, 3);
     fclose($fp);
 	
@@ -156,16 +187,11 @@ if (isset($_POST['submit']))
 	$_SESSION["login_email"] = $email;
 	$_SESSION["user_object"] = $userLoggingIn;
 	
-	$tpl->assign("info_msg", $info1);
-	$tpl->assign( "loginemail", $user_login_email );
-	$html = $tpl->draw('info', $return_string = true);
-	echo $html;
-	
-	exit;
+	header( 'Location: index.php' ) ;
 }
 
 // Show registration form if not posting back
-$html = $tpl->draw( 'register', $return_string = true );
+$html = $tpl->draw( 'user_settings', $return_string = true );
 
 // and then draw the output
 echo $html;

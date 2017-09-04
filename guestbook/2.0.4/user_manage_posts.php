@@ -4,9 +4,10 @@ define('IN_GB', TRUE);
 
 session_start();
 
+include("includes/config.php");
 include("includes/functions.php");
 include("includes/gb.class.php");
-include("includes/config.php");
+include("includes/user.class.php");
 
 $selected_language_session = $default_language[2];
 
@@ -28,10 +29,27 @@ $lang_select_array = getLanguageArray($language_array);
 
 // Check if logged in
 $user_login_email = "";
+$userid = "";
 
 if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
+	$user_login_object = getUserByEmail($user_login_email);
+	$userid = $user_login_object->id;
+}
+
+if (isset($_GET['id']))
+{
+	// Remove Post
+	$post_to_remove = trim($_GET['id']);
+	$is_user_post_owner = isUserPostOwner($post_to_remove, $userid);
+	
+	if ($is_user_post_owner)
+	{
+		deletePostById($post_to_remove, $userid);
+	}
+
+	header( 'Location: user_manage_posts.php' ) ;
 }
 
 //initialize a Rain TPL object
@@ -58,49 +76,12 @@ $tpl->assign( "info2", $info2 );
 $tpl->assign( "loginusermanageposts", $login_allow_post_delete );
 $tpl->assign( "info4", $info4 );
 
-$page = $_GET['page'];
-$order= $_GET['order'];
-
-$currentPage = $page;
-
-if ($page == "" || $order == "")
-{
-    $page = 1;
-    $order = "asc";
-}
-
-// Validate browser input ------------------------------------------------------------
-
-if (is_numeric($page) == false) 
-{
-	$tpl->assign( "error_msg", $msgnonnumericpagenr);
-	$html = $tpl->draw( 'error', $return_string = true );
-	echo $html;
-	exit;
-}
-
-if (!($order == "asc" || $order == "desc"))
-{
-	$tpl->assign( "error_msg", $msgsortingerror);
-	$html = $tpl->draw( 'error', $return_string = true );
-	echo $html;
-	exit;
-}  
-
-// -----------------------------------------------------------------------------------
-
-if ($page == "") { $page = 1; }
-$fwd = $page + 1;
-$rwd = $page - 1;
-
-// Setting the default values for number of records per page -------------------------
-
-$perpage = $total_records_per_page;
 
 // Reading in all the records, putting each guestbook entry in one Array Element -----
 
 $filename = "data/list.txt";
 $handle = fopen($filename, "r");
+$lines = array();
 
 if (filesize($filename) == 0)
 {
@@ -113,50 +94,28 @@ else
 {
 	$datain = fread($handle, filesize($filename));
 	fclose($handle);
-	$out = explode("<!-- E -->", $datain);
+	$out = explode("<!-- E -->", $datain);	
 
 	$outCount = count($out) - 1;
-	$j = $outCount-1;
+	$j = 0;
 
-	if ($order == "desc")
+	for ($i=0; $i<=$outCount; $i++)
 	{
-		for ($i=0; $i<=$outCount; $i++)
+		$temp1 = unserialize($out[$i]);
+		
+		if ($temp1 != null && $temp1->gbUserId != null && $temp1->gbUserId == $userid)
 		{
 			$lines[$j] = unserialize($out[$i]);
-			$j = $j - 1;
+			$j++;
 		}
 	}
-	else
-	{
-		for ($i=0; $i<=$outCount; $i++)
-		{
-			$lines[$i] = unserialize($out[$i]);
-		}
-	}
-
-	// Counting the total number of entries (lines) in the data text file --------
-
-	$result = count($lines);
-	$count = $result-1;
-
-	// Calculate how many pages there are ----------------------------------------
-
-	if ($count == 0) { $totalpages = 0; }
-	else { $totalpages = intval(($count - 1) / $perpage) + 1; }
-
-	$page = $totalpages - ($page - 1);
-
-	$end = $count - (($totalpages - $page) * $perpage);
-	$start = $end - ($perpage - 1); if ($start < 1) { $start = 1; }
-
-	if ($start < 0) { $start = 0; }
 	
 	// Display guestbook entries --------------------------------------------------
 	
 	$html = $tpl->draw( 'header', $return_string = true );
 	echo $html;
 
-	for ($i=$end-1; $i>$start-2; $i--)
+	for ($i=0;$i<count($lines);$i++)	
 	{
 		// Convert to local date time
 		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
@@ -178,68 +137,15 @@ else
 		$tpl->assign( "langCharSet", $default_language[4]);
 		$tpl->assign( "lang_select_array", $lang_select_array);
 		$tpl->assign( "outputhideemail", $lines[$i]->gbHideEmail); 
+		$tpl->assign( "warning1", $warning1); 
+		$tpl->assign( "postid", $lines[$i]->id);
 		
-		$html = $tpl->draw( 'list', $return_string = true );
+		$html = $tpl->draw( 'user_manage_post', $return_string = true );
 		echo $html;
 	}
 
     echo "<center>";
 	echo '<br><div class="pagination">';
-
-	
-	// Creating the Forward and Backward links -------------------------------------
-
-	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
-	{
-		echo "<a href=\"list.php?page=1&order=$order\">&lt&lt</a>";
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>";
-	}
-	else if ($rwd > 0)
-	{ 
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>"; 
-	}
-	
-	// loop through and display each page number
-	
-	$startPagination = $currentPage - 3;
-	$endPagination = $currentPage + 3;
-
-	if ($startPagination < 1)
-	{
-		$startPagination = 1;
-	}
-
-	if ($endPagination > $totalpages)
-	{
-		$endPagination = $totalpages;
-	}
-	
-	//for ($i = 1; $i<=$totalpages; $i++)
-	for ($i = $startPagination; $i<=$endPagination; $i++)  
-	{
-        if ($currentPage == $i)
-        {
-             echo "<b><a href=\"list.php?page=$i&order=$order\" class=\"pagination current\"><b>$i</b></a></b>";  
-        }
-        else
-        {
-            echo "<b><a href=\"list.php?page=$i&order=$order\">$i</a></b>"; 
-        }
-	}
-
-	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
-	{
-		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>";
-	}
-	else if ($fwd > 0 && $fwd <= $totalpages)
-	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>"; 
-	}
-	
-	if ($currentPage < $totalpages)
-	{
-		echo "<a href=\"list.php?page=$totalpages&order=$order\">&gt&gt</a>"; 
-	}
 
 	echo "</div>";
 	echo "</center>";

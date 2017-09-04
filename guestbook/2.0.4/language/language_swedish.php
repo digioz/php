@@ -58,5 +58,9 @@ $error9						= "Kan inte registrera på grund av ett fel.";
 $error10					= "Lösenordet och lösenordet Bekräfta matchar inte.";
 $info1						= "Du har loggats in med framgång.";
 $error11					= "Det går inte att logga in. Vänligen försök igen senare.";
+$warning1					= "Är du säker på att du vill radera detta meddelande?";
+$info2						= "Inställningar";
+$info3						= "Spara";
+$info4						= "Hantera inlägg";
 
 ?>

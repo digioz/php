@@ -58,5 +58,9 @@ $error9					= "Nepodarilo sa zaregistrovať kvôli chybe.";
 $error10				= "Potvrdenie hesla a hesla sa nezhoduje.";
 $info1					= "Boli ste úspešne prihlásení.";
 $error11				= "Nemôžem sa prihlásiť. Skúste to znova neskôr.";
+$warning1				= "Naozaj chcete odstrániť túto správu?";
+$info2					= "Nastavenie";
+$info3					= "Uložiť";
+$info4					= "Správa príspevkov";
 
 ?>

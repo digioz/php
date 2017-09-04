@@ -87,6 +87,9 @@ $tpl->assign( "logouttxt", $logouttxt );
 $tpl->assign( "registertxt", $registertxt );
 $tpl->assign( "loginemail", $user_login_email );
 $tpl->assign( "loginname", $user_login_name );
+$tpl->assign( "info2", $info2 );
+$tpl->assign( "loginusermanageposts", $login_allow_post_delete );
+$tpl->assign( "info4", $info4 );
 
 if ($image_verify == 1)
 {

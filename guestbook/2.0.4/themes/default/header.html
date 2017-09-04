@@ -8,13 +8,20 @@
 </head>
 <body>
 	<div class="topcorner" style="width:98%;text-align:right;margin-right:50px;">
-		<a href="register.php" style="color:#ffffff;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
-		
 			{if condition="$loginemail == ''"}
+				<a href="register.php" style="color:#ffffff;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
 				<a style="color:#ffffff;" href="login.php"><i class="fa fa-unlock-alt"></i>&nbsp;
 					{$logintxt}
 				</a>
 			{else}
+				<a style="color:#ffffff;" href="user_settings.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$info2}
+				</a> | 
+				{if condition="$loginusermanageposts == '1'"}
+					<a style="color:#ffffff;" href="user_manage_posts.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+						{$info4}
+					</a> | 
+				{/if}
 				<a style="color:#ffffff;" href="logout.php"><i class="fa fa-unlock-alt"></i>&nbsp;
 					{$logouttxt}
 				</a>

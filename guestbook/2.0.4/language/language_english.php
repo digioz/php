@@ -58,5 +58,9 @@ $error9					= "Unable to Register due to an error.";
 $error10				= "Password and Password Confirm do not match.";
 $info1					= "You have been logged in successfully.";
 $error11				= "Unable to log you in. Please try again later.";
+$warning1				= "Are you sure you want to delete this message?";
+$info2					= "Settings";
+$info3					= "Save";
+$info4					= "Manage Posts";
 
 ?>

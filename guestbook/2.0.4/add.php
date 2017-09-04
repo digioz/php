@@ -60,6 +60,9 @@ $tpl->assign( "logintxt", $logintxt );
 $tpl->assign( "logouttxt", $logouttxt );
 $tpl->assign( "registertxt", $registertxt );
 $tpl->assign( "loginemail", $user_login_email );
+$tpl->assign( "info2", $info2 );
+$tpl->assign( "loginusermanageposts", $login_allow_post_delete );
+$tpl->assign( "info4", $info4 );
 
 // Validate Form Token
 $csrf = new csrf();

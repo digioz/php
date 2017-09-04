@@ -270,18 +270,21 @@ function getAllUsers()
 }
 
 function getUserByEmail($email)
-{
+{	
 	$users = getAllUsers();
 	
 	foreach ($users as &$user) 
-	{		
-		if ($user->email == $email)
-		{	
-			return $user;
+	{
+		if ($user != null)
+		{
+			if ($user->email == $email)
+			{	
+				return $user;
+			}
 		}
-		
-		return null;
 	}
+	
+	return;
 }
 
 function getUserById($id)
@@ -320,9 +323,64 @@ function getGUID(){
     }
 }
 
+function getAllPosts()
+{
+	$lines = array();
+	$filename = "data/list.txt";
+	$handle = fopen($filename, "r");
+	$datain = fread($handle, filesize($filename));
+	fclose($handle);
+	$out = explode("<!-- E -->", $datain);	
+	$outCount = count($out) - 1;
+	$j = 0;
 
+	for ($i=0; $i<=$outCount; $i++)
+	{
+		$lines[$j] = unserialize($out[$i]);
+		$j++;
+	}
+	
+	return $lines;
+}
 
+function isUserPostOwner($postid, $userid)
+{
+	$allPosts = getAllPosts();
+	
+	foreach ($allPosts as &$post) 
+	{
+		if ($post != null && $post->id == $postid && $post->gbUserId == $userid)
+		{
+			return true;
+		}
+		
+	}
+	
+	return false;
+}
 
+function deletePostById($postid, $userid)
+{
+	$datanew = "";
+	$allPosts = getAllPosts();
+	
+	foreach ($allPosts as &$post) 
+	{
+		if ($post != null && $post->id != $postid)
+		{
+			$datanew .= serialize($post) . "<!-- E -->";
+		}
+	}
+	
+	@$fp = fopen("data/list.txt", "w");
+    flock($fp, 2);
+    
+    fwrite($fp, $datanew);
+    flock($fp, 3);
+    fclose($fp);
+	
+	return;
+}
 
 
 ?>

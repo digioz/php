@@ -58,5 +58,9 @@ $error9					= "Kann aufgrund eines Fehlers nicht registriert werden.";
 $error10				= "Kennwort und Kennwort bestätigen nicht übereinstimmen.";
 $info1					= "Sie sind erfolgreich angemeldet.";
 $error11				= "Sie können sich nicht einloggen. Bitte versuchen Sie es später noch einmal.";
+$warning1				= "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?";
+$info2					= "Einstellungen";
+$info3					= "Sparen";
+$info4					= "Beiträge verwalten";
 
 ?>
