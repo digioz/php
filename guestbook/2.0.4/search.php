@@ -35,6 +35,9 @@ if (isset($_SESSION["login_email"]))
 	$user_login_email = $_SESSION["login_email"];
 }
 
+// Initialize Variables
+$search = "";
+
 //initialize a Rain TPL object
 $tpl = new RainTPL;
 $tpl->assign( "theme", $theme );
@@ -60,11 +63,16 @@ $tpl->assign( "loginusermanageposts", $login_allow_post_delete );
 $tpl->assign( "info4", $info4 );
 
 if(!isset($_GET['page'])) $_GET['page'] = 0;
-$search = sanitize_html_string($_POST['search_term']);
+
+if (isset($_POST['search_term']))
+{
+	$search = sanitize_html_string($_POST['search_term']);
+}
+
 $pageNum = sanitize_int($_GET['page'],0,9000);
 
 // Set Search Variables 
-if ($search == "")
+if ($search == "" && isset($_GET['search_term']))
 {   if(!isset($_GET['search_term'])) $_GET['search_term'] = '';
     $search = sanitize_html_string($_GET['search_term']);
 }
