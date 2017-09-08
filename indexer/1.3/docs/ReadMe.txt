@@ -1,4 +1,8 @@
-Thank You for Choosing the DigiOz Directory Indexer Version 1.2. 
+Thank You for Choosing the DigiOz Directory Indexer Version 1.3. 
+
+What's New in Version 1.3:
+--------------------------
+- Security bug fix for FireFox Browsers. 
 
 What's New in Version 1.2:
 --------------------------
