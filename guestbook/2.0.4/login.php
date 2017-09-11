@@ -77,7 +77,7 @@ $tpl->assign( "info2", $info2 );
 $tpl->assign( "loginusermanageposts", $login_allow_post_delete );
 $tpl->assign( "info4", $info4 );
 
-// Process Registration
+// Process Login
 if (isset($_POST['submit']))
 {	
 	$email = $_POST['email'];
@@ -91,7 +91,7 @@ if (isset($_POST['submit']))
         echo $html;
 		exit;
     }
-
+	
 	$allUsers = getAllUsers();
 	
 	$userLoggingIn = getUserByEmail($email);
@@ -99,13 +99,26 @@ if (isset($_POST['submit']))
 	
 	if (isset($userLoggingIn))
 	{
-		$_SESSION["login_email"] = $email;
-		$_SESSION["user_object"] = $userLoggingIn;
+		// Check to make sure login is correct
+		$userLoginValidated = false;
+		$userLoginValidated = validateLogin($email, $password, $userLoggingIn->password, $login_salt);
 		
-		$tpl->assign("info_msg", $info1);
-		$tpl->assign( "loginemail", $user_login_email );
-		$html = $tpl->draw('info', $return_string = true);
-		echo $html;
+		if ($userLoginValidated)
+		{
+			$_SESSION["login_email"] = $email;
+			$_SESSION["user_object"] = $userLoggingIn;
+			
+			$tpl->assign("info_msg", $info1);
+			$tpl->assign( "loginemail", $email );
+			$html = $tpl->draw('info', $return_string = true);
+			echo $html;			
+		}
+		else
+		{
+			$tpl->assign("error_msg", $error11);
+			$html = $tpl->draw('error', $return_string = true);
+			echo $html;
+		}
 	}
 	else
 	{

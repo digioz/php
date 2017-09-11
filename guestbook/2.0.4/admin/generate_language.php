@@ -75,7 +75,11 @@ if (isset($_POST['Submit']))
   $f55 = $_POST['f55'];
   $f56 = $_POST['f56'];
   $f57 = $_POST['f57'];
-  $f58 = $_POST['f58'];  
+  $f58 = $_POST['f58'];
+  $f59 = $_POST['f59'];
+  $f60 = $_POST['f60'];
+  $f61 = $_POST['f61'];
+  $f62 = $_POST['f62'];
   
 
 echo "<textarea  cols=\"80\" rows=\"30\">";
@@ -139,7 +143,12 @@ echo "".
 "\$error9		= '$f55';\n".
 "\$error10		= '$f56';\n".
 "\$info1		= '$f57';\n".
-"\$error11		= '$f58';\n";
+"\$error11		= '$f58';\n".
+"\$warning1		= '$f59';\n".
+"\$info2		= '$f60';\n".
+"\$info3		= '$f61';\n".
+"\$info4		= '$f62';\n";
+
 
 echo '?>';
 echo "\n";
@@ -389,6 +398,24 @@ be added to future versions of the guestbook. </p>
     <td> Unable to log you in. Please try again later. </td>
     <td> <input type="textbox" name="f58" size="50">
 </tr>
+
+<tr>
+    <td> Are you sure you want to delete this message? </td>
+    <td> <input type="textbox" name="f58" size="50">
+</tr>
+<tr>
+    <td> Settings </td>
+    <td> <input type="textbox" name="f58" size="50">
+</tr>
+<tr>
+    <td> Save </td>
+    <td> <input type="textbox" name="f58" size="50">
+</tr>
+<tr>
+    <td> Manage Posts </td>
+    <td> <input type="textbox" name="f58" size="50">
+</tr>
+
 
 <tr>
     <td></td>
