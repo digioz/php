@@ -207,7 +207,6 @@ if ($let_user_hide_email == "1")
 {
 	if (isset($_POST['hideemail']) && $_POST['hideemail'] == "hideemail")
 	{
-		echo "Hide Email: ".$_POST['hideemail']."<br/>";
 		$hideemail	 = true;
 	}
 }
@@ -372,7 +371,10 @@ if (strlen($error) == 0)
             } 
 			else 
 			{
-                echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";
+                if ($_FILES['file']['name'][$i] != "")
+                {
+                    echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";                    
+                }
             }
         }
         
