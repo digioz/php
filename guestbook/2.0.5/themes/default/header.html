@@ -1,0 +1,51 @@
+<html lang="{$langCode}">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset={$langCharSet}" />
+	<title>{$title}</title>
+	<link rel="STYLESHEET" type="text/css" href="style.css">
+	<link rel="STYLESHEET" type="text/css" href="font-awesome.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+</head>
+<body>
+	<div class="topcorner" style="width:98%;text-align:right;margin-right:50px;">
+			{if condition="$loginemail == ''"}
+				<a href="register.php" style="color:#ffffff;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
+				<a style="color:#ffffff;" href="login.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logintxt}
+				</a>
+			{else}
+				<a style="color:#ffffff;" href="user_settings.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$info2}
+				</a> | 
+				{if condition="$loginusermanageposts == '1'"}
+					<a style="color:#ffffff;" href="user_manage_posts.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+						{$info4}
+					</a> | 
+				{/if}
+				<a style="color:#ffffff;" href="logout.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logouttxt}
+				</a>
+			{/if}
+	</div>
+	
+	<p>&nbsp;</p>
+
+	<center>
+	<a href="list.php?page=1&order=asc"><img src="images/logo.png" alt="{$headingtitletxt}"></a>
+	<br><br>
+	<form action="search.php" method="post">
+		<input type="text" name="search_term" size="50" maxlength="50" id="field" placeholder="Search">
+		<input type=submit value="{$searchbuttontxt}">
+	</form>
+	<br>
+	
+	<nav>
+	<ul>
+		<li><a href="guestbook.php"><i class="fa fa-pencil"></i>&nbsp;<b>{$addentrytxt}</b></a></li>
+		<li><a href="list.php?page=1&amp;order=asc"><i class="fa fa-align-center"></i>&nbsp;{$viewguestbooktxt}</a></li>
+		<li><a href="list.php?page=1&amp;order=asc"><i class="fa fa-chevron-down"></i>&nbsp;{$newpostfirsttxt}</a></li>
+		<li><a href="list.php?page=1&amp;order=desc"><i class="fa fa-chevron-up"></i>&nbsp;{$newpostlasttxt}</a></li>
+	</ul>
+</nav>
+<br>
+<br>

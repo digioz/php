@@ -1,0 +1,87 @@
+{include="header"}
+
+<div class="panel panel-primary" style="width:600px;">
+	<div class="panel-heading">
+		<h3 class="panel-title">&nbsp;</h3>
+	</div>
+	<div class="panel-body">
+		<div class="message">
+
+		<br>
+		<form name="post" action="register.php" method="post">
+			<table border="0" style="padding:20px;">
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$nametxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="name" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$emailtxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="email" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$passwordtxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="password" name="password" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$passwordconfirmtxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="password" name="passwordconfirm" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$addresstxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="address" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$citytxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="city" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$statetxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="state" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$ziptxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="zip" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$countrytxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="country" size="40"></td>
+				</tr>
+				<tr>
+					<td style="padding:10px;">
+						<p><b><font size="2">{$phonetxt}</font></b></p>
+					</td>
+					<td style="padding:10px;"><input class="form-control" type="text" name="phone" size="40"></td>
+				</tr>
+				
+				<tr>
+					<td style="padding:10px;"></td>
+					<td style="padding:10px;">
+						<div align="right">
+							<input class="btn btn-primary" type="submit" name="submit" value="{$registertxt}">
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+</div>
+
+{include="footer"}
