@@ -4,5 +4,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <EnvName>PHPDev</EnvName>
+    <RootNamespace>digiozguestbook</RootNamespace>
+    <WebRoot />
+    <RuntimeVersion>8.1</RuntimeVersion>
   </PropertyGroup>
 </Project>
