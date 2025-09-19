@@ -10,22 +10,29 @@ $gb_version = "2.0.6";
 
 // Theme directory -------------------------------------------------------------------
 
-$theme = "default";		  	  // Set to the name of the directory in "theme" folder
-							  // Theme validation will be done after functions.php is loaded
+$theme = "default";              // Set to the name of the directory in "theme" folder
+                                  // Theme validation will be done after functions.php is loaded
+
+// Data encryption settings -----------------------------------------------------------
+// Enable to encrypt sensitive data files (list.txt, list_mod.txt, users.txt)
+$data_encryption_enabled = 1;     // 1 = on, 0 = off
+// IMPORTANT: Change this key to a strong, 32+ character random value and keep it secret.
+// You can also load it from an environment variable and fallback here if empty.
+$data_encryption_key = getenv('GB_DATA_KEY') ?: 'CHANGE_ME_TO_A_LONG_RANDOM_SECRET_KEY_32+_CHARS';
 
 // Date Format Settings --------------------------------------------------------------
 
-$timezone_offset = -5;		  // Number of hours to offset from UTC Time Zone
-							  // Change the format to the date format for your region
+$timezone_offset = -5;            // Number of hours to offset from UTC Time Zone
+                                  // Change the format to the date format for your region
 $date_time_format = "D m/j/y g:i A";
-$dst_auto_detect = 0; 		  // Set "1" to auto detect, "0" to disable
+$dst_auto_detect = 0;             // Set "1" to auto detect, "0" to disable
 
 // Variables for making a field optional in form -------------------------------------
 
 $email_optional      = 0;     // Set "1" for optional email, "0" to make it required
 $name_optional       = 0;     // Set "1" for optional name, "0" to make it required
 $message_optional    = 0;     // Set "1" for optional message, "0" for required
-$let_user_hide_email = 0;	  // Set "1" to let users hide their own emails
+$let_user_hide_email = 0;     // Set "1" to let users hide their own emails
 
 // Variables for notifying administrator when a new message is posted ----------------
 
@@ -43,19 +50,19 @@ $notify_message     = "A new entry has been submitted to your DigiOz Guestbook."
 
 // Guestbook Configuration Variables ------------------------------------------------
 
-$total_records_per_page	= 10;	// determines how many messages show per page in list
+$total_records_per_page = 10;  // determines how many messages show per page in list
 
 // Variable for choosing language file name -----------------------------------------
 
-								// Set the default language from the list below 
+                                // Set the default language from the list below 
 $default_language = array("English", "en", "language.php", "en_US", "UTF-8");
 // $default_language = array("Norwegian", "no", "language_norwegian.php", "no_NO", "UTF-8");
 
-$allow_user_language_select = 1;	// Allow the user to select a language 
-									// The array below is a list of languages that 
-									// the users will be able to select from. If 
-									// adding a new language make sure to add the 
-									// file listed below to the languages directory first
+$allow_user_language_select = 1;    // Allow the user to select a language 
+                                    // The array below is a list of languages that 
+                                    // the users will be able to select from. If 
+                                    // adding a new language make sure to add the 
+                                    // file listed below to the languages directory first
 $language_array = array();
 $language_array[] = array("English", "en", "language.php", "en_US", "UTF-8");
 $language_array[] = array("Czech", "cs", "language_czech.php", "cs_CZ", "ISO-8859-2");
@@ -71,16 +78,16 @@ $language_array[] = array("Norwegian", "no", "language_norwegian.php", "no_NO", 
 // Image Verification Feature -------------------------------------------------------
 
 $image_verify       = 0;      // Set to 1 for simple, or 2 for Recaptcha Version 1.0
-							  // or set to 3 for Recaptcha Version 2.0. 
-							  // If you select 2 or 3, you have to set the Recaptcha 
-							  // public and private keys below as well
-							  // Do Image Verification to prevent spam post
+                              // or set to 3 for Recaptcha Version 2.0. 
+                              // If you select 2 or 3, you have to set the Recaptcha 
+                              // public and private keys below as well
+                              // Do Image Verification to prevent spam post
                               // Option 1 requires your PHP to have been
                               // compiled with GD 2.0.x or higher. Option 3 requires
-							  // for your PHP to support CURL in order to communicate
-							  // the image verification answer to Google and verify it.
+                              // for your PHP to support CURL in order to communicate
+                              // the image verification answer to Google and verify it.
 
-$recaptcha_public_key = "";	  // Recaptcha Public Key obtained from google.com/recaptcha
+$recaptcha_public_key = "";   // Recaptcha Public Key obtained from google.com/recaptcha
 $recaptcha_private_key = "";  // Recaptcha Private Key obtained from google.com/recaptcha
                               
 // Admin Interface Username ---------------------------------------------------------
@@ -90,14 +97,14 @@ $_Password         = "admin";
 
 // User Login Settings --------------------------------------------------------------
 							  // We recommend that you change the logion salt value
-$login_salt		   			= "WfQCAgS3uISXDK7Azw";
-$login_required	 			= "0";
-$login_allow_post_delete 	= "1";
+$login_salt                   = "WfQCAgS3uISXDK7Azw";
+$login_required               = "0";
+$login_allow_post_delete      = "1";
 
 // Stop Forum Spam Settings ---------------------------------------------------------
 
-$stop_forum_spam_enabled 	= "0";
-$stop_forum_spam_key 		= "";
+$stop_forum_spam_enabled  = "0";
+$stop_forum_spam_key      = "";
 
 // Flood protection setting ---------------------------------------------------------
 
@@ -116,18 +123,18 @@ $banIPKey           = 0;      // Set "1" to block posting of banned IP or "0" to
 
 // Attachment Settings -------------------------------------------------------------
 
-$gbAllowAttachments = 0;	  // Flag to enable file upload
-$gbDisplayImageInBody = 1;	  // Only works if Attachments are Allowed
+$gbAllowAttachments = 0;      // Flag to enable file upload
+$gbDisplayImageInBody = 1;     // Only works if Attachments are Allowed
 
-$attach_ext = array();  	  // List of file extensions that are allowed as attachments
+$attach_ext = array();        // List of file extensions that are allowed as attachments
 $attach_ext[] = 'jpg';
 $attach_ext[] = 'png';
 $attach_ext[] = 'gif';
 $attach_ext[] = 'pdf';
 $attach_ext[] = 'txt';
 
-$attach_img = array();  	  // List of file extensions to show as image in the body 
-$attach_img[] = 'jpg';		  // of message
+$attach_img = array();        // List of file extensions to show as image in the body 
+$attach_img[] = 'jpg';        // of message
 $attach_img[] = 'png';
 $attach_img[] = 'gif';
 

@@ -15,7 +15,6 @@ include("../includes/functions.php");
 include("../includes/gb.class.php");
 
 $order= isset($_GET['order']) ? $_GET['order'] : "";
-
 ?>
 
 <center>
@@ -57,53 +56,32 @@ if (!($order == "asc" || $order == "desc" || $order == ""))
 // Reading in all the records, putting each guestbook entry in one Array Element -----
 
 $filename = "../data/list.txt";
-$handle = fopen($filename, "r");
-$datain = fread($handle, filesize($filename));
-fclose($handle);
+$datain = readDataFile($filename);
 $out = explode("<!-- E -->", $datain);
 
-$outCount = count($out) - 1;
-$j = $outCount-1;
-
-if ($order == "desc")
-{
-    for ($i=0; $i<=$outCount; $i++)
-    {
-        $lines[$j] = unserialize($out[$i]);
-        $j = $j - 1;
-    }
-}
-else
-{
-    for ($i=0; $i<=$outCount; $i++)
-    {
-        $lines[$i] = unserialize($out[$i]);
-    }
+$lines = [];
+for ($i=0; $i<count($out)-1; $i++) {
+    $raw = trim($out[$i]); if ($raw==='') continue;
+    $data = json_decode($raw, true);
+    if (is_array($data)) { $lines[] = gbClass::fromArray($data); }
 }
 
-// Lets Clear the output text file first
-
-@ $fp = fopen("../data/list.txt","w");
-flock($fp, 2);
-fwrite($fp, "");
-flock($fp, 3);
-fclose($fp);
+if ($order == "desc") {
+    $lines = array_values(array_reverse($lines));
+}
 
 // Now that we have all the entries in an array, lets take out the one entry that the user wants deleted
 
-for ($i=0; $i<$outCount; $i++)
+$datanew = "";
+for ($i=0; $i<count($lines); $i++)
 {
   if ($i != $id)
   {
-     @ $fp = fopen("../data/list.txt","a");
-     flock($fp, 2);
-     $data = serialize($lines[$i])."<!-- E -->";
-     fwrite($fp, $data);
-     flock($fp, 3);
-     fclose($fp);
+     $datanew .= json_encode($lines[$i])."<!-- E -->";
   }
 }
 
+writeDataFile($filename, $datanew);
 
 ?>
 <p>&nbsp;</p>

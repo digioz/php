@@ -65,27 +65,17 @@ $tpl->assign( "info2", $info2 );
 $tpl->assign( "loginusermanageposts", $login_allow_post_delete );
 $tpl->assign( "info4", $info4 );
 
-$page = $_GET['page'];
-$order= $_GET['order'];
+// Inputs with defaults
+$page  = isset($_GET['page']) ? $_GET['page'] : 1;
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc';
 
+// Normalize
+if ($page === '' || !is_numeric($page) || (int)$page < 1) { $page = 1; }
+$page = (int)$page;
+$order = ($order === 'desc') ? 'desc' : 'asc';
 $currentPage = $page;
 
-if ($page == "" || $order == "")
-{
-    $page = 1;
-    $order = "asc";
-}
-
 // Validate browser input ------------------------------------------------------------
-
-if (is_numeric($page) == false) 
-{
-	$tpl->assign( "error_msg", $msgnonnumericpagenr);
-	$html = $tpl->draw( 'error', $return_string = true );
-	echo $html;
-	exit;
-}
-
 if (!($order == "asc" || $order == "desc"))
 {
 	$tpl->assign( "error_msg", $msgsortingerror);
@@ -94,21 +84,14 @@ if (!($order == "asc" || $order == "desc"))
 	exit;
 }  
 
-// -----------------------------------------------------------------------------------
-
-if ($page == "") { $page = 1; }
-$fwd = $page + 1;
-$rwd = $page - 1;
-
 // Setting the default values for number of records per page -------------------------
-
 $perpage = $total_records_per_page;
 
 // Reading in all the records, putting each guestbook entry in one Array Element -----
-
 $filename = "data/list.txt";
 
-if (!file_exists($filename) || filesize($filename) == 0)
+$datain = readDataFile($filename);
+if ($datain === '' )
 {
 	$tpl->assign( "error_msg", $msgnoentries);
 	$html = $tpl->draw( 'error', $return_string = true );
@@ -116,155 +99,109 @@ if (!file_exists($filename) || filesize($filename) == 0)
 	exit;
 }
 
-$handle = fopen($filename, "r");
-$datain = fread($handle, filesize($filename));
-fclose($handle);
-
-// Use secure JSON decoding instead of unserialize()
+// Parse entries
 $out = explode("<!-- E -->", $datain);
-$outCount = count($out) - 1;
 $lines = array();
-
-if ($order == "desc")
-{
-	$j = $outCount-1;
-	for ($i=0; $i<$outCount; $i++)
-	{
-		if (trim($out[$i]) !== '') {
-			$data = json_decode($out[$i], true);
-			if ($data !== null) {
-				$lines[$j] = gbClass::fromArray($data);
-			}
-			$j = $j - 1;
-		}
-	}
-}
-else
-{
-	for ($i=0; $i<$outCount; $i++)
-	{
-		if (trim($out[$i]) !== '') {
-			$data = json_decode($out[$i], true);
-			if ($data !== null) {
-				$lines[$i] = gbClass::fromArray($data);
-			}
-		}
+foreach ($out as $chunk) {
+	$chunk = trim($chunk);
+	if ($chunk === '') continue;
+	$data = json_decode($chunk, true);
+	if (is_array($data)) {
+		$lines[] = gbClass::fromArray($data);
+	} else {
+		// legacy fallback if needed
+		$legacy = @unserialize($chunk, ["allowed_classes" => ["gbClass"]]);
+		if ($legacy instanceof gbClass) { $lines[] = $legacy; }
 	}
 }
 
 // Filter out null entries
-$lines = array_filter($lines);
+$lines = array_values(array_filter($lines));
 
-// Counting the total number of entries (lines) in the data text file --------
+// Apply sort order: asc = oldest first, desc = newest first
+if ($order === 'desc') { $lines = array_reverse($lines); }
 
-$result = count($lines);
-$count = $result;
-
-// Calculate how many pages there are ----------------------------------------
-
-if ($count == 0) { $totalpages = 0; }
-else { $totalpages = intval(($count - 1) / $perpage) + 1; }
-
-$page = $totalpages - ($page - 1);
-
-$end = $count - (($totalpages - $page) * $perpage);
-$start = $end - ($perpage - 1); if ($start < 1) { $start = 1; }
-
-if ($start < 0) { $start = 0; }
-	
-	// Display guestbook entries --------------------------------------------------
-	
-	$html = $tpl->draw( 'header', $return_string = true );
+// Pagination calculations
+$count = count($lines);
+if ($count === 0) {
+	$tpl->assign( "error_msg", $msgnoentries);
+	$html = $tpl->draw( 'error', $return_string = true );
 	echo $html;
+	exit;
+}
 
-	for ($i=$end-1; $i>$start-2; $i--)
-	{
-		// Convert to local date time
-		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
-		
-		if ($dst_auto_detect == 0)
-		{
-			$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset));
-		}
-		
-		$tpl->assign( "listDatetxt", $listDatetxt);
-		$tpl->assign( "listnametxt", $listnametxt);
-		$tpl->assign( "listemailtxt", $listemailtxt);
-		$tpl->assign( "listMessagetxt", $listMessagetxt);
-		$tpl->assign( "outputdate", sanitizeOutput($date_format_locale));
-		$tpl->assign( "outputfrom", sanitizeOutput($lines[$i]->gbFrom));
-		$tpl->assign( "outputemail", sanitizeOutput($lines[$i]->gbEmail));
-		// Do not escape the message so that smiley <img> tags (and safe system-generated markup) render
-		$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
-		$tpl->assign( "langCode", $default_language[1]);
-		$tpl->assign( "langCharSet", $default_language[4]);
-		$tpl->assign( "lang_select_array", $lang_select_array);
-		$tpl->assign( "outputhideemail", $lines[$i]->gbHideEmail); 
-		
-		$html = $tpl->draw( 'list', $return_string = true );
-		echo $html;
-	}
+$totalpages = (int)ceil($count / max(1, $perpage));
+if ($currentPage > $totalpages) { $currentPage = $totalpages; }
 
-    echo "<center>";
-	echo '<br><div class="pagination">';
+$startIndex = ($currentPage - 1) * $perpage;
+$endIndex = min($startIndex + $perpage, $count);
 
+// Render header
+$html = $tpl->draw( 'header', $return_string = true );
+echo $html;
+
+// Display guestbook entries --------------------------------------------------
+for ($i = $startIndex; $i < $endIndex; $i++)
+{
+	// Convert to local date time
+	$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
 	
-	// Creating the Forward and Backward links -------------------------------------
-
-	if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
+	if ($dst_auto_detect == 0)
 	{
-		echo "<a href=\"list.php?page=1&order=$order\">&lt&lt</a>";
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>";
-	}
-	else if ($rwd > 0)
-	{ 
-		echo "<a href=\"list.php?page=$rwd&order=$order\">&lt</a>"; 
+		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset));
 	}
 	
-	// loop through and display each page number
+	$tpl->assign( "listDatetxt", $listDatetxt);
+	$tpl->assign( "listnametxt", $listnametxt);
+	$tpl->assign( "listemailtxt", $listemailtxt);
+	$tpl->assign( "listMessagetxt", $listMessagetxt);
+	$tpl->assign( "outputdate", sanitizeOutput($date_format_locale));
+	$tpl->assign( "outputfrom", sanitizeOutput($lines[$i]->gbFrom));
+	$tpl->assign( "outputemail", sanitizeOutput($lines[$i]->gbEmail));
+	// Do not escape the message so that smiley <img> tags (and safe system-generated markup) render
+	$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
+	$tpl->assign( "langCode", $default_language[1]);
+	$tpl->assign( "langCharSet", $default_language[4]);
+	$tpl->assign( "lang_select_array", $lang_select_array);
+	$tpl->assign( "outputhideemail", $lines[$i]->gbHideEmail); 
 	
-	$startPagination = $currentPage - 3;
-	$endPagination = $currentPage + 3;
+	$html = $tpl->draw( 'list', $return_string = true );
+	echo $html;
+}
 
-	if ($startPagination < 1)
-	{
-		$startPagination = 1;
-	}
+// Pagination UI --------------------------------------------------------------
+echo "<center>";
+echo '<br><div class="pagination">';
 
-	if ($endPagination > $totalpages)
-	{
-		$endPagination = $totalpages;
-	}
-	
-	//for ($i = 1; $i<=$totalpages; $i++)
-	for ($i = $startPagination; $i<=$endPagination; $i++)  
-	{
-        if ($currentPage == $i)
-        {
-             echo "<b><a href=\"list.php?page=$i&order=$order\" class=\"pagination current\"><b>$i</b></a></b>";  
-        }
-        else
-        {
-            echo "<b><a href=\"list.php?page=$i&order=$order\">$i</a></b>"; 
-        }
-	}
+if ($currentPage > 1) {
+	echo "<a href=\"list.php?page=1&order=$order\">&lt&lt</a>";
+	echo "<a href=\"list.php?page=" . ($currentPage - 1) . "&order=$order\">&lt</a>";
+}
 
-	if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
-	{
-		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>";
-	}
-	else if ($fwd > 0 && $fwd <= $totalpages)
-	{ 
-		echo "<a href=\"list.php?page=$fwd&order=$order\">&gt</a>"; 
-	}
-	
-	if ($currentPage < $totalpages)
-	{
-		echo "<a href=\"list.php?page=$totalpages&order=$order\">&gt&gt</a>"; 
-	}
+$startPagination = max(1, $currentPage - 3);
+$endPagination = min($totalpages, $currentPage + 3);
 
-	echo "</div>";
-	echo "</center>";
+for ($i = $startPagination; $i <= $endPagination; $i++)
+{
+	if ($currentPage == $i)
+	{
+		// highlight current page
+		echo "<b><a href=\"list.php?page=$i&order=$order\" class=\"pagination current\"><b>$i</b></a></b>";  
+	}
+	else
+	{
+		echo "<b><a href=\"list.php?page=$i&order=$order\">$i</a></b>"; 
+	}
+}
+
+if ($currentPage < $totalpages)
+{
+	echo "<a href=\"list.php?page=" . ($currentPage + 1) . "&order=$order\">&gt</a>";
+	echo "<a href=\"list.php?page=$totalpages&order=$order\">&gt&gt</a>"; 
+}
+
+echo "</div>";
+echo "</center>";
 
 $html = $tpl->draw( 'footer', $return_string = true );
 echo $html;

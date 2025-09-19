@@ -93,10 +93,10 @@ if($search == "")
     exit;
 } 
 
-// Check that the data file contains entries  
-
+// Read all entries safely (supports encrypted data files)
 $filename = "data/list.txt";
-if (!file_exists($filename) || filesize($filename) == 0)
+$datain = readDataFile($filename);
+if ($datain === '')
 {
     $tpl->assign( "error_msg", $msgnoentries);
     $html = $tpl->draw( 'error', $return_string = true );
@@ -104,20 +104,26 @@ if (!file_exists($filename) || filesize($filename) == 0)
     exit;
 }
 
-// Read all entries and put in array
-$handle = fopen($filename, "r");
-$datain = fread($handle, filesize($filename));
-fclose($handle);
 $out = explode("<!-- E -->", $datain);
-array_pop($out);
 $search_results = [];
 
-// Search array "out" for user search term and put matches in array search_results
+// Search entries for user search term
 foreach($out as $value)
 {
+    $value = trim($value);
+    if ($value === '') continue;
+
     $data = json_decode($value, true);
-    if ($data === null) continue;
-    $obj_info = gbClass::fromArray($data);
+    $obj_info = null;
+    if (is_array($data)) {
+        $obj_info = gbClass::fromArray($data);
+    } else {
+        // Legacy fallback
+        $legacy = @unserialize($value, ["allowed_classes" => ["gbClass"]]);
+        if ($legacy instanceof gbClass) { $obj_info = $legacy; }
+    }
+    if (!$obj_info) continue;
+
     $obj_vars = get_object_vars($obj_info);
 
     foreach($obj_vars as  $val)

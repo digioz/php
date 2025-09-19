@@ -93,10 +93,11 @@ $tpl->assign( "info4", $info4 );
 $tpl->assign( "token_id", $token_id );
 $tpl->assign( "token_value", $token_value );
 
-// Read all posts and filter by owner
+// Read all posts and filter by owner (use decrypt-aware helper)
 $lines = [];
 $filename = "data/list.txt";
-if (!file_exists($filename) || filesize($filename) == 0) {
+$datain = readDataFile($filename);
+if ($datain === '') {
     echo $tpl->draw('header', true);
     $tpl->assign( "error_msg", $msgnoentries);
     echo $tpl->draw('error', true);
@@ -104,7 +105,6 @@ if (!file_exists($filename) || filesize($filename) == 0) {
     exit;
 }
 
-$datain = file_get_contents($filename);
 $out = explode("<!-- E -->", $datain);
 
 foreach ($out as $chunk) {

@@ -101,9 +101,10 @@ $tpl->assign("user_country", $user_login_object->country);
 $tpl->assign("user_phone", $user_login_object->phone);
 
 
-// Process Registration
+// Process save
 if (isset($_POST['submit']))
-{	
+{   
+    // Minimal validation to keep change focused on encryption
 	$name = $_POST['name'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
@@ -115,7 +116,7 @@ if (isset($_POST['submit']))
 	$country = $_POST['country'];
 	$phone = $_POST['phone'];
 	
-	if ($password != $passwordConfirm)
+	if ($password !== $passwordConfirm)
 	{
 		$tpl->assign("error_msg", $error10);
         $html = $tpl->draw('error', $return_string = true);
@@ -123,65 +124,40 @@ if (isset($_POST['submit']))
         exit;
 	}
 	
-	
-	
-	/*
-	echo "Name: " . $name . "<br>";
-	echo "Email: " . $email . "<br>";
-	echo "Password: " . $password . "<br>";
-	echo "Password Confirm: " . $passwordConfirm . "<br>";
-	echo "Address: " . $address . "<br>";
-	echo "City: " . $city . "<br>";
-	echo "State: " . $state . "<br>";
-	echo "Zip: " . $zip . "<br>";
-	echo "Country: " . $country . "<br>";
-	echo "Phone: " . $phone . "<br>";
-	*/
-	
 	$users = getAllUsers();
 	$user_current = getUserByEmail($user_login_email);
-	$data_updated = "";
+	$datanew = "";
 	
 	foreach ($users as &$user)
 	{
-		if ($user != null)
+		if ($user == null) { continue; }
+		if ($user->id == $user_current->id)
 		{
-			if ($user->id == $user_current->id)
+			$user->name = $name;
+			$user->email = $email;
+			$user->address = $address;
+			$user->city = $city;
+			$user->state = $state;
+			$user->zip = $zip;
+			$user->country = $country;
+			$user->phone = $phone;
+			
+			if (strlen($password) > 0)
 			{
-				$user->name = $name;
-				$user->email = $email;
-				$user->address = $address;
-				$user->city = $city;
-				$user->state = $state;
-				$user->zip = $zip;
-				$user->country = $country;
-				$user->phone = $phone;
-				
-				if (strlen($password) > 0)
-				{
-					$password = encryptPassword($password, $login_salt);
-					$user->password = $password;
-				}
+				// Update password using secure password_hash
+				$user->password = encryptPassword($password);
 			}
-
-			$data_updated .= serialize($user) . "<!-- E -->";
 		}
+		$datanew .= json_encode($user) . "<!-- E -->";
 	}
 	
-	@$fp = fopen("data/users.txt", "w");
-    flock($fp, 2);
-    
-    if (!$fp) 
-	{
-        $tpl->assign("error_msg", $error9 . " - " . $error8);
+	// Write back using encryption-aware helper
+	if (!writeDataFile("data/users.txt", $datanew)) {
+		$tpl->assign("error_msg", $error9 . " - " . $error8);
         $html = $tpl->draw('error', $return_string = true);
         echo $html;
         exit;
-    }
-    
-    fwrite($fp, $data_updated);
-    flock($fp, 3);
-    fclose($fp);
+	}
 	
 	$userLoggingIn = getUserByEmail($email);
 	$_SESSION["login_email"] = $email;
@@ -190,10 +166,9 @@ if (isset($_POST['submit']))
 	header( 'Location: index.php' ) ;
 }
 
-// Show registration form if not posting back
+// Show settings form if not posting back
 $html = $tpl->draw( 'user_settings', $return_string = true );
 
-// and then draw the output
 echo $html;
 	
 ?>

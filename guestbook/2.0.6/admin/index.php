@@ -12,6 +12,7 @@ include("login_check.php");
 include("../includes/config.php");
 include("includes/header.php");
 include("../includes/gb.class.php");
+include("../includes/functions.php");
 include("../language/$default_language[2]");
 
 $page = isset($_GET['page']) ? $_GET['page'] : "";
@@ -35,36 +36,32 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
     // Reading in all the records, putting each guestbook entry in one Array Element -----
 
     $filename = "../data/list.txt";
-    $handle = fopen($filename, "r");
+    $datain = readDataFile($filename);
 
-    if (filesize($filename) == 0)
+    if ($datain === '' )
     {
        print "No enteries to delete";
     }
     else
     { 
-        // there are entries let the user select one
-        $datain = fread($handle, filesize($filename));
-        fclose($handle);
         $out = explode("<!-- E -->", $datain);
 
         $outCount = count($out) - 1;
         $j = $outCount-1;
 
-        if ($order == "desc")
+        $lines = [];
+        for ($i=0; $i<=$outCount; $i++)
         {
-            for ($i=0; $i<=$outCount; $i++)
-            {
-                $lines[$j] = unserialize($out[$i]);
-                $j = $j - 1;
+            $raw = trim($out[$i]); if ($raw==='') continue;
+            $data = json_decode($raw, true);
+            if (is_array($data)) {
+                $lines[$i] = gbClass::fromArray($data);
             }
         }
-        else
+
+        if ($order == "desc")
         {
-            for ($i=0; $i<=$outCount; $i++)
-            {
-                $lines[$i] = unserialize($out[$i]);
-            }
+            $lines = array_values(array_reverse($lines));
         }
 
         // Counting the total number of entries (lines) in the data text file ----------------

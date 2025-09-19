@@ -93,7 +93,7 @@ $tpl->assign( "info4", $info4 );
 if (isset($_POST['submit']))
 {
 	$name = validateInput($_POST['name'] ?? '', 'string', 100);
-	$email = validateInput($_POST['email'] ?? '', 'email', 150);
+	$email = validateInput($_POST['email'] ?? '', 'email', 254);
 	$password = validateInput($_POST['password'] ?? '', 'string', 200);
 	$passwordConfirm = validateInput($_POST['passwordconfirm'] ?? '', 'string', 200);
 	$address = validateInput($_POST['address'] ?? '', 'string', 200);
@@ -133,22 +133,14 @@ if (isset($_POST['submit']))
 	$u = new userClass();
 	$u->setUserVars($email, $hashedPassword, $name, $address, $city, $state, $zip, $country, $phone);
 	
-	@$fp = fopen("data/users.txt", "a");
-    flock($fp, 2);
-    
-    if (!$fp) 
-	{
-        $tpl->assign("error_msg", $error9 . " - " . $error8);
+	// Store user as JSON and encrypt if enabled
+	$data = json_encode($u) . "<!-- E -->";
+	if (!appendDataFile("data/users.txt", $data)) {
+		$tpl->assign("error_msg", $error9 . " - " . $error8);
         $html = $tpl->draw('error', $return_string = true);
         echo $html;
         exit;
-    }
-    
-    // Store user as JSON instead of PHP serialize for security
-    $data = json_encode($u) . "<!-- E -->";
-    fwrite($fp, $data);
-    flock($fp, 3);
-    fclose($fp);
+	}
 	
 	$userLoggingIn = getUserByEmail($email);
 	$_SESSION["login_email"] = $email;

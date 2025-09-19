@@ -4,20 +4,63 @@ if(!defined('IN_GB')) {
    die('Direct access not permitted');
 }
 
+// Encryption middleware ------------------------------------------------------------
+function gbEncrypt($plaintext) {
+    global $data_encryption_enabled, $data_encryption_key;
+    if (empty($data_encryption_enabled)) { return $plaintext; }
+    $key = hash('sha256', (string)$data_encryption_key, true); // 32 bytes
+    $iv = random_bytes(16);
+    $ciphertext = openssl_encrypt($plaintext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+    if ($ciphertext === false) { return $plaintext; }
+    return base64_encode($iv . $ciphertext);
+}
+
+function gbDecrypt($ciphertextB64) {
+    global $data_encryption_enabled, $data_encryption_key;
+    if (empty($data_encryption_enabled)) { return $ciphertextB64; }
+    $raw = base64_decode($ciphertextB64, true);
+    if ($raw === false || strlen($raw) < 17) { return $ciphertextB64; }
+    $iv = substr($raw, 0, 16);
+    $cipher = substr($raw, 16);
+    $key = hash('sha256', (string)$data_encryption_key, true);
+    $plain = openssl_decrypt($cipher, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+    return $plain === false ? $ciphertextB64 : $plain;
+}
+
+function writeDataFile($filename, $content) {
+    $payload = gbEncrypt($content);
+    $result = @file_put_contents($filename, $payload); // no LOCK_EX to avoid hangs on some FS
+    return $result !== false;
+}
+
+function appendDataFile($filename, $content) {
+    global $data_encryption_enabled;
+    if (empty($data_encryption_enabled)) {
+        // Plain append when encryption disabled
+        $result = @file_put_contents($filename, $content, FILE_APPEND);
+        return $result !== false;
+    }
+    // When encryption is enabled, read, append, then write full encrypted content
+    $existing = readDataFile($filename);
+    $payload = $existing . $content;
+    return writeDataFile($filename, $payload);
+}
+
+function readDataFile($filename) {
+    if (!file_exists($filename) || filesize($filename) == 0) { return ''; }
+    $raw = file_get_contents($filename);
+    if ($raw === false) { return ''; }
+    // Try decrypt; if fails, return raw (supports legacy plaintext)
+    $maybe = gbDecrypt($raw);
+    // Heuristic: if decryption returned empty but file not empty, trust decryption result anyway
+    return $maybe;
+}
+
 // Check to see if email address is valid --------------------------------
 function checkmail($youremail)
 {
-	$youremail_clean = stripslashes(trim($youremail));
-	$pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
-	
-	if (preg_match($pattern, $youremail_clean) === 1) 
-	{
-		return true;
-	}
-	else 
-	{
-		return false;
-	}
+    $youremail_clean = stripslashes(trim($youremail));
+    return filter_var($youremail_clean, FILTER_VALIDATE_EMAIL) !== false;
 }
 
 // Smiley face insertion function --------------------------------------
@@ -27,9 +70,9 @@ function smiley_face($yourmessage)
 	$i = 0;
 	$ubb1 = array( "[b]", "[B]", "[/b]", "[/B]", "[u]", "[U]", "[/u]", "[/U]", "[i]", "[I]", "[/i]", "[/I]", "[center]", "[CENTER]", "[/center]", "[/CENTER]" );
 	$ubb2 = array( "<b>", "<B>", "</b>", "</B>", "<u>", "<U>", "</u>", "</U>", "<i>", "<I>", "</i>", "</I>", "<center>", "<CENTER>", "</center>", "</CENTER>" );
-	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
 	$sm2  = array( "question", "biggrin", "confused", "cool", "cry", "eek", "evil", "exclaim", "frown", "idea", "arrow", "lol", "mad", "mrgreen", "neutral", "razz", "redface", "rolleyes", "sad", "smile", "surprised", "twisted", "wink" );
-	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
 
 	// UBB Code Insertion and Replacing UBB tags with the appropriate HTML tag
 
@@ -244,14 +287,10 @@ function validateLogin($username, $password, $storedHash, $salt = null)
 function getAllUsers()
 {
     $filename = "data/users.txt";
-    if (!file_exists($filename) || filesize($filename) == 0) {
+    $datain = readDataFile($filename);
+    if ($datain === '' ) {
         return array();
     }
-    
-    $handle = fopen($filename, "r");
-    $datain = fread($handle, filesize($filename));
-    fclose($handle);
-    
     $out = explode("<!-- E -->", $datain);
     $outCount = count($out) - 1;
     $lines = array();
@@ -269,15 +308,12 @@ function getAllUsers()
             continue;
         }
 
-        // Backward-compat: try safe unserialize for legacy entries
-        // Limit allowed classes to userClass to avoid object injection
         $legacy = @unserialize($raw, ["allowed_classes" => ["userClass"]]);
         if ($legacy instanceof userClass) {
             $lines[] = $legacy;
         }
     }
-    
-    return array_filter($lines); // Remove null entries
+    return array_filter($lines);
 }
 
 function getUserByEmail($email)
@@ -331,32 +367,24 @@ function getGUID(){
 
 function getAllPosts()
 {
-	$lines = array();
-	$filename = "data/list.txt";
-	
-	if (!file_exists($filename) || filesize($filename) == 0) {
-		return array();
-	}
-	
-	$handle = fopen($filename, "r");
-	$datain = fread($handle, filesize($filename));
-	fclose($handle);
-	
-	// Use secure JSON decoding instead of unserialize()
-	$out = explode("<!-- E -->", $datain);	
-	$outCount = count($out) - 1;
+    $filename = "data/list.txt";
+    $datain = readDataFile($filename);
+    if ($datain === '') { return array(); }
+    $lines = array();
 
-	for ($i=0; $i<$outCount; $i++)
-	{
-		if (trim($out[$i]) !== '') {
-			$data = json_decode($out[$i], true);
-			if ($data !== null) {
-				$lines[] = gbClass::fromArray($data);
-			}
-		}
-	}
-	
-	return array_filter($lines); // Remove null entries
+    $out = explode("<!-- E -->", $datain);
+    $outCount = count($out) - 1;
+
+    for ($i=0; $i<$outCount; $i++)
+    {
+        if (trim($out[$i]) !== '') {
+            $data = json_decode($out[$i], true);
+            if ($data !== null) {
+                $lines[] = gbClass::fromArray($data);
+            }
+        }
+    }
+    return array_filter($lines);
 }
 
 function isUserPostOwner($postid, $userid)
@@ -377,26 +405,17 @@ function isUserPostOwner($postid, $userid)
 
 function deletePostById($postid, $userid)
 {
-	$datanew = "";
-	$allPosts = getAllPosts();
-	
-	foreach ($allPosts as $post) 
-	{
-		if ($post != null && $post->id != $postid)
-		{
-			// Use secure JSON encoding instead of serialize()
-			$datanew .= json_encode($post) . "<!-- E -->";
-		}
-	}
-	
-	@$fp = fopen("data/list.txt", "w");
-    flock($fp, 2);
-    
-    fwrite($fp, $datanew);
-    flock($fp, 3);
-    fclose($fp);
-	
-	return;
+    $datanew = "";
+    $allPosts = getAllPosts();
+    foreach ($allPosts as $post) 
+    {
+        if ($post != null && $post->id != $postid)
+        {
+            $datanew .= json_encode($post) . "<!-- E -->";
+        }
+    }
+    writeDataFile("data/list.txt", $datanew);
+    return;
 }
 
 function updatePostById($postid, $userid, $newMessage, $newHideEmail = null)
@@ -408,7 +427,6 @@ function updatePostById($postid, $userid, $newMessage, $newHideEmail = null)
     foreach ($allPosts as $post) {
         if ($post == null) { continue; }
         if ($post->id === $postid && $post->gbUserId === $userid) {
-            // Update message and optional hide email flag
             $post->gbMessage = $newMessage;
             if ($newHideEmail !== null) {
                 $post->gbHideEmail = (bool)$newHideEmail;
@@ -418,12 +436,7 @@ function updatePostById($postid, $userid, $newMessage, $newHideEmail = null)
         $datanew .= json_encode($post) . "<!-- E -->";
     }
 
-    @$fp = fopen("data/list.txt", "w");
-    flock($fp, 2);
-    fwrite($fp, $datanew);
-    flock($fp, 3);
-    fclose($fp);
-
+    writeDataFile("data/list.txt", $datanew);
     return $updated;
 }
 

@@ -218,7 +218,7 @@ $hideemail = false;
 
 // Validate and sanitize input data
 $yourname = validateInput($_POST['yourname'], 'string', 40);
-$youremail = validateInput($_POST['youremail'], 'email', 40);
+$youremail = validateInput($_POST['youremail'], 'email', 254);
 $yourmessage = validateInput($_POST['yourmessage'], 'string', 1000);
 
 // Check for validation failures
@@ -275,7 +275,7 @@ if ($name_optional != 1)
 
 if ($email_optional != 1) 
 {
-    if (strlen($youremail) > 40) // Check Email Length
+    if (strlen($youremail) > 254) // Check Email Length
 	{
         $error .= "<br>$error2";
     }
@@ -462,22 +462,8 @@ if (strlen($error) == 0)
     
     $a = new gbClass();
     $a->setGBVars($date, $yourname, $youremail, $yourmessage, $hideemail, $userid);
-    @$fp = fopen("data/list.txt", "a");
-    flock($fp, 2);
-    
-    if (!$fp) 
-	{
-        $tpl->assign("error_msg", $error7 . " - " . $error8);
-        $html = $tpl->draw('error', $return_string = true);
-        echo $html;
-        exit;
-    }
-    
-    // Use secure JSON encoding instead of serialize()
     $data = json_encode($a) . "<!-- E -->";
-    fwrite($fp, $data);
-    flock($fp, 3);
-    fclose($fp);
+    appendDataFile("data/list.txt", $data);
     
     // Give Confirmation that the Guestbook Entry was written -----------------------------------------
     
