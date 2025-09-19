@@ -140,13 +140,13 @@ $.extend($.fn, {
             return valid;
         }
     },
-	// attributes: space seperated list of attributes to retrieve and remove
+	// attributes: space separated list of attributes to retrieve and remove
 	removeAttrs: function(attributes) {
 		/// <summary>
 		/// Remove the specified attributes from the first matched element and return them.
 		/// </summary>
 		/// <param name="attributes" type="String">
-		/// A space-seperated list of attribute names to remove.
+		/// A space-separated list of attribute names to remove.
 		/// </param>
 
 		var result = {},
