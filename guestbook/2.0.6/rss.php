@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: application/rss+xml; charset=UTF-8"); 
-$rssfeed = '<?xml version="1.0" encoding="ISO-8859-1" ?>';
+
+// Open RSS
+$rssfeed = '<?xml version="1.0" encoding="UTF-8" ?>';
 $rssfeed .= '<rss version="2.0">';
 $rssfeed .= '<channel>';
 $rssfeed .= '<title>DigiOz Guestbook</title>';
@@ -12,53 +14,57 @@ echo $rssfeed;
 
 $rssfeed = '';
 
+// App context
 define('IN_GB', TRUE);
-include("includes/gb.class.php");
 include("includes/config.php");
+include("includes/functions.php");
+include("includes/gb.class.php");
 
+// Read entries using decrypt-aware helper
 $filename = "data/list.txt";
-$handle = fopen($filename, "r");
+$datain = readDataFile($filename);
 
-if (filesize($filename) != 0)
-{
-	$datain = fread($handle, filesize($filename));
-	fclose($handle);
-	$out = explode("<!-- E -->", $datain);
+$entries = array();
+if ($datain !== '') {
+    $chunks = explode("<!-- E -->", $datain);
+    foreach ($chunks as $chunk) {
+        $chunk = trim($chunk);
+        if ($chunk === '') continue;
 
-	$outCount = count($out) - 1;
-	$j = $outCount-1;
-    
+        $data = json_decode($chunk, true);
+        $obj = null;
+        if (is_array($data)) {
+            $obj = gbClass::fromArray($data);
+        } else {
+            $legacy = @unserialize($chunk, ["allowed_classes" => ["gbClass"]]);
+            if ($legacy instanceof gbClass) { $obj = $legacy; }
+        }
+        if ($obj) { $entries[] = $obj; }
+    }
 
-	for ($i=0; $i<=$outCount; $i++)
-	{
-		$lines[$j] = json_decode($out[$i]);
-		$j = $j - 1;
-	}
+    // Newest first
+    $entries = array_reverse($entries);
 
-	// Counting the total number of entries (lines) in the data text file --------
+    // Build items
+    foreach ($entries as $e) {
+        $from = isset($e->gbFrom) ? $e->gbFrom : '';
+        $msg = isset($e->gbMessage) ? $e->gbMessage : '';
+        $date = isset($e->gbDate) ? (int)$e->gbDate : time();
 
-	$result = count($lines);
-	$count = $result-1;
-	
-	// Display guestbook entries --------------------------------------------------
+        // Escape for XML, then convert newlines to <br/>
+        $tmpMsg = htmlspecialchars($msg, ENT_QUOTES | ENT_XML1 | ENT_SUBSTITUTE, 'UTF-8');
+        $tmpMsg = str_replace(["\r\n", "\r", "\n"], "<br />", $tmpMsg);
 
-	for ($i=0; $i<$count; $i++)
-	{
-        $tmpMsg = $lines[$i]->gbMessage;
-        $tmpMsg = str_replace("<", "&lt;", $tmpMsg);
-        $tmpMsg = str_replace(">", "&gt;", $tmpMsg);
-        $tmpMsg = str_replace("\n", "<br />", $tmpMsg);
-        $tmpMsg = str_replace("\r", "<br />", $tmpMsg);
-        
         $rssfeed .= '<item>';
-        $rssfeed .= '<title>' . $lines[$i]->gbFrom . '</title>';
+        $rssfeed .= '<title>' . htmlspecialchars($from, ENT_QUOTES | ENT_XML1, 'UTF-8') . '</title>';
         $rssfeed .= '<description>' . $tmpMsg . '</description>';
         $rssfeed .= '<link>rss.php</link>';
-        $rssfeed .= '<pubDate>' . $lines[$i]->gbDate . '</pubDate>';
+        $rssfeed .= '<pubDate>' . date(DATE_RSS, $date) . '</pubDate>';
         $rssfeed .= '</item>';
-	}
+    }
 }
 
+// Close RSS
 $rssfeed .= '</channel>';
 $rssfeed .= '</rss>';
 
