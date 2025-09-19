@@ -31,7 +31,7 @@ if (filesize($filename) != 0)
 
 	for ($i=0; $i<=$outCount; $i++)
 	{
-		$lines[$j] = unserialize($out[$i]);
+		$lines[$j] = json_decode($out[$i]);
 		$j = $j - 1;
 	}
 
