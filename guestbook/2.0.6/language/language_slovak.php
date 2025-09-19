@@ -56,6 +56,7 @@ $countrytxt				= "Krajina";
 $phonetxt				= "telefón";
 $error9					= "Nepodarilo sa zaregistrovať kvôli chybe.";
 $error10				= "Potvrdenie hesla a hesla sa nezhoduje.";
+$error12				= "Tento e-mail je už zaregistrovaný.";
 $info1					= "Boli ste úspešne prihlásení.";
 $error11				= "Nemôžem sa prihlásiť. Skúste to znova neskôr.";
 $warning1				= "Naozaj chcete odstrániť túto správu?";

@@ -2,24 +2,31 @@
 
 define('IN_GB', TRUE);
 
-session_start();
+// Include security configuration first
+include("includes/security_headers.php");
+include("includes/secure_session.php");
+
+startSecureSession();
 
 include("includes/functions.php");
-include("includes/gb.class.php");
 include("includes/config.php");
+include("includes/gb.class.php");
+
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
 
 $selected_language_session = $default_language[2];
 
 if (isset($_SESSION["language_selected_file"]))
 {
-	$selected_language_session = $_SESSION["language_selected_file"];
+	$selected_language_session = validateLanguage($_SESSION["language_selected_file"], $language_array);
 }
 
 include("language/$selected_language_session");
 include("includes/rain.tpl.class.php");
 
 raintpl::configure("base_url", null );
-raintpl::configure("tpl_dir", "themes/$theme/" );
+raintpl::configure("tpl_dir", "themes/" . $theme . "/" );
 raintpl::configure("cache_dir", "cache/" );
 
 // Construct the language select array
@@ -100,56 +107,70 @@ $perpage = $total_records_per_page;
 // Reading in all the records, putting each guestbook entry in one Array Element -----
 
 $filename = "data/list.txt";
-$handle = fopen($filename, "r");
 
-if (filesize($filename) == 0)
+if (!file_exists($filename) || filesize($filename) == 0)
 {
 	$tpl->assign( "error_msg", $msgnoentries);
 	$html = $tpl->draw( 'error', $return_string = true );
 	echo $html;
 	exit;
 }
-else
+
+$handle = fopen($filename, "r");
+$datain = fread($handle, filesize($filename));
+fclose($handle);
+
+// Use secure JSON decoding instead of unserialize()
+$out = explode("<!-- E -->", $datain);
+$outCount = count($out) - 1;
+$lines = array();
+
+if ($order == "desc")
 {
-	$datain = fread($handle, filesize($filename));
-	fclose($handle);
-	$out = explode("<!-- E -->", $datain);
-
-	$outCount = count($out) - 1;
 	$j = $outCount-1;
-
-	if ($order == "desc")
+	for ($i=0; $i<$outCount; $i++)
 	{
-		for ($i=0; $i<=$outCount; $i++)
-		{
-			$lines[$j] = unserialize($out[$i]);
+		if (trim($out[$i]) !== '') {
+			$data = json_decode($out[$i], true);
+			if ($data !== null) {
+				$lines[$j] = gbClass::fromArray($data);
+			}
 			$j = $j - 1;
 		}
 	}
-	else
+}
+else
+{
+	for ($i=0; $i<$outCount; $i++)
 	{
-		for ($i=0; $i<=$outCount; $i++)
-		{
-			$lines[$i] = unserialize($out[$i]);
+		if (trim($out[$i]) !== '') {
+			$data = json_decode($out[$i], true);
+			if ($data !== null) {
+				$lines[$i] = gbClass::fromArray($data);
+			}
 		}
 	}
+}
 
-	// Counting the total number of entries (lines) in the data text file --------
+// Filter out null entries
+$lines = array_filter($lines);
 
-	$result = count($lines);
-	$count = $result-1;
+// Counting the total number of entries (lines) in the data text file --------
 
-	// Calculate how many pages there are ----------------------------------------
+$result = count($lines);
+$count = $result;
 
-	if ($count == 0) { $totalpages = 0; }
-	else { $totalpages = intval(($count - 1) / $perpage) + 1; }
+// Calculate how many pages there are ----------------------------------------
 
-	$page = $totalpages - ($page - 1);
+if ($count == 0) { $totalpages = 0; }
+else { $totalpages = intval(($count - 1) / $perpage) + 1; }
 
-	$end = $count - (($totalpages - $page) * $perpage);
-	$start = $end - ($perpage - 1); if ($start < 1) { $start = 1; }
+$page = $totalpages - ($page - 1);
 
-	if ($start < 0) { $start = 0; }
+$end = $count - (($totalpages - $page) * $perpage);
+$start = $end - ($perpage - 1); if ($start < 1) { $start = 1; }
+
+if ($start < 0) { $start = 0; }
 	
 	// Display guestbook entries --------------------------------------------------
 	
@@ -170,9 +191,10 @@ else
 		$tpl->assign( "listnametxt", $listnametxt);
 		$tpl->assign( "listemailtxt", $listemailtxt);
 		$tpl->assign( "listMessagetxt", $listMessagetxt);
-		$tpl->assign( "outputdate", $date_format_locale);
-		$tpl->assign( "outputfrom", $lines[$i]->gbFrom);
-		$tpl->assign( "outputemail", $lines[$i]->gbEmail);
+		$tpl->assign( "outputdate", sanitizeOutput($date_format_locale));
+		$tpl->assign( "outputfrom", sanitizeOutput($lines[$i]->gbFrom));
+		$tpl->assign( "outputemail", sanitizeOutput($lines[$i]->gbEmail));
+		// Do not escape the message so that smiley <img> tags (and safe system-generated markup) render
 		$tpl->assign( "outputmessage", $lines[$i]->gbMessage);
 		$tpl->assign( "langCode", $default_language[1]);
 		$tpl->assign( "langCharSet", $default_language[4]);
@@ -243,10 +265,9 @@ else
 
 	echo "</div>";
 	echo "</center>";
-}
 
-	$html = $tpl->draw( 'footer', $return_string = true );
-	echo $html;
+$html = $tpl->draw( 'footer', $return_string = true );
+echo $html;
 
 ?>
 

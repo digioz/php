@@ -58,6 +58,7 @@ $error9					= "Kan ikke registrere på grunn av en feil.";
 $error10				= "Passord og passord Bekreft samsvarer ikke.";
 $info1					= "Du har blitt logget inn med hell.";
 $error11				= "Kan ikke logge deg på. Prøv igjen senere.";
+$error12				= "Denne e-posten er allerede registrert.";
 $warning1				= "Er du sikker på at du vil slette denne meldingen?";
 $info2					= "Innstillinger";
 $info3					= "Lagre";

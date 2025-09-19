@@ -1,23 +1,29 @@
 <?php
 define('IN_GB', TRUE);
 
-session_start();
+include("includes/security_headers.php");
+include("includes/secure_session.php");
+
+startSecureSession();
 
 include("includes/functions.php");
-include("includes/user.class.php");
 include("includes/config.php");
+include("includes/user.class.php");
+
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
 
 $selected_language_session = $default_language[2];
 $selected_language_session_code = $default_language[1];
 
 if (isset($_SESSION["language_selected_file"]))
 {
-	$selected_language_session = $_SESSION["language_selected_file"];
+	$selected_language_session = validateLanguage($_SESSION["language_selected_file"], $language_array);
 }
 
 if (isset($_SESSION["language_selected_code"]))
 {
-	$selected_language_session_code = $_SESSION["language_selected_code"];
+	$selected_language_session_code = validateInput($_SESSION["language_selected_code"], 'string', 5);
 }
 
 include("language/$selected_language_session");
@@ -26,7 +32,7 @@ include("includes/rain.tpl.class.php");
 include("includes/csrf.class.php"); 
 
 raintpl::configure("base_url", null );
-raintpl::configure("tpl_dir", "themes/$theme/" );
+raintpl::configure("tpl_dir", "themes/" . $theme . "/" );
 raintpl::configure("cache_dir", "cache/" );
 
 // Construct the language select array
@@ -80,36 +86,43 @@ $tpl->assign( "info4", $info4 );
 // Process Login
 if (isset($_POST['submit']))
 {	
-	$email = $_POST['email'];
-	$password = $_POST['password'];
+	$email = validateInput($_POST['email'], 'email', 100);
+	$password = validateInput($_POST['password'], 'string', 200);
 	
-	// Validate Email format
-	if (checkmail($email) != 1) 
-	{
+	// Validate input
+	if ($email === false) {
         $tpl->assign("error_msg", $error3);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+		exit;
+    }
+    
+    if ($password === false || empty($password)) {
+        $tpl->assign("error_msg", "Invalid password");
         $html = $tpl->draw('error', $return_string = true);
         echo $html;
 		exit;
     }
 	
 	$allUsers = getAllUsers();
-	
 	$userLoggingIn = getUserByEmail($email);
 	$msg = "";
 	
 	if (isset($userLoggingIn))
 	{
-		// Check to make sure login is correct
-		$userLoginValidated = false;
-		$userLoginValidated = validateLogin($email, $password, $userLoggingIn->password, $login_salt);
+		// Use secure password verification (no salt parameter needed)
+		$userLoginValidated = validateLogin($email, $password, $userLoggingIn->password);
 		
 		if ($userLoginValidated)
 		{
+			// Regenerate session ID on successful login for security
+			regenerateSessionOnLogin();
+			
 			$_SESSION["login_email"] = $email;
 			$_SESSION["user_object"] = $userLoggingIn;
 			
 			$tpl->assign("info_msg", $info1);
-			$tpl->assign( "loginemail", $email );
+			$tpl->assign( "loginemail", sanitizeOutput($email) );
 			$html = $tpl->draw('info', $return_string = true);
 			echo $html;			
 		}

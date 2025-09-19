@@ -2,18 +2,25 @@
 
 define('IN_GB', TRUE);
 
-session_start();
+// Include security configuration first
+include("includes/security_headers.php");
+include("includes/secure_session.php");
 
-include("includes/config.php");
+startSecureSession();
+
 include("includes/functions.php");
+include("includes/config.php");
 include("includes/gb.class.php");
 include("includes/user.class.php");
+
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
 
 $selected_language_session = $default_language[2];
 
 if (isset($_SESSION["language_selected_file"]))
 {
-	$selected_language_session = $_SESSION["language_selected_file"];
+	$selected_language_session = validateLanguage($_SESSION["language_selected_file"], $language_array);
 }
 
 include("language/$selected_language_session");
@@ -22,9 +29,8 @@ include("includes/rain.tpl.class.php");
 include("includes/csrf.class.php");
 
 raintpl::configure("base_url", null);
-raintpl::configure("tpl_dir", "themes/$theme/");
+raintpl::configure("tpl_dir", "themes/" . $theme . "/");
 raintpl::configure("cache_dir", "cache/");
-
 // Construct the language select array
 $lang_select_array = array();
 $lang_select_array = getLanguageArray($language_array);
@@ -36,8 +42,21 @@ $userid = "";
 if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
-	$user_login_object = getUserByEmail($user_login_email);
-	$userid = $user_login_object->id;
+	// Prefer the session user object if available
+	if (isset($_SESSION["user_object"]) && is_object($_SESSION["user_object"])) {
+		$sessUser = $_SESSION["user_object"];		
+		if (isset($sessUser->id) && !empty($sessUser->id)) {
+			$userid = $sessUser->id;
+		}
+	}
+
+	// Fallback: look up by email if id still empty
+	if (empty($userid)) {
+		$user_login_object = getUserByEmail($user_login_email);
+		if ($user_login_object && isset($user_login_object->id)) {
+			$userid = $user_login_object->id;
+		}
+	}
 }
 
 //initialize a Rain TPL object
@@ -197,11 +216,35 @@ if ($referersKey == 1)
 
 $hideemail = false;
 
-$yourname    = $_POST['yourname'];
-$youremail   = $_POST['youremail'];
-$yourmessage = $_POST['yourmessage'];
-$timestamp   = date_create();
-$date        = date_timestamp_get($timestamp);
+// Validate and sanitize input data
+$yourname = validateInput($_POST['yourname'], 'string', 40);
+$youremail = validateInput($_POST['youremail'], 'email', 40);
+$yourmessage = validateInput($_POST['yourmessage'], 'string', 1000);
+
+// Check for validation failures
+if ($yourname === false) {
+    $tpl->assign("error_msg", "Invalid name provided");
+    $html = $tpl->draw('error', $return_string = true);
+    echo $html;
+    exit;
+}
+
+if ($youremail === false && $email_optional != 1) {
+    $tpl->assign("error_msg", "Invalid email address provided");
+    $html = $tpl->draw('error', $return_string = true);
+    echo $html;
+    exit;
+}
+
+if ($yourmessage === false) {
+    $tpl->assign("error_msg", "Invalid message content");
+    $html = $tpl->draw('error', $return_string = true);
+    echo $html;
+    exit;
+}
+
+$timestamp = date_create();
+$date = date_timestamp_get($timestamp);
 
 if ($let_user_hide_email == "1")
 {
@@ -334,47 +377,71 @@ if (strlen($error) == 0)
     
     if ($gbAllowAttachments == 1) 
 	{
-        $attachment_text                 = "";
+        $attachment_text = "";
         $attachment_upload_count_success = 0;
-        $i                               = 0;
+        $i = 0;
+        
+        // Define allowed MIME types for security
+        $allowedMimeTypes = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg', 
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'pdf' => 'application/pdf',
+            'txt' => 'text/plain'
+        ];
         
         for ($i = 0; $i < count($_FILES['file']['name']); $i++) 
 		{
-            $target_path = "uploads/";
-            $ext         = explode('.', basename($_FILES['file']['name'][$i]));
-            $fileext     = $ext[count($ext) - 1];
-            $filename    = md5(uniqid()) . "." . $fileext;
-            $target_path = $target_path . $filename;
+            if ($_FILES['file']['name'][$i] == '') continue;
             
-            if (in_array($fileext, $attach_ext)) 
+            $ext = explode('.', basename($_FILES['file']['name'][$i]));
+            $fileext = strtolower($ext[count($ext) - 1]);
+            
+            // Validate file extension
+            if (!in_array($fileext, $attach_ext)) {
+                echo "File " . sanitizeOutput($_FILES['file']['name'][$i]) . " extension not allowed!<br />";
+                continue;
+            }
+            
+            // Validate file upload and MIME type
+            $uploadValidation = validateFileUpload($_FILES['file'][$i], array_values($allowedMimeTypes));
+            if (!$uploadValidation['success']) {
+                echo "File " . sanitizeOutput($_FILES['file']['name'][$i]) . " upload failed: " . $uploadValidation['message'] . "<br />";
+                continue;
+            }
+            
+            // Generate secure filename
+            $filename = generateSecureFilename($fileext);
+            $target_path = "uploads/" . $filename;
+            
+            // Ensure upload directory exists and is properly secured
+            if (!file_exists("uploads")) {
+                mkdir("uploads", 0755, true);
+                // Add .htaccess to prevent direct execution of uploaded files
+                file_put_contents("uploads/.htaccess", "Options -ExecCGI\nAddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi\n");
+            }
+            
+            if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) 
 			{
-                if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_path)) 
+                $safeOriginalName = sanitizeOutput($_FILES['file']['name'][$i]);
+                $attachment_text .= "<li><a href=\"" . sanitizeOutput($target_path) . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $safeOriginalName . "</a></li>";
+                
+                if ($gbDisplayImageInBody == 1 && in_array($fileext, $attach_img)) 
 				{
-                    $attachment_text .= "<li><a href=\"" . $target_path . "\" target=\"_blank\" style=\"color:blue;font-size:10px;\">" . $_FILES['file']['name'][$i] . "</a></li>";
-                    
-                    if ($gbDisplayImageInBody == 1 && in_array($fileext, $attach_img)) 
+                    if ($attachment_upload_count_success == 0) 
 					{
-                        if ($attachment_upload_count_success == 0) 
-						{
-                            $yourmessage .= "<br /><br />";
-                        }
-                        
-                        $yourmessage .= "<a href=\"$target_path\" target=\"_blank\"><img src=\"$target_path\" style=\"width:120px;\" /></a>&nbsp;&nbsp;";
+                        $yourmessage .= "<br /><br />";
                     }
                     
-                    $attachment_upload_count_success++;
-                } 
-				else 
-				{
-                    echo "There was an error uploading the file" . $_FILES['file']['name'][$i] . ", please try again! <br />";
+                    $yourmessage .= "<a href=\"" . sanitizeOutput($target_path) . "\" target=\"_blank\"><img src=\"" . sanitizeOutput($target_path) . "\" style=\"width:120px;\" /></a>&nbsp;&nbsp;";
                 }
+                
+                $attachment_upload_count_success++;
             } 
 			else 
 			{
-                if ($_FILES['file']['name'][$i] != "")
-                {
-                    echo "File" . $_FILES['file']['name'][$i] . " is not allowed! <br />";                    
-                }
+                echo "There was an error uploading the file " . sanitizeOutput($_FILES['file']['name'][$i]) . ", please try again!<br />";
             }
         }
         
@@ -406,7 +473,8 @@ if (strlen($error) == 0)
         exit;
     }
     
-    $data = serialize($a) . "<!-- E -->";
+    // Use secure JSON encoding instead of serialize()
+    $data = json_encode($a) . "<!-- E -->";
     fwrite($fp, $data);
     flock($fp, 3);
     fclose($fp);
@@ -425,16 +493,16 @@ if (strlen($error) == 0)
     $tpl->assign("yourMessagetxt", $yourMessagetxt);
 	$tpl->assign("lang_select_array", $lang_select_array);	
     
-    $temp1 = stripslashes($yourname);
-    $temp2 = stripslashes($youremail);
-    $temp3 = stripslashes($yourmessage);
+    $temp1 = sanitizeOutput(stripslashes($yourname));
+    $temp2 = sanitizeOutput(stripslashes($youremail));
+    $temp3 = sanitizeOutput(stripslashes($yourmessage));
     
     $tpl->assign("temp1", $temp1);
     $tpl->assign("temp2", $temp2);
     $tpl->assign("temp3", smiley_face($temp3));
     
     $tpl->assign("result1", $result1);
-    $tpl->assign("entryDate", $date_format_locale);
+    $tpl->assign("entryDate", sanitizeOutput($date_format_locale));
     $tpl->assign("result2", $result2);
     
     $html = $tpl->draw('add', $return_string = true);

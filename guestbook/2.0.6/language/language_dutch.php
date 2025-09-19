@@ -58,6 +58,7 @@ $error9					= "Kan niet registreren door een fout.";
 $error10				= "Wachtwoord en wachtwoord bevestigen komen niet overeen.";
 $info1					= "U bent succesvol ingelogd.";
 $error11				= "Kan je niet inloggen. Probeer het later nog eens.";
+$error12				= "Dit e-mailadres is al geregistreerd.";
 $warning1				= "Weet u zeker dat u dit bericht wilt verwijderen?";
 $info2					= "Instellingen";
 $info3					= "Save";

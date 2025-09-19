@@ -58,6 +58,7 @@ $error9					= "Nelze se zaregistrovat kvůli chybě.";
 $error10				= "Heslo a Heslo Potvrdit neodpovídají.";
 $info1					= "Byl jste úspěšně přihlášeni.";
 $error11				= "Nemohu se přihlásit. Zkuste to prosím později.";
+$error12				= "Tento e-mail je již zaregistrován.";
 $warning1				= "Opravdu chcete tuto zprávu smazat?";
 $info2					= "Nastavení";
 $info3					= "Uložit";

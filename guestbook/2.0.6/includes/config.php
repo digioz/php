@@ -6,11 +6,12 @@ if(!defined('IN_GB')) {
 
 // Version of this Guestbook ---------------------------------------------------------
 
-$gb_version = "2.0.4";
+$gb_version = "2.0.6";
 
 // Theme directory -------------------------------------------------------------------
 
 $theme = "default";		  	  // Set to the name of the directory in "theme" folder
+							  // Theme validation will be done after functions.php is loaded
 
 // Date Format Settings --------------------------------------------------------------
 

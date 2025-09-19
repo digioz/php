@@ -1,0 +1,51 @@
+{include="header"}
+
+<div class="panel panel-primary" style="width:600px;">
+	<div class="panel-heading">
+		<h3 class="panel-title">&nbsp;</h3>
+	</div>
+	<div class="panel-body">
+		<div class="message">
+			<form name="post" action="user_edit_post.php?id={$postid}" method="post">
+				<input type="hidden" name="{$tokenid}" value="{$tokenvalue}" />
+				<table border="0" style="padding:20px;">
+					<tr>
+						<td style="padding:10px;">
+							<p><b><font size="2">{$yournametxt}</font></b></p>
+						</td>
+						<td style="padding:10px;"><input class="form-control" type="text" name="yourname" size="40" value="{$outputfrom}" disabled></td>
+					</tr>
+					<tr>
+						<td style="padding:10px;">
+							<p><b><font size="2">{$youremailtxt}</font></b></p>
+						</td>
+						<td style="padding:10px;"><input class="form-control" type="text" name="youremail" size="40" value="{$outputemail}" disabled></td>
+					</tr>
+					{if condition="$let_user_hide_email == 1"}
+					<tr>
+						<td style="padding:10px;">
+							<p><b><font size="2">{$hideemailtxt}</font></b></p>
+						</td>
+						<td style="padding:10px;"><input class="form-control" type="checkbox" name="hideemail" value="hideemail" {if condition="$outputhideemail == true"}checked{/if}></td>
+					</tr>
+					{/if}
+					<tr>
+						<td style="padding:10px;">
+							<p><b><font size="2">{$yourMessagetxt}</font></b></p>
+						</td>
+						<td style="padding:10px;"><textarea class="form-control" name="yourmessage" cols="45" rows="10">{$postmessage}</textarea></td>
+					</tr>
+					<tr>
+						<td style="padding:10px;"></td>
+						<td style="padding:10px;">
+							<div align="right">
+								<input class="btn btn-primary" type="submit" name="submit" value="{$submitbutton}">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+
+{include="footer"}

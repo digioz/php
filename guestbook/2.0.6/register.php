@@ -1,23 +1,28 @@
 <?php
 define('IN_GB', TRUE);
 
-session_start();
+include("includes/security_headers.php");
+include("includes/secure_session.php");
+startSecureSession();
 
 include("includes/functions.php");
 include("includes/user.class.php");
 include("includes/config.php");
+
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
 
 $selected_language_session = $default_language[2];
 $selected_language_session_code = $default_language[1];
 
 if (isset($_SESSION["language_selected_file"]))
 {
-	$selected_language_session = $_SESSION["language_selected_file"];
+	$selected_language_session = validateLanguage($_SESSION["language_selected_file"], $language_array);
 }
 
 if (isset($_SESSION["language_selected_code"]))
 {
-	$selected_language_session_code = $_SESSION["language_selected_code"];
+	$selected_language_session_code = validateInput($_SESSION["language_selected_code"], 'string', 5);
 }
 
 include("language/$selected_language_session");
@@ -87,43 +92,34 @@ $tpl->assign( "info4", $info4 );
 // Process Registration
 if (isset($_POST['submit']))
 {
-	$name = "";
-	$email = "";
-	$password = "";
-	$passwordConfirm = "";
-	$address = "";
-	$city = "";
-	$state = "";
-	$zip = "";
-	$country = "";
-	$phone = "";
+	$name = validateInput($_POST['name'] ?? '', 'string', 100);
+	$email = validateInput($_POST['email'] ?? '', 'email', 150);
+	$password = validateInput($_POST['password'] ?? '', 'string', 200);
+	$passwordConfirm = validateInput($_POST['passwordconfirm'] ?? '', 'string', 200);
+	$address = validateInput($_POST['address'] ?? '', 'string', 200);
+	$city = validateInput($_POST['city'] ?? '', 'string', 100);
+	$state = validateInput($_POST['state'] ?? '', 'string', 100);
+	$zip = validateInput($_POST['zip'] ?? '', 'string', 20);
+	$country = validateInput($_POST['country'] ?? '', 'string', 100);
+	$phone = validateInput($_POST['phone'] ?? '', 'string', 50);
 
-	$name = trim($_POST['name'])?:'';
-	$email = trim($_POST['email'])?:'';
-	$password = trim($_POST['password'])?:'';
-	$passwordConfirm = trim($_POST['passwordconfirm'])?:'';
-	$address = trim($_POST['address'])?:'';
-	$city = trim($_POST['city'])?:'';
-	$state = trim($_POST['state'])?:'';
-	$zip = trim($_POST['zip'])?:'';
-	$country = trim($_POST['country'])?:'';
-	$phone = trim($_POST['phone'])?:'';
+	if ($email === false) {
+		$tpl->assign("error_msg", $error3);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+        exit;
+	}
 
-	/*
-	echo "Name: " . $name . "<br>";
-	echo "Email: " . $email . "<br>";
-	echo "Password: " . $password . "<br>";
-	echo "Password Confirm: " . $passwordConfirm . "<br>";
-	echo "Address: " . $address . "<br>";
-	echo "City: " . $city . "<br>";
-	echo "State: " . $state . "<br>";
-	echo "Zip: " . $zip . "<br>";
-	echo "Country: " . $country . "<br>";
-	echo "Phone: " . $phone . "<br>";
-	exit; 
-	*/
-	
-	if ($password != $passwordConfirm)
+	// Prevent duplicate registration by email (case-insensitive)
+	if (getUserByEmail($email) !== null) {
+		$duplicateMsg = isset($error12) ? $error12 : "This email is already registered.";
+		$tpl->assign("error_msg", $duplicateMsg);
+        $html = $tpl->draw('error', $return_string = true);
+        echo $html;
+        exit;
+	}
+
+	if ($password === false || $passwordConfirm === false || $password !== $passwordConfirm)
 	{
 		$tpl->assign("error_msg", $error10);
         $html = $tpl->draw('error', $return_string = true);
@@ -131,10 +127,11 @@ if (isset($_POST['submit']))
         exit;
 	}
 	
-	$password = encryptPassword($password, $login_salt);
+	// Hash password using secure API
+	$hashedPassword = encryptPassword($password);
 
 	$u = new userClass();
-	$u->setUserVars($email, $password, $name, $address, $city, $state, $zip, $country, $phone);
+	$u->setUserVars($email, $hashedPassword, $name, $address, $city, $state, $zip, $country, $phone);
 	
 	@$fp = fopen("data/users.txt", "a");
     flock($fp, 2);
@@ -147,7 +144,8 @@ if (isset($_POST['submit']))
         exit;
     }
     
-    $data = serialize($u) . "<!-- E -->";
+    // Store user as JSON instead of PHP serialize for security
+    $data = json_encode($u) . "<!-- E -->";
     fwrite($fp, $data);
     flock($fp, 3);
     fclose($fp);
@@ -157,7 +155,7 @@ if (isset($_POST['submit']))
 	$_SESSION["user_object"] = $userLoggingIn;
 	
 	$tpl->assign("info_msg", $info1);
-	$tpl->assign( "loginemail", $user_login_email );
+	$tpl->assign( "loginemail", sanitizeOutput($email) );
 	$html = $tpl->draw('info', $return_string = true);
 	echo $html;
 	

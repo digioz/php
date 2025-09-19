@@ -15,10 +15,16 @@ A feature-rich, customizable PHP guestbook application that allows visitors to l
 - UTF-8 and ISO charset support
 
 ### 🔒 **Security Features**
-- CSRF protection for form submissions
+- **Enhanced Security**: Protection against SQL injection, XSS, CSRF, and file upload attacks
+- **Secure Data Storage**: JSON-based data storage instead of unsafe PHP serialization
+- **Strong Password Hashing**: Uses PHP's `password_hash()` with secure defaults
+- **Input Validation**: Comprehensive server-side validation for all user inputs
+- **File Upload Security**: MIME type validation, secure filename generation, and upload restrictions
+- **Session Security**: Secure session configuration with regeneration and proper cookie settings
+- **Security Headers**: Comprehensive HTTP security headers to prevent common attacks
 - IP-based spam filtering and banning
 - Bad word filtering
-- Flood protection
+- Flood protection  
 - Stop Forum Spam integration
 - Multiple CAPTCHA options (Built-in, reCAPTCHA v1.0, reCAPTCHA v2.0)
 
@@ -37,8 +43,9 @@ A feature-rich, customizable PHP guestbook application that allows visitors to l
 ## Requirements
 
 - **PHP**: 8.1+ (with GD extension for built-in CAPTCHA)
-- **Web Server**: Apache, Nginx, or similar
-- **Optional**: cURL extension (for reCAPTCHA v2.0)
+- **Web Server**: Apache, Nginx, or similar  
+- **Extensions**: cURL (for reCAPTCHA v2.0), JSON, OpenSSL
+- **Security**: HTTPS recommended for production use
 
 ## Installation
 
@@ -52,7 +59,10 @@ A feature-rich, customizable PHP guestbook application that allows visitors to l
    ```bash
    chmod 755 data/
    chmod 755 cache/
+   chmod 755 uploads/
    chmod 644 data/list.txt
+   chmod 644 data/users.txt
+   chmod 600 includes/config.php
    ```
 
 3. **Configure the application:**
@@ -60,13 +70,15 @@ A feature-rich, customizable PHP guestbook application that allows visitors to l
    - Set your timezone in `$timezone_offset`
    - Configure email notifications if desired
    - Set up CAPTCHA keys if using reCAPTCHA
+   - **Important**: Change default admin credentials immediately
 
 4. **Upload to your web server:**
    - Upload all files to your web directory
-   - Ensure the web server can read/write to `data/` and `cache/` directories
+   - Ensure the web server can read/write to `data/`, `cache/`, and `uploads/` directories
+   - Verify `.htaccess` file is properly configured
 
 5. **Access your guestbook:**
-   - Visit `http://yourdomain.com/path-to-guestbook/`
+   - Visit `https://yourdomain.com/path-to-guestbook/` (HTTPS recommended)
    - The system will automatically redirect to the main guestbook view
 
 ## Configuration
@@ -175,11 +187,30 @@ Change the `$theme` variable in `includes/config.php`:
 
 ## Security Considerations
 
-- Regularly update banned IP lists
-- Monitor the spam filter effectiveness
-- Keep reCAPTCHA keys secure
-- Review user-submitted content regularly
+### Critical Security Updates in v2.0.6
+- **Data Storage**: Migrated from unsafe PHP `serialize()` to secure JSON encoding
+- **Password Security**: Replaced weak `crypt()` with secure `password_hash()`
+- **Input Validation**: Added comprehensive server-side validation for all inputs
+- **XSS Protection**: All user output is now properly sanitized
+- **File Upload Security**: Enhanced MIME type validation and secure file handling
+- **Session Security**: Implemented secure session configuration with proper regeneration
+
+### Ongoing Security Practices
+- Change default admin credentials immediately after installation
+- Use HTTPS in production environments
+- Regularly update banned IP lists and spam filters
+- Monitor logs for suspicious activity (`data/message_post.log`, `data/message_spam.log`)
+- Keep reCAPTCHA keys secure and rotate periodically
+- Review and moderate user-submitted content regularly
 - Backup your data directory frequently
+- Keep PHP and web server software updated
+- Consider implementing rate limiting for additional protection
+
+### File Permissions
+- `data/` directory: 755 (writable by web server)
+- `includes/config.php`: 600 (readable only by owner)
+- `uploads/` directory: 755 with PHP execution disabled
+- Log files: 644 (web server readable/writable)
 
 ## Contributing
 

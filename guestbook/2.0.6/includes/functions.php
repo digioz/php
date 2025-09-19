@@ -38,7 +38,7 @@ function smiley_face($yourmessage)
 		$yourmessage = str_replace($ubb1[$i], $ubb2[$i], $yourmessage);
 	}
 
-	// Inserting smiley faces for guestbook users
+	// Inserting smiley faces for guestbook users - icons are in global images directory
 
 	for ($i=0; $i<=22; $i++)
 	{
@@ -229,77 +229,86 @@ function getLanguageArray($language_array)
 	return $lang_select_array;
 }
 
-function encryptPassword($password, $salt)
+function encryptPassword($password)
 {
-	$hash = crypt($password, $salt);
-	
-	return $hash;
+	// Use PHP's secure password_hash() function instead of weak crypt()
+	return password_hash($password, PASSWORD_DEFAULT);
 }
 
-function validateLogin($username, $password, $storedHash, $salt)
+function validateLogin($username, $password, $storedHash, $salt = null)
 {
-	$result = false;
-	
-	$hashAttempt = encryptPassword($password, $salt);
-	
-	if ( hash_equals($hashAttempt, $storedHash) ) 
-	{
-		$result = true;
-	}
-	
-	return $result;
+	// Use PHP's secure password_verify() function
+	return password_verify($password, $storedHash);
 }
 
 function getAllUsers()
 {
-	$filename = "data/users.txt";
-	$handle = fopen($filename, "r");
+    $filename = "data/users.txt";
+    if (!file_exists($filename) || filesize($filename) == 0) {
+        return array();
+    }
+    
+    $handle = fopen($filename, "r");
+    $datain = fread($handle, filesize($filename));
+    fclose($handle);
+    
+    $out = explode("<!-- E -->", $datain);
+    $outCount = count($out) - 1;
+    $lines = array();
 
-	$datain = fread($handle, filesize($filename));
-	fclose($handle);
-	$out = explode("<!-- E -->", $datain);
+    for ($i=0; $i<$outCount; $i++)
+    {
+        $raw = trim($out[$i]);
+        if ($raw === '') continue;
 
-	$outCount = count($out) - 1;
+        // Try JSON first (new format)
+        $data = json_decode($raw, true);
+        if (is_array($data)) {
+            $user = userClass::fromArray($data);
+            if ($user) $lines[] = $user;
+            continue;
+        }
 
-	for ($i=0; $i<=$outCount; $i++)
-	{
-		$lines[$i] = unserialize($out[$i]);
-	}
-	
-	return $lines;
+        // Backward-compat: try safe unserialize for legacy entries
+        // Limit allowed classes to userClass to avoid object injection
+        $legacy = @unserialize($raw, ["allowed_classes" => ["userClass"]]);
+        if ($legacy instanceof userClass) {
+            $lines[] = $legacy;
+        }
+    }
+    
+    return array_filter($lines); // Remove null entries
 }
 
 function getUserByEmail($email)
-{	
-	$users = getAllUsers();
-	
-	foreach ($users as &$user) 
-	{
-		if ($user != null)
-		{
-			if ($user->email == $email)
-			{	
-				return $user;
-			}
-		}
-	}
-	
-	return;
+{   
+    $users = getAllUsers();
+    $emailNorm = strtolower($email);
+    
+    foreach ($users as $user) 
+    {
+        if ($user != null && isset($user->email) && strtolower($user->email) == $emailNorm)
+        {   
+            return $user;
+        }
+    }
+    
+    return null;
 }
 
 function getUserById($id)
 {
 	$users = getAllUsers();
 	
-	foreach ($users as &$user) 
+	foreach ($users as $user) 
 	{		
-		if ($user->id == $id)
+		if ($user != null && $user->id == $id)
 		{	
 			return $user;
 		}
-		
-		return null;
 	}
+	
+	return null;
 }
 
 function getGUID(){
@@ -309,17 +318,14 @@ function getGUID(){
     }
 	else
 	{
-        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-        $charid = strtoupper(md5(uniqid(rand(), true)));
-        $hyphen = chr(45);// "-"
-        $uuid = chr(123)// "{"
-            .substr($charid, 0, 8).$hyphen
-            .substr($charid, 8, 4).$hyphen
-            .substr($charid,12, 4).$hyphen
-            .substr($charid,16, 4).$hyphen
-            .substr($charid,20,12)
-            .chr(125);// "}"
-        return $uuid;
+        // Use cryptographically secure random bytes for GUID generation
+        return sprintf('{%04X%04X-%04X-%04X-%04X-%04X%04X%04X}',
+            random_int(0, 65535), random_int(0, 65535),
+            random_int(0, 65535),
+            random_int(16384, 20479), // 4xxx
+            random_int(32768, 49151), // 8xxx, 9xxx, Axxx or Bxxx
+            random_int(0, 65535), random_int(0, 65535), random_int(0, 65535)
+        );
     }
 }
 
@@ -327,20 +333,30 @@ function getAllPosts()
 {
 	$lines = array();
 	$filename = "data/list.txt";
+	
+	if (!file_exists($filename) || filesize($filename) == 0) {
+		return array();
+	}
+	
 	$handle = fopen($filename, "r");
 	$datain = fread($handle, filesize($filename));
 	fclose($handle);
+	
+	// Use secure JSON decoding instead of unserialize()
 	$out = explode("<!-- E -->", $datain);	
 	$outCount = count($out) - 1;
-	$j = 0;
 
-	for ($i=0; $i<=$outCount; $i++)
+	for ($i=0; $i<$outCount; $i++)
 	{
-		$lines[$j] = unserialize($out[$i]);
-		$j++;
+		if (trim($out[$i]) !== '') {
+			$data = json_decode($out[$i], true);
+			if ($data !== null) {
+				$lines[] = gbClass::fromArray($data);
+			}
+		}
 	}
 	
-	return $lines;
+	return array_filter($lines); // Remove null entries
 }
 
 function isUserPostOwner($postid, $userid)
@@ -364,11 +380,12 @@ function deletePostById($postid, $userid)
 	$datanew = "";
 	$allPosts = getAllPosts();
 	
-	foreach ($allPosts as &$post) 
+	foreach ($allPosts as $post) 
 	{
 		if ($post != null && $post->id != $postid)
 		{
-			$datanew .= serialize($post) . "<!-- E -->";
+			// Use secure JSON encoding instead of serialize()
+			$datanew .= json_encode($post) . "<!-- E -->";
 		}
 	}
 	
@@ -380,6 +397,148 @@ function deletePostById($postid, $userid)
     fclose($fp);
 	
 	return;
+}
+
+function updatePostById($postid, $userid, $newMessage, $newHideEmail = null)
+{
+    $allPosts = getAllPosts();
+    $datanew = "";
+    $updated = false;
+
+    foreach ($allPosts as $post) {
+        if ($post == null) { continue; }
+        if ($post->id === $postid && $post->gbUserId === $userid) {
+            // Update message and optional hide email flag
+            $post->gbMessage = $newMessage;
+            if ($newHideEmail !== null) {
+                $post->gbHideEmail = (bool)$newHideEmail;
+            }
+            $updated = true;
+        }
+        $datanew .= json_encode($post) . "<!-- E -->";
+    }
+
+    @$fp = fopen("data/list.txt", "w");
+    flock($fp, 2);
+    fwrite($fp, $datanew);
+    flock($fp, 3);
+    fclose($fp);
+
+    return $updated;
+}
+
+// Security Functions -----------------------------------------------------
+
+/**
+ * Validate and sanitize input data
+ * @param mixed $input The input to validate
+ * @param string $type The type of validation (email, string, int, etc.)
+ * @param int $maxLength Maximum allowed length
+ * @return mixed Sanitized input or false if invalid
+ */
+function validateInput($input, $type, $maxLength = null) {
+    if ($input === null || $input === '') {
+        return '';
+    }
+    
+    $input = trim($input);
+    
+    switch($type) {
+        case 'email':
+            $input = filter_var($input, FILTER_VALIDATE_EMAIL);
+            if (!$input) return false;
+            break;
+            
+        case 'string':
+            // Remove null bytes and control characters
+            $input = str_replace(["\0", "\r"], '', $input);
+            break;
+            
+        case 'int':
+            $input = filter_var($input, FILTER_VALIDATE_INT);
+            if ($input === false) return false;
+            break;
+            
+        case 'filename':
+            // Validate filename - only allow alphanumeric, dots, hyphens, underscores
+            if (!preg_match('/^[a-zA-Z0-9._-]+$/', $input)) {
+                return false;
+            }
+            break;
+    }
+    
+    if ($maxLength && strlen($input) > $maxLength) {
+        return false;
+    }
+    
+    return $input;
+}
+
+/**
+ * Sanitize output for HTML display to prevent XSS
+ * @param string $string The string to sanitize
+ * @return string Sanitized string
+ */
+function sanitizeOutput($string) {
+    return htmlspecialchars($string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+}
+
+/**
+ * Validate theme name against whitelist
+ * @param string $theme Theme name
+ * @return string Valid theme name
+ */
+function validateTheme($theme) {
+    $allowedThemes = ['default', 'bootstrap', 'simple'];
+    return in_array($theme, $allowedThemes) ? $theme : 'default';
+}
+
+/**
+ * Validate language file against whitelist
+ * @param string $language Language filename
+ * @param array $allowedLanguages Array of allowed language files
+ * @return string Valid language filename
+ */
+function validateLanguage($language, $allowedLanguages) {
+    $validLanguages = array_column($allowedLanguages, 2);
+    return in_array($language, $validLanguages) ? $language : 'language.php';
+}
+
+/**
+ * Generate cryptographically secure random filename
+ * @param string $extension File extension
+ * @return string Secure filename
+ */
+function generateSecureFilename($extension) {
+    return bin2hex(random_bytes(16)) . '.' . $extension;
+}
+
+/**
+ * Validate file upload
+ * @param array $file $_FILES array element
+ * @param array $allowedTypes Allowed MIME types
+ * @param int $maxSize Maximum file size in bytes
+ * @return array Result array with success boolean and message
+ */
+function validateFileUpload($file, $allowedTypes, $maxSize = 5242880) { // 5MB default
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['success' => false, 'message' => 'Upload error occurred'];
+    }
+    
+    if ($file['size'] > $maxSize) {
+        return ['success' => false, 'message' => 'File too large'];
+    }
+    
+    // Check MIME type
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+    
+    if (!in_array($mimeType, $allowedTypes)) {
+        return ['success' => false, 'message' => 'File type not allowed'];
+    }
+    
+    return ['success' => true, 'mime_type' => $mimeType];
 }
 
 

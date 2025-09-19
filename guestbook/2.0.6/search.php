@@ -2,17 +2,22 @@
 
 define('IN_GB', TRUE); 
 
-session_start();
+include("includes/security_headers.php");
+include("includes/secure_session.php");
+startSecureSession();
 
 include("includes/functions.php");
 include("includes/gb.class.php");
 include("includes/config.php");
 
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
+
 $selected_language_session = $default_language[2];
 
 if (isset($_SESSION["language_selected_file"]))
 {
-	$selected_language_session = $_SESSION["language_selected_file"];
+	$selected_language_session = validateLanguage($_SESSION["language_selected_file"], $language_array);
 }
 
 include("language/$selected_language_session");
@@ -91,169 +96,164 @@ if($search == "")
 // Check that the data file contains entries  
 
 $filename = "data/list.txt";
-$handle = fopen($filename, "r");
-
-if (filesize($filename) == 0)
+if (!file_exists($filename) || filesize($filename) == 0)
 {
-   fclose($handle);
-   
     $tpl->assign( "error_msg", $msgnoentries);
     $html = $tpl->draw( 'error', $return_string = true );
     echo $html;
     exit;
 }
 
-    // Read all entries and put in array
-    $datain = fread($handle, filesize($filename));
-    fclose($handle);
-    $out = explode("<!-- E -->", $datain);
-    array_pop($out);
-	$search_results = [];
-  
+// Read all entries and put in array
+$handle = fopen($filename, "r");
+$datain = fread($handle, filesize($filename));
+fclose($handle);
+$out = explode("<!-- E -->", $datain);
+array_pop($out);
+$search_results = [];
 
-    // Search array "out" for user search term and put matches in array search_results
-    foreach($out as $value)
+// Search array "out" for user search term and put matches in array search_results
+foreach($out as $value)
+{
+    $data = json_decode($value, true);
+    if ($data === null) continue;
+    $obj_info = gbClass::fromArray($data);
+    $obj_vars = get_object_vars($obj_info);
+
+    foreach($obj_vars as  $val)
     {
-        $obj_info = unserialize($value);
-        $obj_vars = get_object_vars($obj_info);
-
-        foreach($obj_vars as  $value)
+        if (is_string($val) && stristr($val, $search))
         {
-            if(stristr($value, $search))
-            {
-                $search_results[] =  $obj_info;
-                break;
-            }
+            $search_results[] =  $obj_info;
+            break;
         }
     }
+}
 
-    // Notify user if no match found
-
-    if (count($search_results) == 0)
-    {
-        $tpl->assign( "error_msg", $msgnomatchfound);
-        $html = $tpl->draw( 'error', $return_string = true );
-        echo $html;
-        exit;
-    }
-
-    // Write header of search page
-    $html = $tpl->draw( 'header', $return_string = true );
+// Notify user if no match found
+if (count($search_results) == 0)
+{
+    $tpl->assign( "error_msg", $msgnomatchfound);
+    $html = $tpl->draw( 'error', $return_string = true );
     echo $html;
+    exit;
+}
 
-    echo "<center><h3>$msgresultofsearch: <u><i>$search</i></u>:</h3><br></center>"; 
+// Write header of search page
+$html = $tpl->draw( 'header', $return_string = true );
+echo $html;
 
+echo "<center><h3>$msgresultofsearch: <u><i>" . sanitizeOutput($search) . "</i></u>:</h3><br></center>"; 
 
+// Display Search Results
+$perPage        = 5;
+$singlePage     = FALSE;
+$total_found    = count($search_results);
+$numberOfPages  = ceil($total_found/$perPage);
 
-    // Display Search Results
+if ($total_found <= $perPage)
+{                                               // Do the search results fit on a single page 
+    $start = 0;                                 // YES: first entery starts at array location 0
+    $end = $total_found - 1;                    // set last entry location, note -1    
+    $singlePage = TRUE;                         // Set the single page indicator flag
+}
+else
+{
+    if($pageNum == 0)
+    {                                           // Did the user select a page to display 
+        $pageNum = 1;                           // NO: we set a default to display first page 
+    }
 
-    $perPage        = 5;
-    $singlePage     = FALSE;
-    $total_found    = count($search_results);
-    $numberOfPages  = ceil($total_found/$perPage);
- 
-    if ($total_found <= $perPage)
-    {                                               // Do the search results fit on a single page 
-        $start = 0;                                 // YES: first entery starts at array location 0
-        $end = $total_found - 1;                    // set last entry location, note -1    
-        $singlePage = TRUE;                         // Set the single page indicator flag
+    $start = ($pageNum-1) * $perPage;           // Defines any page start boundary
+    
+    if($total_found >= ($pageNum * $perPage))
+    {                                           // Check to see if it is a full page
+        $end =  ($pageNum * $perPage)-1;        // Yes: Set end to page boundary end -1 
     }
     else
-    {
-        if($pageNum == 0)
-        {                                           // Did the user select a page to display 
-            $pageNum = 1;                           // NO: we set a default to display first page 
-        }
+    {                                           // Not a full page end point is the total found
+        $end = $total_found - 1;                // Set end accordingly again -1 
+    }  
+}
 
-        $start = ($pageNum-1) * $perPage;           // Defines any page start boundary
-        
-        if($total_found >= ($pageNum * $perPage))
-        {                                           // Check to see if it is a full page
-            $end =  ($pageNum * $perPage)-1;        // Yes: Set end to page boundary end -1 
-        }
-        else
-        {                                           // Not a full page end point is the total found
-            $end = $total_found - 1;                // Set end accordingly again -1 
-        }  
-    }
-
-    // Display search page results using our start and end points defined.
-    for($i=$start; $i<=$end; $i++)
-    {
-		// Convert to local date time
-		$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
-		
-		if ($dst_auto_detect == 0)
-		{
-			$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset));
-		}
-		
-       $tpl->assign( "listDatetxt", $listDatetxt);
-        $tpl->assign( "listnametxt", $listnametxt);
-        $tpl->assign( "listemailtxt", $listemailtxt);
-        $tpl->assign( "listMessagetxt", $listMessagetxt);
-        $tpl->assign( "outputdate", $date_format_locale);
-        $tpl->assign( "outputfrom", $search_results[$i]->gbFrom);
-        $tpl->assign( "outputemail", $search_results[$i]->gbEmail);
-        $tpl->assign( "outputmessage", $search_results[$i]->gbMessage);
-		$tpl->assign( "langCode", $default_language[1]);
-		$tpl->assign( "langCharSet", $default_language[4]);
-		$tpl->assign( "lang_select_array", $lang_select_array);
-		$tpl->assign( "outputhideemail", $search_results[$i]->gbHideEmail); 
-		$tpl->assign( "loginemail", $user_login_email );
-        
-        $html = $tpl->draw( 'list', $return_string = true );
-        echo $html;
-    }
-
-	echo '<div class="pagination">';
+// Display search page results using our start and end points defined.
+for($i=$start; $i<=$end; $i++)
+{
+	// Convert to local date time
+	$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
 	
-    // Navigation Bar  
-    $self = $_SERVER['PHP_SELF'];                       // This page's path used in link creation
-    $gbSearchNav = ""; 
-    $numNavItems = 10;                                  // Number of seperate page links to display in nav menu
-
-    $numNavGroup = (INT)(($pageNum-1)/$numNavItems) ;   // Calculate number of navigation groups
-                                                        // multiples of nav items
-
-    if($numberOfPages > (($numNavGroup+1)*$numNavItems))
-    {                                                   // More than a full block of nav links required 
-        $ref = ($numNavGroup+1)*$numNavItems;           // Yes: calculate pages catered for within
-    }                                                   // a full group of links.
-    else
-    {                                                   // No: could be equal or less than a full group of links 
-        $ref = $numberOfPages;                          // so all the pages are catered for.
-    }
-
-    //Show page 1 link, back ref (chevrons) to previous page and keep search term alive
-    $back_ref    = $numNavGroup*$numNavItems;         // back navigation  
-    $forward_ref = (($numNavGroup+1)*$numNavItems)+1; // forward navigation  
-
-    if($numNavGroup >0)
-    { // Add first page and back nav (chevrons)to menu 
-        $gbSearchNav .= "<a href=\"$self?page=1&search_term=$search\">&nbsp;Page 1&nbsp;</a>";
-        $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=$search\">&nbsp;&lt;&lt;&lt;&nbsp;</a>";
-    }
-
-    // Add page nav core group and square brackets or other separator. 
-    for($page = $numNavGroup*$numNavItems+1; $page < $ref+1; $page++)
-    {
-        $gbSearchNav .=  "<a href=\"$self?page=$page&search_term=$search\">$page</a>&nbsp;";
-    }
-
-    if($numberOfPages >(($numNavGroup+1)*$numNavItems) )
-    {                                                   // Add last page and forward nav
-        $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=$search\">&gt;&gt&gt;</a> ";
-        $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=$search\">Page $numberOfPages</a> ";
-    }
-
-    echo $gbSearchNav;                                  // after all that hard work display it
+	if ($dst_auto_detect == 0)
+	{
+		$date_format_locale = gmdate($date_time_format, $search_results[$i]->gbDate + 3600 * ($timezone_offset));
+	}
 	
-	echo "</div>";
+    $tpl->assign( "listDatetxt", $listDatetxt);
+    $tpl->assign( "listnametxt", $listnametxt);
+    $tpl->assign( "listemailtxt", $listemailtxt);
+    $tpl->assign( "listMessagetxt", $listMessagetxt);
+    $tpl->assign( "outputdate", sanitizeOutput($date_format_locale));
+    $tpl->assign( "outputfrom", sanitizeOutput($search_results[$i]->gbFrom));
+    $tpl->assign( "outputemail", sanitizeOutput($search_results[$i]->gbEmail));
+    // Do not escape message so smiley <img> tags render
+    $tpl->assign( "outputmessage", $search_results[$i]->gbMessage);
+	$tpl->assign( "langCode", $default_language[1]);
+	$tpl->assign( "langCharSet", $default_language[4]);
+	$tpl->assign( "lang_select_array", $lang_select_array);
+	$tpl->assign( "outputhideemail", $search_results[$i]->gbHideEmail); 
+	$tpl->assign( "loginemail", $user_login_email );
+    
+    $html = $tpl->draw( 'list', $return_string = true );
+    echo $html;
+}
+
+echo '<div class="pagination">';
+
+// Navigation Bar  
+$self = $_SERVER['PHP_SELF'];                       // This page's path used in link creation
+$gbSearchNav = ""; 
+$numNavItems = 10;                                  // Number of seperate page links to display in nav menu
+
+$numNavGroup = (INT)(($pageNum-1)/$numNavItems) ;   // Calculate number of navigation groups
+                                                    // multiples of nav items
+
+if($numberOfPages > (($numNavGroup+1)*$numNavItems))
+{                                                   // More than a full block of nav links required 
+    $ref = ($numNavGroup+1)*$numNavItems;           // Yes: calculate pages catered for within
+}                                                   // a full group of links.
+else
+{                                                   // No: could be equal or less than a full group of links 
+    $ref = $numberOfPages;                          // so all the pages are catered for.
+}
+
+//Show page 1 link, back ref (chevrons) to previous page and keep search term alive
+$back_ref    = $numNavGroup*$numNavItems;         // back navigation  
+$forward_ref = (($numNavGroup+1)*$numNavItems)+1; // forward navigation  
+
+if($numNavGroup >0)
+{ // Add first page and back nav (chevrons)to menu 
+    $gbSearchNav .= "<a href=\"$self?page=1&search_term=" . urlencode($search) . "\">&nbsp;Page 1&nbsp;</a>";
+    $gbSearchNav .= "<a href=\"$self?page=$back_ref&search_term=" . urlencode($search) . "\">&nbsp;&lt;&lt;&lt;&nbsp;</a>";
+}
+
+// Add page nav core group and square brackets or other separator. 
+for($page = $numNavGroup*$numNavItems+1; $page < $ref+1; $page++)
+{
+    $gbSearchNav .=  "<a href=\"$self?page=$page&search_term=" . urlencode($search) . "\">$page</a>&nbsp;";
+}
+
+if($numberOfPages >(($numNavGroup+1)*$numNavItems) )
+{                                                   // Add last page and forward nav
+    $gbSearchNav .=  "<a href=\"$self?page=$forward_ref&search_term=" . urlencode($search) . "\">&gt;&gt&gt;</a> ";
+    $gbSearchNav .= "<a href=\"$self?page=$numberOfPages&search_term=" . urlencode($search) . "\">Page $numberOfPages</a> ";
+}
+
+echo $gbSearchNav;                                  // after all that hard work display it
+
+echo "</div>";
   
-    // Write Footer 
-    $html = $tpl->draw( 'footer', $return_string = true );
-    echo $html;
+// Write Footer 
+$html = $tpl->draw( 'footer', $return_string = true );
+echo $html;
 
 ?>
 
