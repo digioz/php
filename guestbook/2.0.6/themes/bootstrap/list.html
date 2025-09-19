@@ -1,0 +1,23 @@
+<center>
+	<table style="min-width:320px; max-width:600px;">
+		<tr>
+			<td>
+				<div class="panel panel-primary" style="width:600px;">
+					<div class="panel-heading">
+						<h3 class="panel-title">&nbsp;</h3>
+					</div>
+					<div class="panel-body">
+					<b>{$listDatetxt}</b>: {$outputdate}<br />
+					<b>{$listnametxt}</b>: {$outputfrom}<br />
+					{if condition="$outputhideemail == false"}
+						<b>{$listemailtxt}</b>: <a href="mailto:{$outputemail}">{$outputemail}</a><br />
+					{/if}
+					<br />
+					<b>{$listMessagetxt}</b>: {$outputmessage}
+					</div>
+				</div>	
+			</td>
+		</tr>
+	</table>
+</center>
+<br />

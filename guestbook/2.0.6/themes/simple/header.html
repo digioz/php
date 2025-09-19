@@ -1,0 +1,49 @@
+<html lang="{$langCode}">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset={$langCharSet}" />
+  <title>{$title}</title>
+  <link rel="STYLESHEET" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#8080ff" vlink="#0000ff" alink="#ffff00"><center>
+<h1>{$headingtitletxt}</h1>
+
+<div class="topcorner" style="width:98%;text-align:right;margin-right:50px;">
+		{if condition="$loginemail == ''"}
+			<a href="register.php" style="color:#000000;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
+			<a style="color:#0000000;" href="login.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+				{$logintxt}
+			</a>
+		{else}
+			<a style="color:#000000;" href="user_settings.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+				{$info2}
+			</a> | 
+			{if condition="$loginusermanageposts == '1'"}
+				<a style="color:#000000;" href="user_manage_posts.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$info4}
+				</a> | 
+			{/if}
+			<a style="color:#000000;" href="logout.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+				{$logouttxt}
+			</a>
+		{/if}
+</div>
+
+<p>&nbsp;</p>
+
+<br><br>
+<center>
+[ <a href="guestbook.php"><b>{$addentrytxt}</b></a> ]
+[ <a href="list.php?page=1&order=asc"><b>{$viewguestbooktxt}</b></a> ]<br>
+[ <a href="list.php?page=1&order=asc">{$newpostfirsttxt}</a> ]
+[ <a href="list.php?page=1&order=desc">{$newpostlasttxt}</a> ]</center>
+<br>
+<form action="search.php" method=post>
+<table border=0 cellpadding=2>
+<tr>
+	<td><font size="1">{$searchlabeltxt}</font></td>
+        <td align=left><input type="text" name="search_term" size=20 maxlength=50><input type=submit value="{$searchbuttontxt}"></td>
+</tr>
+</table>
+</form>
+<br>

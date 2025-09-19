@@ -1,0 +1,22 @@
+<div class="message">
+<table width="560" cellspacing="0" cellpadding="5">
+<tbody>
+<tr>
+	<td></td>
+</tr>
+<tr>
+	<td>
+		<b>{$listDatetxt}</b>: {$outputdate}<br />
+		<b>{$listnametxt}</b>: {$outputfrom}<br />
+		{if condition="$outputhideemail == false"}
+			<b>{$listemailtxt}</b>: <a href="mailto:{$outputemail}">{$outputemail}</a><br />
+		{/if}
+		<br />
+		<b>{$listMessagetxt}</b>: {$outputmessage}
+		</table>
+	</td>
+</tr>
+</tbody>
+</table>
+</div>
+<br />

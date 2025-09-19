@@ -1,0 +1,30 @@
+<table bgcolor="#EFEFEF" bordercolor="#C0C0C0" border="1" width="500" cellspacing="0" cellpadding="10">
+<tr>
+	<td background="themes/{$theme}/images/toolbar.jpg" height="20"></td>
+</tr>
+<tr>
+	<td>
+		<div style="width:100%;float:right;text-align:right;">
+			<a href="user_edit_post.php?id={$postid}"><img src="../../images/i_edit.png" alt="Edit" width="16" height="16" /></a>
+			&nbsp;
+			<form action="user_manage_posts.php" method="post" style="display:inline;">
+				<input type="hidden" name="post_id" value="{$postid}" />
+				<input type="hidden" name="{$token_id}" value="{$token_value}" />
+				<button type="submit" style="border:none;background:none;padding:0;margin:0;" onclick="return confirm('{$warning1}');">
+					<img src="../../images/i_delete.png" alt="Delete" width="16" height="16" />
+				</button>
+			</form>
+		</div>	
+		
+		<b>{$listDatetxt}</b>: {$outputdate}<br />
+		<b>{$listnametxt}</b>: {$outputfrom}<br />
+		{if condition="$outputhideemail == false"}
+			<b>{$listemailtxt}</b>: <a href="mailto:{$outputemail}">{$outputemail}</a><br />
+		{/if}
+		<br />
+		<b>{$listMessagetxt}</b>: {$outputmessage}
+		</table>
+	</td>
+</tr>
+</table>
+<br />
