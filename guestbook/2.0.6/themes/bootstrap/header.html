@@ -1,0 +1,71 @@
+<html lang="{$langCode}">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset={$langCharSet}" />
+  <title>{$title}</title>
+  <link rel="STYLESHEET" type="text/css" href="css/bootstrap.min.css">
+  <link rel="STYLESHEET" type="text/css" href="css/Site.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="topcorner" style="width:98%;text-align:right;margin-right:50px;">
+			{if condition="$loginemail == ''"}
+				<a href="register.php" style="color:#000000;"><i class="fa fa-user"></i>&nbsp;{$registertxt}</a> | 
+				<a style="color:#000000;" href="login.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logintxt}
+				</a>
+			{else}
+				<a style="color:#000000;" href="user_settings.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$info2}
+				</a> | 
+				{if condition="$loginusermanageposts == '1'"}
+					<a style="color:#000000;" href="user_manage_posts.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+						{$info4}
+					</a> | 
+				{/if}
+				<a style="color:#000000;" href="logout.php"><i class="fa fa-unlock-alt"></i>&nbsp;
+					{$logouttxt}
+				</a>
+			{/if}
+	</div>
+	
+	<p>&nbsp;</p>
+	
+	<center>
+	<a href="list.php?page=1&order=asc"><img src="images/logo.png" alt="{$headingtitletxt}"></a>
+	<br><br>
+	<form action="search.php" method="post">
+		<table>
+			<tr>
+				<td><input class="form-control" type="text" name="search_term" size="50" maxlength="50" id="search_term" placeholder="Search"></td>
+				<td><input class="btn btn-primary" type=submit value="{$searchbuttontxt}"></td>
+			</tr>
+		</table>
+	</form>
+	<br>
+	
+	<div class="container theme-showcase" role="main" style="text-align:center;max-width:700px;">
+		<nav class="navbar navbar-inverse">
+		   <div class="container">
+			  <div class="navbar-header">
+				 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+				 <span class="sr-only">Toggle navigation</span>
+				 <span class="icon-bar"></span>
+				 <span class="icon-bar"></span>
+				 <span class="icon-bar"></span>
+				 </button>
+			  </div>
+			  <div class="navbar-collapse collapse">
+				 <ul class="nav navbar-nav">
+					<li><a href="guestbook.php">{$addentrytxt}</a></li>
+					<li><a href="list.php?page=1&amp;order=asc">{$viewguestbooktxt}</a></li>
+					<li><a href="list.php?page=1&amp;order=asc">{$newpostfirsttxt}</a></li>
+					<li><a href="list.php?page=1&amp;order=desc">{$newpostlasttxt}</a></li>
+				 </ul>
+			  </div>
+			  <!--/.nav-collapse -->
+		   </div>
+		</nav>
+	</div>
+<br>
+<br>

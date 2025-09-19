@@ -1,0 +1,19 @@
+</td></tr></table>
+<br>
+<!-- Language Selection -->
+
+<form action="settings.php"  method="POST">
+	<select id="language_selected" name="language_selected" onchange="this.form.submit()">
+	{loop="$lang_select_array"}
+		<option>{$value}</option>
+	{/loop}
+	</select>
+</form>
+<br>
+<a href="http://www.digioz.com"><div class="footer">Powered by DigiOz Guestbook<br>&copy; 2007- {$currentyear} DigiOz Multimedia. </div></a>
+<br>
+<a href="rss.php"><img src="images/rss.png" border="0" /></a>
+
+</center>
+</body>
+</html>
