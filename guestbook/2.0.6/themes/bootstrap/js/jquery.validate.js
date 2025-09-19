@@ -143,7 +143,7 @@ $.extend($.fn, {
 			switch(command) {
 			case "add":
 				$.extend(existingRules, $.validator.normalizeRule(argument));
-				// remove messages from rules, but allow them to be set separetely
+				// remove messages from rules, but allow them to be set separately
 				delete existingRules.messages;
 				staticRules[element.name] = existingRules;
 				if ( argument.messages ) {
