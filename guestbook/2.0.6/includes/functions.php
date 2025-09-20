@@ -70,22 +70,22 @@ function smiley_face($yourmessage)
 	$i = 0;
 	$ubb1 = array( "[b]", "[B]", "[/b]", "[/B]", "[u]", "[U]", "[/u]", "[/U]", "[i]", "[I]", "[/i]", "[/I]", "[center]", "[CENTER]", "[/center]", "[/CENTER]" );
 	$ubb2 = array( "<b>", "<B>", "</b>", "</B>", "<u>", "<U>", "</u>", "</U>", "<i>", "<I>", "</i>", "</I>", "<center>", "<CENTER>", "</center>", "</CENTER>" );
-	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
-	$sm2  = array( "question", "biggrin", "confused", "cool", "cry", "eek", "evil", "exclaim", "frown", "idea", "arrow", "lol", "mad", "mrgreen", "neutral", "razz", "redface", "rolleyes", "sad", "smile", "surprised", "twisted", "wink" );
-	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm2  = array( "question", "biggrin", "confused", "cool", "cry", "eek", "evil", "exclaim", "frown", "idea", "idea", "arrow", "lol", "mad", "mrgreen", "neutral", "razz", "redface", "rolleyes", "sad", "smile", "surprised", "twisted", "wink" );
+	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
 
 	// UBB Code Insertion and Replacing UBB tags with the appropriate HTML tag
 
-	for ($i=0; $i<=15; $i++)
+	for ($i=0; $i<count($ubb1); $i++)
 	{
 		$yourmessage = str_replace($ubb1[$i], $ubb2[$i], $yourmessage);
 	}
 
 	// Inserting smiley faces for guestbook users - icons are in global images directory
 
-	for ($i=0; $i<=22; $i++)
+	for ($i=0; $i<count($sm1); $i++)
 	{
-		$yourmessage = str_replace($sm1[$i], "<img src=\"images/icon_$sm2[$i].gif\" ALT=\"$sm3[$i]\">", $yourmessage);
+		$yourmessage = str_replace($sm1[$i], "<img src=\"images/icon_{$sm2[$i]}.gif\" ALT=\"{$sm3[$i]}\">", $yourmessage);
 	}
 	
 	return $yourmessage;
@@ -109,50 +109,59 @@ function clean_message($yourmessage)
 		$yourmessage = str_replace($rep1[$i], $rep2[$i], $yourmessage);
 	}
 
-	$yourmessage = str_replace('"','&#34;', $yourmessage);
+	$yourmessage = str_replace('\"','&#34;', $yourmessage);
 
 	return $yourmessage;
 }
 
-// Function to breakup log words in message -------------------------
+// Function to breakup long words in message but preserve user newlines ----
 
 function wordbreak($text, $wordsize) 
 {
 	if (strlen($text) <= $wordsize) { return $text; } # No breaking necessary, return original text.
 
-	$text = str_replace("\n", "", $text); # Strip linefeeds
+	// Process each line separately to preserve user-entered newlines
+	$lines = preg_split("/\r\n|\r|\n/", $text);
 	$done = "false";
 	$newtext = "";
-	$start = 0; # Initialize starting position
-	$segment = substr($text, $start, $wordsize + 1); # Initialize first segment
 
-	while ($done == "false") 
-	{
-		$lastspace = strrpos($segment, " ");
-		$lastbreak = strrpos($segment, "\r");
-
-		if ( $lastspace == "" AND $lastbreak == "" ) 
+	foreach ($lines as $idx => $line) {
+		$start = 0; # Initialize starting position
+		$segment = substr($line, $start, $wordsize + 1); # Initialize first segment
+		while (true) 
 		{
-			$newtext .= substr($text, $start, $wordsize) . " ";
-			$start = $start + $wordsize; 
+			$lastspace = strrpos($segment, " ");
+			$lastbreak = strrpos($segment, "\r");
+
+			if ( $lastspace === false && $lastbreak === false ) 
+			{
+				if (strlen($segment) > $wordsize) {
+					$newtext .= substr($line, $start, $wordsize) . " ";
+					$start = $start + $wordsize;
+				} else {
+					$newtext .= $segment;
+					break;
+				}
+			}
+			else 
+			{
+				$last = max($lastspace !== false ? $lastspace : -1, $lastbreak !== false ? $lastbreak : -1);
+				$newtext .= substr($segment, 0, $last + 1);
+				$start = $start + $last + 1;
+			}
+
+			$segment = substr($line, $start, $wordsize + 1);
+
+			if ( strlen($segment) <= $wordsize ) 
+			{
+				$newtext .= $segment;
+				break;
+			}
 		}
-		else 
-		{
-			$last = max($lastspace, $lastbreak);
-			$newtext .= substr($segment, 0, $last + 1);
-			$start = $start + $last + 1;
-		}
-
-		$segment = substr($text, $start, $wordsize + 1);
-
-		if ( strlen($segment) <= $wordsize ) 
-		{
-			$newtext .= $segment;
-			$done = "true";
+		if ($idx < count($lines) - 1) {
+			$newtext .= "\n";
 		}
 	}
-
-	$newtext = str_replace("\r", "\r\n", $newtext); # Replace linefeeds
 
 	return $newtext;
 }
@@ -553,7 +562,4 @@ function validateFileUpload($file, $allowedTypes, $maxSize = 5242880) { // 5MB d
     
     return ['success' => true, 'mime_type' => $mimeType];
 }
-
-
-?>
 

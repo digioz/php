@@ -4,14 +4,15 @@ define('IN_GB', TRUE);
 
 // Include security configuration first
 include("includes/security_headers.php");
+// Load classes that may exist in session BEFORE starting session
+include("includes/user.class.php");
+include("includes/gb.class.php");
 include("includes/secure_session.php");
 
 startSecureSession();
 
 include("includes/functions.php");
 include("includes/config.php");
-include("includes/gb.class.php");
-include("includes/user.class.php");
 
 // Validate theme after functions are loaded
 $theme = validateTheme($theme);
@@ -44,7 +45,7 @@ if (isset($_SESSION["login_email"]))
 	$user_login_email = $_SESSION["login_email"];
 	// Prefer the session user object if available
 	if (isset($_SESSION["user_object"]) && is_object($_SESSION["user_object"])) {
-		$sessUser = $_SESSION["user_object"];		
+		$sessUser = $_SESSION["user_object"]; 		
 		if (isset($sessUser->id) && !empty($sessUser->id)) {
 			$userid = $sessUser->id;
 		}
@@ -481,7 +482,8 @@ if (strlen($error) == 0)
     
     $temp1 = sanitizeOutput(stripslashes($yourname));
     $temp2 = sanitizeOutput(stripslashes($youremail));
-    $temp3 = sanitizeOutput(stripslashes($yourmessage));
+    // Do not escape the message so <br> remains as line breaks, like list.php
+    $temp3 = $yourmessage;
     
     $tpl->assign("temp1", $temp1);
     $tpl->assign("temp2", $temp2);

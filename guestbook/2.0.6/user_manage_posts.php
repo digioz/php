@@ -4,12 +4,13 @@ define('IN_GB', TRUE);
 
 include("includes/security_headers.php");
 include("includes/secure_session.php");
+// Load classes that may be unserialized from session BEFORE starting session
+include("includes/user.class.php");
+include("includes/gb.class.php");
 startSecureSession();
 
 include("includes/config.php");
 include("includes/functions.php");
-include("includes/gb.class.php");
-include("includes/user.class.php");
 include("includes/csrf.class.php");
 
 $selected_language_session = $default_language[2];
