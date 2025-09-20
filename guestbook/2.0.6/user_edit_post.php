@@ -140,6 +140,7 @@ $tpl->assign('let_user_hide_email', $let_user_hide_email);
 $tpl->assign('loginemail', $_SESSION['login_email']);
 $tpl->assign('loginname', $thePost->gbFrom);
 $tpl->assign('postid', $thePost->id);
+$tpl->assign('postid_url', rawurlencode($thePost->id));
 $tpl->assign('postmessage', $postMessagePlain);
 $tpl->assign('outputfrom', $thePost->gbFrom);
 $tpl->assign('outputemail', $thePost->gbEmail);

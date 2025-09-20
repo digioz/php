@@ -1,11 +1,17 @@
 <?php
 define('IN_GB', TRUE);
 
-session_start();
+// Use the same secure session/bootstrap as other pages
+include("includes/security_headers.php");
+include("includes/secure_session.php");
+startSecureSession();
 
 include("includes/functions.php");
 include("includes/user.class.php");
 include("includes/config.php");
+
+// Validate theme after functions are loaded
+$theme = validateTheme($theme);
 
 $selected_language_session = $default_language[2];
 $selected_language_session_code = $default_language[1];
@@ -40,17 +46,18 @@ if (isset($_SESSION["login_email"]))
 {
 	$user_login_email = $_SESSION["login_email"];
 	$user_login_object = getUserByEmail($user_login_email);
-	$userid = $user_login_object->id;
+	$userid = $user_login_object ? $user_login_object->id : '';
 }
 else
 {
-	header( 'Location: index.php' ) ;
+	header('Location: index.php');
+	exit;
 }
 
-// Generate Token Id and Valid  
+// Generate Token Id and Value
 $csrf = new csrf();
 $token_id = $csrf->get_token_id();
-$token_value = $csrf->get_token($token_id);
+$token_value = $csrf->get_token();
 
 //initialize a Rain TPL object
 $tpl = new RainTPL;
@@ -99,12 +106,19 @@ $tpl->assign("user_state", $user_login_object->state);
 $tpl->assign("user_zip", $user_login_object->zip);
 $tpl->assign("user_country", $user_login_object->country);
 $tpl->assign("user_phone", $user_login_object->phone);
-
+$tpl->assign('tokenid', $token_id);
+$tpl->assign('tokenvalue', $token_value);
 
 // Process save
 if (isset($_POST['submit']))
 {   
-    // Minimal validation to keep change focused on encryption
+    // CSRF check
+    if ($csrf->check_valid('post') === false) {
+        $tpl->assign("error_msg", $errorFormToken);
+        echo $tpl->draw('error', true);
+        exit;
+    }
+
 	$name = $_POST['name'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
@@ -163,11 +177,12 @@ if (isset($_POST['submit']))
 	$_SESSION["login_email"] = $email;
 	$_SESSION["user_object"] = $userLoggingIn;
 	
-	header( 'Location: index.php' ) ;
+	header('Location: index.php');
+	exit;
 }
 
 // Show settings form if not posting back
-$html = $tpl->draw( 'user_settings', $return_string = true );
+$html = $tpl->draw('user_settings', $return_string = true);
 
 echo $html;
 	

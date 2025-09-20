@@ -114,47 +114,24 @@ function clean_message($yourmessage)
 	return $yourmessage;
 }
 
-// Function to breakup log words in message -------------------------
+// Function to breakup long words in message but preserve user newlines ----
 
 function wordbreak($text, $wordsize) 
 {
-	if (strlen($text) <= $wordsize) { return $text; } # No breaking necessary, return original text.
+    // If short, no breaking necessary
+    if (strlen($text) <= $wordsize) { return $text; }
 
-	$text = str_replace("\n", "", $text); # Strip linefeeds
-	$done = "false";
-	$newtext = "";
-	$start = 0; # Initialize starting position
-	$segment = substr($text, $start, $wordsize + 1); # Initialize first segment
+    // Process each line separately to preserve user-entered newlines
+    $lines = preg_split("/\r\n|\r|\n/", $text);
+    $resultLines = array();
 
-	while ($done == "false") 
-	{
-		$lastspace = strrpos($segment, " ");
-		$lastbreak = strrpos($segment, "\r");
+    foreach ($lines as $line) {
+        // Insert soft breaks in long tokens while keeping the line
+        $resultLines[] = wordwrap($line, $wordsize, ' ', true);
+    }
 
-		if ( $lastspace == "" AND $lastbreak == "" ) 
-		{
-			$newtext .= substr($text, $start, $wordsize) . " ";
-			$start = $start + $wordsize; 
-		}
-		else 
-		{
-			$last = max($lastspace, $lastbreak);
-			$newtext .= substr($segment, 0, $last + 1);
-			$start = $start + $last + 1;
-		}
-
-		$segment = substr($text, $start, $wordsize + 1);
-
-		if ( strlen($segment) <= $wordsize ) 
-		{
-			$newtext .= $segment;
-			$done = "true";
-		}
-	}
-
-	$newtext = str_replace("\r", "\r\n", $newtext); # Replace linefeeds
-
-	return $newtext;
+    // Restore original line structure using \n (clean_message will convert to <br>)
+    return implode("\n", $resultLines);
 }
 
 // Function to filter out bad words ------------------------------------------
@@ -553,7 +530,4 @@ function validateFileUpload($file, $allowedTypes, $maxSize = 5242880) { // 5MB d
     
     return ['success' => true, 'mime_type' => $mimeType];
 }
-
-
-?>
 
