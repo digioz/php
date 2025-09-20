@@ -4,14 +4,15 @@ define('IN_GB', TRUE);
 
 // Include security configuration first
 include("includes/security_headers.php");
+// Load classes that may exist in session BEFORE starting session
+include("includes/user.class.php");
+include("includes/gb.class.php");
 include("includes/secure_session.php");
 
 startSecureSession();
 
 include("includes/functions.php");
 include("includes/config.php");
-include("includes/gb.class.php");
-include("includes/user.class.php");
 
 // Validate theme after functions are loaded
 $theme = validateTheme($theme);

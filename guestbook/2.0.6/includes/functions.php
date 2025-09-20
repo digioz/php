@@ -70,22 +70,22 @@ function smiley_face($yourmessage)
 	$i = 0;
 	$ubb1 = array( "[b]", "[B]", "[/b]", "[/B]", "[u]", "[U]", "[/u]", "[/U]", "[i]", "[I]", "[/i]", "[/I]", "[center]", "[CENTER]", "[/center]", "[/CENTER]" );
 	$ubb2 = array( "<b>", "<B>", "</b>", "</B>", "<u>", "<U>", "</u>", "</U>", "<i>", "<I>", "</i>", "</I>", "<center>", "<CENTER>", "</center>", "</CENTER>" );
-	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
-	$sm2  = array( "question", "biggrin", "confused", "cool", "cry", "eek", "evil", "exclaim", "frown", "idea", "arrow", "lol", "mad", "mrgreen", "neutral", "razz", "redface", "rolleyes", "sad", "smile", "surprised", "twisted", "wink" );
-	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm1  = array( ":?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ":oops:", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
+	$sm2  = array( "question", "biggrin", "confused", "cool", "cry", "eek", "evil", "exclaim", "frown", "idea", "idea", "arrow", "lol", "mad", "mrgreen", "neutral", "razz", "redface", "rolleyes", "sad", "smile", "surprised", "twisted", "wink" );
+	$sm3  = array( ": ?:", ":D", ":?", ":cool:", ":cry:", ":shock:", ":evil:", ":!:", ":frown:", ":idea!", ":idea:", ":arrow:", ":lol:", ":x", ":mrgreen:", ":|", ":P", ": oops :", ":roll:", ":(", ":)", ":o", ":twisted:", ":wink:" );
 
 	// UBB Code Insertion and Replacing UBB tags with the appropriate HTML tag
 
-	for ($i=0; $i<=15; $i++)
+	for ($i=0; $i<count($ubb1); $i++)
 	{
 		$yourmessage = str_replace($ubb1[$i], $ubb2[$i], $yourmessage);
 	}
 
 	// Inserting smiley faces for guestbook users - icons are in global images directory
 
-	for ($i=0; $i<=22; $i++)
+	for ($i=0; $i<count($sm1); $i++)
 	{
-		$yourmessage = str_replace($sm1[$i], "<img src=\"images/icon_$sm2[$i].gif\" ALT=\"$sm3[$i]\">", $yourmessage);
+		$yourmessage = str_replace($sm1[$i], "<img src=\"images/icon_{$sm2[$i]}.gif\" ALT=\"{$sm3[$i]}\">", $yourmessage);
 	}
 	
 	return $yourmessage;
@@ -109,7 +109,7 @@ function clean_message($yourmessage)
 		$yourmessage = str_replace($rep1[$i], $rep2[$i], $yourmessage);
 	}
 
-	$yourmessage = str_replace('"','&#34;', $yourmessage);
+	$yourmessage = str_replace('\"','&#34;', $yourmessage);
 
 	return $yourmessage;
 }
@@ -118,20 +118,52 @@ function clean_message($yourmessage)
 
 function wordbreak($text, $wordsize) 
 {
-    // If short, no breaking necessary
-    if (strlen($text) <= $wordsize) { return $text; }
+	if (strlen($text) <= $wordsize) { return $text; } # No breaking necessary, return original text.
 
-    // Process each line separately to preserve user-entered newlines
-    $lines = preg_split("/\r\n|\r|\n/", $text);
-    $resultLines = array();
+	// Process each line separately to preserve user-entered newlines
+	$lines = preg_split("/\r\n|\r|\n/", $text);
+	$done = "false";
+	$newtext = "";
 
-    foreach ($lines as $line) {
-        // Insert soft breaks in long tokens while keeping the line
-        $resultLines[] = wordwrap($line, $wordsize, ' ', true);
-    }
+	foreach ($lines as $idx => $line) {
+		$start = 0; # Initialize starting position
+		$segment = substr($line, $start, $wordsize + 1); # Initialize first segment
+		while (true) 
+		{
+			$lastspace = strrpos($segment, " ");
+			$lastbreak = strrpos($segment, "\r");
 
-    // Restore original line structure using \n (clean_message will convert to <br>)
-    return implode("\n", $resultLines);
+			if ( $lastspace === false && $lastbreak === false ) 
+			{
+				if (strlen($segment) > $wordsize) {
+					$newtext .= substr($line, $start, $wordsize) . " ";
+					$start = $start + $wordsize;
+				} else {
+					$newtext .= $segment;
+					break;
+				}
+			}
+			else 
+			{
+				$last = max($lastspace !== false ? $lastspace : -1, $lastbreak !== false ? $lastbreak : -1);
+				$newtext .= substr($segment, 0, $last + 1);
+				$start = $start + $last + 1;
+			}
+
+			$segment = substr($line, $start, $wordsize + 1);
+
+			if ( strlen($segment) <= $wordsize ) 
+			{
+				$newtext .= $segment;
+				break;
+			}
+		}
+		if ($idx < count($lines) - 1) {
+			$newtext .= "\n";
+		}
+	}
+
+	return $newtext;
 }
 
 // Function to filter out bad words ------------------------------------------

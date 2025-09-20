@@ -63,11 +63,46 @@ $csrf = new csrf();
 $token_id = $csrf->get_token_id();
 $token_value = $csrf->get_token();
 
-// Derive a plain message for editing: convert <br> to newlines and replace img ALT with code
+// Derive a plain message for editing: convert <br> to newlines and convert smiley <img> back to tokens
 $postMessagePlain = $thePost->gbMessage;
 $postMessagePlain = str_ireplace(["<br>", "<br/>", "<br />"], "\n", $postMessagePlain);
-$postMessagePlain = preg_replace('/<img[^>]*ALT=\"([^\"]+)\"[^>]*>/i', '$1', $postMessagePlain);
-// strip remaining tags
+
+// Map icon names back to original tokens used by smiley_face()
+$smileyMap = [
+    'question' => ':?:',
+    'biggrin' => ':D',
+    'confused' => ':?',
+    'cool' => ':cool:',
+    'cry' => ':cry:',
+    'eek' => ':shock:',
+    'evil' => ':evil:',
+    'exclaim' => ':!:',
+    'frown' => ':frown:',
+    'idea' => ':idea:',
+    'arrow' => ':arrow:',
+    'lol' => ':lol:',
+    'mad' => ':x',
+    'mrgreen' => ':mrgreen:',
+    'neutral' => ':|',
+    'razz' => ':P',
+    'redface' => ':oops:',
+    'rolleyes' => ':roll:',
+    'sad' => ':(',
+    'smile' => ':)',
+    'surprised' => ':o',
+    'twisted' => ':twisted:',
+    'wink' => ':wink:'
+];
+
+$postMessagePlain = preg_replace_callback('/<img[^>]+icon_([a-z]+)\.gif[^>]*>/i', function($m) use ($smileyMap) {
+    $key = strtolower($m[1]);
+    return isset($smileyMap[$key]) ? $smileyMap[$key] : '';
+}, $postMessagePlain);
+
+// Normalize a couple of legacy ALT variants back to canonical tokens
+$postMessagePlain = str_ireplace([': ?:',' : ?:', ': oops :'], [':?:', ':?:', ':oops:'], $postMessagePlain);
+
+// Strip any remaining tags
 $postMessagePlain = strip_tags($postMessagePlain);
 
 // Handle submit
@@ -126,6 +161,8 @@ $tpl->assign('addentrytxt', $addentrytxt);
 $tpl->assign('viewguestbooktxt', $viewguestbooktxt);
 $tpl->assign('newpostfirsttxt', $newpostfirsttxt);
 $tpl->assign('newpostlasttxt', $newpostlasttxt);
+$tpl->assign('searchlabeltxt', $searchlabeltxt);
+$tpl->assign('searchbuttontxt', $searchbuttontxt);
 $tpl->assign('currentyear', date('Y'));
 $tpl->assign('goback', $goback);
 $tpl->assign('langCode', $default_language[1]);
@@ -137,6 +174,12 @@ $tpl->assign('yourMessagetxt', $yourMessagetxt);
 $tpl->assign('submitbutton', isset($info3)?$info3:'Save');
 $tpl->assign('hideemailtxt', $hideemailtxt);
 $tpl->assign('let_user_hide_email', $let_user_hide_email);
+$tpl->assign('logintxt', $logintxt);
+$tpl->assign('logouttxt', $logouttxt);
+$tpl->assign('registertxt', $registertxt);
+$tpl->assign('info2', $info2);
+$tpl->assign('loginusermanageposts', $login_allow_post_delete);
+$tpl->assign('info4', $info4);
 $tpl->assign('loginemail', $_SESSION['login_email']);
 $tpl->assign('loginname', $thePost->gbFrom);
 $tpl->assign('postid', $thePost->id);
