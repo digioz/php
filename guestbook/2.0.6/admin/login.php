@@ -1,38 +1,43 @@
 <?php
 
-// This starts the session ---------------------------------------------
-
 define('IN_GB', TRUE);
 
-session_start();
-
-// This is the administrative Username and Password --------------------
-
+// Secure session & headers
+include("../includes/security_headers.php");
+include("../includes/secure_session.php");
 include("../includes/config.php");
 
-// If the form was submitted -------------------------------------------
+startSecureSession();
+
 $error = '';
-if (isset($_POST['Submitted'])) 
-{
-    // If the username and password match up, then continue...
-    if ($_POST['Username'] == $_Username && $_POST['Password'] == $_Password) { 
 
-        // Username and password matched, set them as logged in and set the 
-        // Username to a session variable. 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Submitted'])) {
+    $user = isset($_POST['Username']) ? trim($_POST['Username']) : '';
+    $pass = isset($_POST['Password']) ? (string)$_POST['Password'] : '';
+
+    if ($user === $_Username && $pass === $_Password) {
+        regenerateSessionOnLogin();
         $_SESSION['Logged_In'] = true;
-        $_SESSION['Username'] = $_Username; 
-    }
-    else
-    {
+        $_SESSION['Username'] = $_Username;
+        header('Location: index.php');
+        exit;
+    } else {
         $error = "<center><div style=\"color:red;\">Invalid Login Information Entered.</div></center>";
-    } 
-} 
-if (!isset($_SESSION['Logged_In'])) $_SESSION['Logged_In'] = 'False';
-// If they are NOT logged in then show the form to login... 
-if ($_SESSION['Logged_In'] != "True") {
+    }
+}
 
-?> 
-    
+if (isset($_GET['mode']) && $_GET['mode'] === 'logout') {
+    destroySecureSession();
+    header('Location: login.php');
+    exit;
+}
+
+$loggedIn = !empty($_SESSION['Logged_In']);
+if ($loggedIn) {
+    header('Location: index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,18 +48,17 @@ if ($_SESSION['Logged_In'] != "True") {
 <body>
 <div class="wrap">
     <div id="content">
-        <h3>Guestbook Admin Interface Login</h3> 
+        <h3>Guestbook Admin Interface Login</h3>
         <p>&nbsp;</p>
         <div id="main">
             <div class="full_w">
-            
-                <form action="login.php" method="post">
+                <form action="login.php" method="post" autocomplete="off">
                     <label for="login">Username:</label>
                     <input id="login" name="Username" class="text" />
                     <label for="pass">Password:</label>
                     <input id="pass" name="Password" type="password" class="text" />
-                    <input type="hidden" name="Submitted" value="True">
-                    <br /> 
+                    <input type="hidden" name="Submitted" value="True" />
+                    <br />
                     <div class="sep"></div>
                     <button type="submit" class="ok">Login</button>
                 </form>
@@ -65,31 +69,5 @@ if ($_SESSION['Logged_In'] != "True") {
     <p>&nbsp;</p>
     <?php echo $error; ?>
 </div>
-
 </body>
-</html>   
-    
-<?php
-} 
-else 
-{
-    $URL="index.php";
-    header ("Location: $URL");
-} 
-
-// If they want to logout then 
-if (@$_GET['mode'] == "logout") { 
-    // Start the session 
-    session_start(); 
-
-    // Put all the session variables into an array 
-    $_SESSION = array(); 
-
-    // and finally remove all the session variables 
-    session_destroy(); 
-
-    // Redirect to show results.. 
-    echo "<META HTTP-EQUIV=\"refresh\" content=\"1; URL=" . $_SERVER['PHP_SELF'] . "\">"; 
-}
- 
-?>
+</html>

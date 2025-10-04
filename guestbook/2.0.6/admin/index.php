@@ -4,86 +4,66 @@
 
 define('IN_GB', TRUE);
 
-session_start();
+include("../includes/security_headers.php");
+include("../includes/secure_session.php");
+include("../includes/config.php");
+include("../includes/functions.php");
+include("../includes/gb.class.php");
 
-$pageTitle = "Home";  
+startSecureSession();
+
+$pageTitle = "Home";
 
 include("login_check.php");
-include("../includes/config.php");
 include("includes/header.php");
-include("../includes/gb.class.php");
-include("../includes/functions.php");
 include("../language/$default_language[2]");
 
-$page = isset($_GET['page']) ? $_GET['page'] : "";
-$order= isset($_GET['order']) ? $_GET['order'] : "";
+// Params ------------------------------------------------------------------
+$page  = isset($_GET['page']) ? $_GET['page'] : 1;
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc';
 
-if ($page == "") { $page = 1; }
-if ($order == "") { $order = "asc"; }
+if (!ctype_digit((string)$page) || (int)$page < 1) { $page = 1; } else { $page = (int)$page; }
+if ($order !== 'asc' && $order !== 'desc') { $order = 'asc'; }
 
-$currentPage = $page;
-$totalpages = 0;
-if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
-{
-    // Check page value ------------------------------------------------------------------
+$perpage = 5;
 
-    $fwd = $page + 1;
-    $rwd = $page - 1;
-
-    // Setting the default values for number of records per page -------------------------
-    $perpage = 5;
-
-    // Reading in all the records, putting each guestbook entry in one Array Element -----
-
-    $filename = "../data/list.txt";
-    $datain = readDataFile($filename);
-
-    if ($datain === '' )
-    {
-       print "No enteries to delete";
+// Load posts ---------------------------------------------------------------
+$filename = "../data/list.txt";
+$datain = readDataFile($filename);
+$lines = [];
+if ($datain !== '') {
+    $out = explode("<!-- E -->", $datain);
+    foreach ($out as $chunk) {
+        $chunk = trim($chunk);
+        if ($chunk === '') continue;
+        $data = json_decode($chunk, true);
+        if (is_array($data)) {
+            $lines[] = gbClass::fromArray($data);
+        }
     }
-    else
-    { 
-        $out = explode("<!-- E -->", $datain);
+}
 
-        $outCount = count($out) - 1;
-        $j = $outCount-1;
+$lines = array_values(array_filter($lines));
 
-        $lines = [];
-        for ($i=0; $i<=$outCount; $i++)
-        {
-            $raw = trim($out[$i]); if ($raw==='') continue;
-            $data = json_decode($raw, true);
-            if (is_array($data)) {
-                $lines[$i] = gbClass::fromArray($data);
-            }
-        }
+if ($order === 'desc') {
+    $lines = array_reverse($lines);
+}
 
-        if ($order == "desc")
-        {
-            $lines = array_values(array_reverse($lines));
-        }
+$count = count($lines);
+if ($count === 0) {
+    echo "<center>No entries to display</center>";
+    include("includes/footer.php");
+    exit;
+}
 
-        // Counting the total number of entries (lines) in the data text file ----------------
+$totalpages = (int)ceil($count / $perpage);
+if ($page > $totalpages) { $page = $totalpages; }
 
-        $result = count($lines);
-        $count = $result-1;
+$startIndex = ($page - 1) * $perpage;
+$endIndex = min($startIndex + $perpage, $count);
 
-        // Caclulate how many pages there are ----------------------------------------
-
-        if ($count == 0) { $totalpages = 0; }
-        else { $totalpages = intval(($count - 1) / $perpage) + 1; }
-
-        $page = $totalpages - ($page - 1);
-
-        $end = $count - (($totalpages - $page) * $perpage);
-        $start = $end - ($perpage - 1); if ($start < 1) { $start = 1; }
-
-        if ($start < 0) { $start = 0; }
 ?>
-
 <center>
-
 <table>
     <thead>
         <tr>
@@ -93,106 +73,48 @@ if (is_numeric($page) == true && ($order == "asc" || $order == "desc"))
             <th scope="col" style="width: 30px;">Action</th>
         </tr>
     </thead>
-
-    <?php
-    for ($i=$end-1; $i>$start-2; $i--)
-    {
-		// Convert to local date time
-		$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset + date("I")));
-		
-		if ($dst_auto_detect == 0)
-		{
-			$date_format_locale = gmdate($date_time_format, $lines[$i]->gbDate + 3600 * ($timezone_offset));
-		}
-    ?>
-        
     <tbody>
+<?php for ($i = $startIndex; $i < $endIndex; $i++): $post = $lines[$i];
+    // Local date conversion
+    $date_format_locale = gmdate($date_time_format, $post->gbDate + 3600 * ($timezone_offset + date("I")));
+    if ($dst_auto_detect == 0) {
+        $date_format_locale = gmdate($date_time_format, $post->gbDate + 3600 * ($timezone_offset));
+    }
+?>
         <tr>
-            <td><?php echo $lines[$i]->gbFrom; ?></td>
-            <td><a href="mailto:<?php echo $lines[$i]->gbEmail; ?>"><?php echo $lines[$i]->gbEmail; ?></a></td>
-            <td><?php echo $date_format_locale ?></td>
-            <td>
-                <!--<a href="#" class="table-icon edit" title="Edit"></a>
-                <a href="#" class="table-icon archive" title="Archive"></a>-->
-                <a href="delete_process.php?id=<?php echo $i; ?>" class="table-icon delete" title="Delete"></a>
-            </td>
+            <td><?php echo htmlspecialchars($post->gbFrom); ?></td>
+            <td><a href="mailto:<?php echo htmlspecialchars($post->gbEmail); ?>"><?php echo htmlspecialchars($post->gbEmail); ?></a></td>
+            <td><?php echo htmlspecialchars($date_format_locale); ?></td>
+            <td><a href="delete_process.php?id=<?php echo $i; ?>&order=<?php echo $order; ?>" class="table-icon delete" title="Delete"></a></td>
         </tr>
         <tr>
-             <td colspan="4">
-                <?php echo $lines[$i]->gbMessage; ?>   
-             </td>
+            <td colspan="4"><?php echo $post->gbMessage; ?></td>
         </tr>
+<?php endfor; ?>
     </tbody>
-    
-    <?php
-    }
-    ?>
-</table> 
-
+</table>
+</center>
 <?php
-    } 
+// Pagination ------------------------------------------------------------
+echo '<center><div class="pagination" style="margin-top:10px;">';
+if ($page > 1) {
+    echo '<a href="index.php?page=1&order=' . $order . '">&lt;&lt;</a>';
+    echo '<a href="index.php?page=' . ($page-1) . '&order=' . $order . '">&lt;</a>';
 }
-
-// Creating the Forward and Backward links -------------------------------------
-echo "<center>";
-echo '<div class="pagination">';
-
-
-
-if ($fwd > 0 && $rwd > 0 && $rwd<$totalpages+1)
-{
-    echo "<a href=\"index.php?page=1&order=$order\">&lt&lt</a>"; 
-    echo "<a href=\"index.php?page=$rwd&order=$order\">&lt</a>";
-}
-else if ($rwd > 0)
-{ 
-    echo "<a href=\"index.php?page=$fwd&order=$order\">&lt</a>"; 
-}
-
-// loop through pages
-
-$startPagination = $currentPage - 3;
-$endPagination = $currentPage + 3;
-
-if ($startPagination < 1)
-{
-    $startPagination = 1;
-}
-
-if ($endPagination > $totalpages)
-{
-    $endPagination = $totalpages;
-}
-
-//for ($i = 1; $i<=$totalpages; $i++)
-for ($i = $startPagination; $i<=$endPagination; $i++)  
-{
-    if ($currentPage == $i)
-    {
-        echo " <a href=\"index.php?page=$i&order=$order\"><b>$i</b></a> ";  
-    }
-    else
-    {
-        echo " <a href=\"index.php?page=$i&order=$order\">$i</a> ";      
+$startPagination = max(1, $page - 3);
+$endPagination   = min($totalpages, $page + 3);
+for ($p = $startPagination; $p <= $endPagination; $p++) {
+    if ($p == $page) {
+        echo '<b><a class="current" href="index.php?page=' . $p . '&order=' . $order . '">' . $p . '</a></b>';
+    } else {
+        echo '<a href="index.php?page=' . $p . '&order=' . $order . '">' . $p . '</a>';
     }
 }
-
-if ($fwd > 0 && $rwd > 0 && $fwd<$totalpages+1)
-{
-    echo "<a href=\"index.php?page=$fwd&order=$order\">&gt</a>";
+if ($page < $totalpages) {
+    echo '<a href="index.php?page=' . ($page+1) . '&order=' . $order . '">&gt;</a>';
+    echo '<a href="index.php?page=' . $totalpages . '&order=' . $order . '">&gt;&gt;</a>';
 }
-else if ($fwd > 0 && $fwd <= $totalpages)
-{ 
-    echo "<a href=\"index.php?page=$fwd&order=$order\">&gt</a>"; 
-}
-
-if ($currentPage < $totalpages)
-{
-    echo "<a href=\"index.php?page=$totalpages&order=$order\">&gt&gt</a>"; 
-}
-
-echo '</div>';
-echo "</center>";
+echo '</div></center>';
 
 include ("includes/footer.php");
 ?>

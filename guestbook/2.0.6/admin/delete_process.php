@@ -4,97 +4,102 @@
 
 define('IN_GB', TRUE);
 
-session_start();
+include("../includes/security_headers.php");
+include("../includes/secure_session.php");
+include("../includes/config.php");
+include("../includes/functions.php");
+include("../includes/gb.class.php");
+
+startSecureSession();
 
 $pageTitle = "Delete Guestbook Entry"; 
 
 include("login_check.php");
-include("../includes/config.php");
 include("includes/header.php"); 
-include("../includes/functions.php");
-include("../includes/gb.class.php");
 
-$order= isset($_GET['order']) ? $_GET['order'] : "";
+// Get and sanitize inputs
+$idRaw    = isset($_GET['id']) ? $_GET['id'] : '';
+$orderRaw = isset($_GET['order']) ? $_GET['order'] : '';
+
+$id   = (ctype_digit($idRaw)) ? (int)$idRaw : -1;
+$order = ($orderRaw === 'asc' || $orderRaw === 'desc') ? $orderRaw : '';
 ?>
-
 <center>
-
 <?php
-
-$id = $_GET['id'];
-
-// Validate browser input ------------------------------------------------------------
-
-if (is_numeric($id) == false)
-{
-  echo "<font color=\"red\">Non Numeric ID Number.</font>";
-  echo "<p>&nbsp;</p>";
-  echo "<p>";
-  echo "<center>";
-  echo "      <a href=\"index.php\"><font color=\"red\"><b>Admin Main</b></font></a> -";
-  echo "      <a href=\"login.php?mode=logout\"><font color=\"red\"><b>Logout</b></font></a>";
-  echo "</center></p>";
-  echo "</body>";
-  echo "</html>";
+// Validation ------------------------------------------------------------
+if ($id < 0) {
+  echo '<font color="red">Non Numeric ID Number.</font>';
+  echo '<p>&nbsp;</p><p><center><a href="index.php"><font color="red"><b>Admin Main</b></font></a> - '
+     .'<a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a></center></p>';
+  include("includes/footer.php");
   exit;
 }
 
-if (!($order == "asc" || $order == "desc" || $order == ""))
-{
-  echo "<font color=\"red\">Entry order can only be 'asc' or 'desc'</font>";
-  echo "<p>&nbsp;</p>";
-  echo "<p>";
-  echo "<center>";
-  echo "      <a href=\"index.php\"><font color=\"red\"><b>Admin Main</b></font></a> -";
-  echo "      <a href=\"login.php?mode=logout\"><font color=\"red\"><b>Logout</b></font></a>";
-  echo "</center></p>";
-  echo "</body>";
-  echo "</html>";
+if (!($order === 'asc' || $order === 'desc' || $order === '')) {
+  echo '<font color="red">Entry order can only be \'asc\' or \'desc\'</font>';
+  echo '<p>&nbsp;</p><p><center><a href="index.php"><font color="red"><b>Admin Main</b></font></a> - '
+     .'<a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a></center></p>';
+  include("includes/footer.php");
   exit;
 }
 
-// Reading in all the records, putting each guestbook entry in one Array Element -----
-
+// Load entries ----------------------------------------------------------
 $filename = "../data/list.txt";
 $datain = readDataFile($filename);
-$out = explode("<!-- E -->", $datain);
+if ($datain === '') {
+  echo '<font color="red">No entries found.</font>';
+  include("includes/footer.php");
+  exit;
+}
 
+$out = explode("<!-- E -->", $datain);
 $lines = [];
-for ($i=0; $i<count($out)-1; $i++) {
-    $raw = trim($out[$i]); if ($raw==='') continue;
-    $data = json_decode($raw, true);
+foreach ($out as $chunk) {
+    $chunk = trim($chunk);
+    if ($chunk === '') continue;
+    $data = json_decode($chunk, true);
     if (is_array($data)) { $lines[] = gbClass::fromArray($data); }
 }
 
-if ($order == "desc") {
+if (count($lines) === 0) {
+  echo '<font color="red">No entries parsed.</font>';
+  include("includes/footer.php");
+  exit;
+}
+
+if ($order === 'desc') {
     $lines = array_values(array_reverse($lines));
 }
 
-// Now that we have all the entries in an array, lets take out the one entry that the user wants deleted
-
-$datanew = "";
-for ($i=0; $i<count($lines); $i++)
-{
-  if ($i != $id)
-  {
-     $datanew .= json_encode($lines[$i])."<!-- E -->";
-  }
+if ($id >= count($lines)) {
+  echo '<font color="red">Invalid ID (out of range).</font>';
+  echo '<p>&nbsp;</p><p><center><a href="index.php"><font color="red"><b>Admin Main</b></font></a> - '
+     .'<a href="login.php?mode=logout"><font color="red"><b>Logout</b></font></a></center></p>';
+  include("includes/footer.php");
+  exit;
 }
 
-writeDataFile($filename, $datanew);
+// Rebuild file without the specified entry --------------------------------
+$datanew = '';
+for ($i=0; $i<count($lines); $i++) {
+    if ($i === $id) { continue; }
+    $datanew .= json_encode($lines[$i]) . "<!-- E -->";
+}
 
+if (!writeDataFile($filename, $datanew)) {
+  echo '<font color="red">Failed to write updated data file.</font>';
+  include("includes/footer.php");
+  exit;
+}
 ?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-
-         <a href="index.php"><center><b><font color="red">Message Deleted!</font></center></b></a><br><br>
-         <a href="index.php"><center><b><font color="black">Back to Delete Menu</font></center></b></a><br>
-		 
+<a href="index.php"><center><b><font color="red">Message Deleted!</font></b></center></a><br><br>
+<a href="index.php"><center><b><font color="black">Back to Delete Menu</font></b></center></a><br>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </center>
-
 <?php
 include ("includes/footer.php");
 ?>
