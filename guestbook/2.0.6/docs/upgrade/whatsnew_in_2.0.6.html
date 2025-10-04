@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DigiOz Guestbook 2.0.6 - What’s New</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+ body { font-family: Arial, Helvetica, sans-serif; line-height:1.5; margin:22px; color:#222; }
+ h1 { font-size:1.9em; margin-bottom:0.3em; }
+ h2 { margin-top:1.6em; border-bottom:2px solid #eee; padding-bottom:4px; }
+ h3 { margin-top:1.2em; }
+ code { background:#f5f5f5; padding:2px 6px; border-radius:4px; font-size:0.9em; }
+ ul { margin-top:6px; }
+ li { margin:4px 0; }
+ .tag { display:inline-block; background:#0A6ECD; color:#fff; font-size:0.7em; padding:2px 6px; border-radius:3px; margin-left:6px; vertical-align:middle; }
+ .note { background:#fff8d8; border-left:4px solid #e9c04c; padding:10px 12px; margin:14px 0; }
+ .mono { font-family: Consolas, Menlo, monospace; }
+ footer { margin-top:40px; font-size:0.8em; color:#666; }
+</style>
+</head>
+<body>
+
+<h1>DigiOz Guestbook 2.0.6 – What’s New</h1>
+<p>This release focuses on hardening security, improving data handling, refining edit behavior (newlines & emojis), and removing long-standing warnings while remaining backward-friendly.</p>
+
+<h2>Security Enhancements</h2>
+<ul>
+  <li><strong>Secure session framework</strong>: strict cookie flags (HttpOnly, SameSite=Strict, Secure when HTTPS), safe regeneration, isolated writable path fallback, explicit logout invalidation.</li>
+  <li><strong>Optional data-at-rest encryption</strong> for <code>list.txt</code>, <code>users.txt</code>, etc. using AES‑256‑CBC with automatic legacy plaintext fallback.</li>
+  <li><strong>Password hashing upgrade</strong> to <code>password_hash()</code>/<code>password_verify()</code>.</li>
+  <li><strong>CSRF protection</strong> added to all mutating forms (add entry, edit, delete, settings).</li>
+  <li><strong>Input & output sanitation utilities</strong>: <code>validateInput()</code>, <code>sanitizeOutput()</code>, theme & language whitelists.</li>
+  <li><strong>Safer attachments</strong>: MIME validation, randomized filenames, execution-blocking <code>.htaccess</code>, restricted inline display.</li>
+  <li>Consistent escaping strategy reduces XSS exposure (only controlled HTML like smilies & line breaks rendered).</li>
+</ul>
+
+<h2>Stability & Reliability</h2>
+<ul>
+  <li>Eliminated <code>__PHP_Incomplete_Class</code> warnings by loading classes before session start.</li>
+  <li>Unified secure session initialization across all pages.</li>
+  <li>Graceful encrypted/plaintext auto-detection prevents “empty data” regressions after enabling encryption.</li>
+  <li>Redirect flows cleaned up with proper <code>exit</code> handling.</li>
+  <li>Template variable coverage expanded to remove “Undefined variable” warnings in cached headers.</li>
+</ul>
+
+<h2>Usability Improvements</h2>
+<ul>
+  <li><strong>Newline preservation</strong> when editing posts (updated <code>wordbreak()</code> logic per line).</li>
+  <li><strong>Emoji round-trip fidelity</strong>: edit form converts existing smiley images back to tokens.</li>
+  <li>Support for both <code>:idea!</code> and <code>:idea:</code>.</li>
+  <li>Add-entry confirmation page now renders line breaks consistently (no raw <code>&lt;br&gt;</code> text).</li>
+</ul>
+
+<h2>Code & Maintainability</h2>
+<ul>
+  <li>Centralized I/O helpers: <code>gbEncrypt()</code>, <code>gbDecrypt()</code>, <code>readDataFile()</code>, <code>appendDataFile()</code>.</li>
+  <li>Attachment pipeline hardened without breaking default disabled behavior.</li>
+  <li>Environment-variable override for encryption key (<code>GB_DATA_KEY</code>).</li>
+  <li>Simplified legacy upgrade path by isolating modern security constructs.</li>
+</ul>
+
+<h2>Developer Notes / Upgrade Considerations</h2>
+<div class="note">
+<strong>Encryption Key:</strong> Replace the placeholder key immediately. Changing it later without decrypt/re-encrypt will render existing encrypted data unreadable.
+</div>
+<ul>
+  <li>If upgrading from pre-hash passwords, implement a one-time legacy rehash on successful login.</li>
+  <li>Clear the <code>cache/</code> directory after deployment to recompile templates with new variables & CSRF fields.</li>
+  <li>Custom themes must include hidden CSRF token inputs in every POST form.</li>
+  <li>When enabling encryption mid-upgrade, first successful write will rewrite files encrypted.</li>
+</ul>
+
+<h2>Summary</h2>
+<p>2.0.6 delivers a comprehensive security uplift (sessions, encryption, hashing, CSRF), improves editor fidelity (emojis & newlines), streamlines persistence logic, and resolves recurring warnings—while preserving backward compatibility paths for legacy data.</p>
+
+<h3>At a Glance</h3>
+<ul>
+  <li>Security: Sessions, Encryption, CSRF, Hashing.</li>
+  <li>Data Safety: Seamless legacy plaintext support.</li>
+  <li>UX: Accurate emoji editing & preserved formatting.</li>
+  <li>Maintainability: Consolidated helpers & clearer upgrade steps.</li>
+</ul>
+
+<footer>
+Generated “What’s New” summary for DigiOz Guestbook 2.0.6.
+</footer>
+
+</body>
+</html>

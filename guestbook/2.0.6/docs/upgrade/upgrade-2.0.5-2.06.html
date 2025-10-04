@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DigiOz Guestbook Upgrade Guide: 2.0.5 → 2.0.6</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+ body { font-family: Arial, Helvetica, sans-serif; line-height:1.45; margin:20px; color:#222; }
+ h1,h2,h3 { font-weight:600; }
+ code, pre { background:#f5f5f5; padding:4px 6px; border-radius:4px; font-size:0.95em; }
+ pre { overflow:auto; }
+ .warn { background:#fff4d6; border-left:4px solid #f0b400; padding:10px 12px; }
+ .step { margin-bottom:14px; }
+ ol.main > li { margin-bottom:14px; }
+ ul { margin-top:6px; }
+ .ok { color:#0a772f; }
+ .mono { font-family: Consolas, Menlo, monospace; }
+ .block { background:#f5f5f5; padding:10px 12px; border-radius:6px; }
+ hr { margin:28px 0; }
+ .small { font-size:0.85em; color:#666; }
+</style>
+</head>
+<body>
+<h1>DigiOz Guestbook Upgrade Guide<br><small>Version 2.0.5 → 2.0.6</small></h1>
+
+<p>This document describes the recommended procedure for upgrading an existing DigiOz Guestbook installation from <strong>2.0.5</strong> to <strong>2.0.6</strong>. Follow the steps in order; do not skip the backup phase.</p>
+
+<div class="warn"><strong>Important:</strong> 2.0.6 introduces secure sessions, optional data-at-rest encryption, CSRF protection, stronger password hashing, safer attachment handling, newline preservation, and improved emoji parsing. Review each change before deploying to production.</div>
+
+<h2>1. Backup</h2>
+<ul>
+  <li>Full copy of the entire guestbook directory.</li>
+  <li>Explicitly preserve:
+    <code>includes/config.php</code>,
+    <code>data/list.txt</code>,
+    <code>data/users.txt</code>,
+    any customized <code>themes/*</code>.</li>
+  <li>If encryption was already enabled in a customized build, note the existing key (cannot be recovered from ciphertext).</li>
+</ul>
+
+<h2>2. Deploy New Files</h2>
+<ul>
+  <li>Extract 2.0.6 package over (or alongside) the 2.0.5 codebase.</li>
+  <li>Do <em>not</em> overwrite your existing <code>includes/config.php</code>; instead merge changes manually (next step).</li>
+  <li>Retain customized themes; add any new variables/tokens shown in stock templates.</li>
+</ul>
+
+<h2>3. Merge Configuration Changes</h2>
+<p>Ensure the following directives exist / are updated in <code>includes/config.php</code>:</p>
+<ul>
+  <li><code>$gb_version = "2.0.6";</code></li>
+  <li><code>$data_encryption_enabled</code> (set to <code>1</code> only after you configure a proper key)</li>
+  <li><code>$data_encryption_key</code>: replace placeholder with a strong, random 32+ char secret (or set <code>GB_DATA_KEY</code> env var)</li>
+  <li><code>$login_allow_post_delete</code> (present and set appropriately)</li>
+</ul>
+<div class="warn"><strong>Never deploy with the placeholder encryption key.</strong> Changing the key later without re-encrypting will make existing encrypted files unreadable.</div>
+
+<h2>4. Secure Session Bootstrap</h2>
+<p>All pages that previously did a raw <code>session_start()</code> must adopt the unified secure session layer. Minimum pattern:</p>
+<pre><code>
+include "includes/security_headers.php";
+include "includes/secure_session.php";
+include "includes/user.class.php";   // classes stored in session BEFORE start
+include "includes/gb.class.php";
+startSecureSession();
+</code></pre>
+<p>Verify this appears (in this order) in these scripts: <code>login.php</code>, <code>logout.php</code>, <code>add.php</code>, <code>user_settings.php</code>, <code>user_manage_posts.php</code>, <code>user_edit_post.php</code>, and any custom admin pages.</p>
+
+<h2>5. CSRF Protection</h2>
+<ul>
+  <li>Each POST form now requires a hidden token pair: <code>{$tokenid}</code> (name) and <code>{$tokenvalue}</code> (value).</li>
+  <li>Tokens added to: add entry, edit post, user settings, post delete forms.</li>
+  <li>Custom / third‑party themes must include:
+<pre><code>&lt;input type="hidden" name="{$tokenid}" value="{$tokenvalue}" /&gt;</code></pre>
+  </li>
+</ul>
+
+<h2>6. Template Cache Refresh</h2>
+<p>Delete all files inside <code>cache/</code> (not the directory itself) so RainTPL recompiles with new variables (prevents “Undefined variable” warnings).</p>
+
+<h2>7. Optional Data Encryption</h2>
+<ol>
+  <li>Set a strong <code>$data_encryption_key</code> (or environment variable) first.</li>
+  <li>Set <code>$data_encryption_enabled = 1</code>.</li>
+  <li>On first write (adding or editing a post / user), plaintext store(s) are read and re-saved encrypted.</li>
+  <li>Rollback: set flag back to 0 &mdash; existing encrypted files remain encrypted; you would need a manual decrypt if you intend to return to plaintext.</li>
+</ol>
+
+<h2>8. File / Directory Permissions</h2>
+<ul>
+  <li><code>data/</code>, <code>cache/</code>, <code>uploads/</code>, <code>data/sessions/</code> writable by web server user.</li>
+  <li>Ensure <code>uploads/.htaccess</code> (auto-created on first attachment) disables script execution.</li>
+</ul>
+
+<h2>9. Password Hashes</h2>
+<p>2.0.6 uses <code>password_hash()</code> / <code>password_verify()</code>. If you had legacy hashes:</p>
+<pre><code>// After a legacy check succeeds, migrate immediately:
+if (legacy_check($inputPwd, $legacyHash)) {
+    $user-&gt;password = password_hash($inputPwd, PASSWORD_DEFAULT);
+    // persist updated users.txt entry
+}</code></pre>
+
+<h2>10. Emoji & Newline Handling</h2>
+<ul>
+  <li>Editing a post now reverses existing smiley <code>&lt;img&gt;</code> tags back to their textual tokens.</li>
+  <li>Both <code>:idea:</code> and <code>:idea!</code> variants supported.</li>
+  <li>User-entered line breaks preserved on edit (updated <code>wordbreak()</code> logic).</li>
+</ul>
+
+<h2>11. Attachments (If Enabled)</h2>
+<ul>
+  <li>MIME type checked with <code>finfo</code>; random filenames assigned.</li>
+  <li>Inline image embedding only for whitelisted extensions when <code>$gbDisplayImageInBody = 1</code>.</li>
+</ul>
+
+<h2>12. Testing Checklist</h2>
+<ul>
+  <li>Login / logout (inspect cookie flags: Secure (if HTTPS), HttpOnly, SameSite=Strict).</li>
+  <li>Add entry with multiple lines + emoticons → verify in list + confirmation pages.</li>
+  <li>Edit entry → confirm emojis persist, newlines preserved.</li>
+  <li>User settings save (password change optional) → CSRF token validated.</li>
+  <li>(If encryption enabled) Inspect <code>data/list.txt</code> (should appear base64/opaque, not JSON/plaintext).</li>
+  <li>Attempt a POST missing token → CSRF error page displayed.</li>
+  <li>Delete a user-owned post (if allowed) → entry removed & file rewritten.</li>
+</ul>
+
+<h2>13. Clean Up Legacy Code</h2>
+<ul>
+  <li>Remove any direct <code>session_start()</code> calls left behind.</li>
+  <li>Remove obsolete manual hashing / salts replaced by <code>password_hash()</code>.</li>
+</ul>
+
+<h2>14. Tag the Release</h2>
+<pre><code>git add .
+git commit -m "Upgrade to DigiOz Guestbook 2.0.6"
+git tag v2.0.6
+git push origin main --tags   # or your branch name</code></pre>
+
+<h2>Quick Reference Checklist</h2>
+<ul>
+  <li class="ok">Backup created</li>
+  <li class="ok">Config merged (encryption flag + key + version)</li>
+  <li class="ok">Secure session bootstrap added everywhere</li>
+  <li class="ok">CSRF tokens in all POST forms / themes</li>
+  <li class="ok">Cache cleared</li>
+  <li class="ok">Permissions verified (data/cache/uploads/sessions)</li>
+  <li class="ok">Encryption tested (if enabled)</li>
+  <li class="ok">Password migration strategy decided (if legacy)</li>
+  <li class="ok">Emojis & newlines verified after edit</li>
+  <li class="ok">Attachments (optional) tested</li>
+  <li class="ok">Release tagged</li>
+</ul>
+
+<hr>
+<p class="small">DigiOz Guestbook 2.0.6 Upgrade Guide &mdash; Generated for release documentation.</p>
+</body>
+</html>
