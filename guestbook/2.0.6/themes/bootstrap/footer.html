@@ -5,7 +5,7 @@
 <form action="settings.php"  method="POST">
 	<select id="language_selected" name="language_selected" onchange="this.form.submit()">
 	{loop="$lang_select_array"}
-		<option>{$value}</option>
+		<option value="{$value}" {if condition="$value == $current_language"}selected="selected"{/if}>{$value}</option>
 	{/loop}
 	</select>
 </form>
