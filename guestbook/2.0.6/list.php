@@ -33,6 +33,15 @@ raintpl::configure("cache_dir", "cache/" );
 $lang_select_array = array();
 $lang_select_array = getLanguageArray($language_array);
 
+// Determine currently selected language display label
+$current_language = "Select Language";
+if (isset($_SESSION['language_selected_file'])) {
+	$file = $_SESSION['language_selected_file'];
+	foreach ($language_array as $lang) {
+		if ($lang[2] === $file) { $current_language = $lang[0]; break; }
+	}
+}
+
 // Check if logged in
 $user_login_email = "";
 
@@ -57,6 +66,7 @@ $tpl->assign( "goback", $goback );
 $tpl->assign( "langCode", $default_language[1]);
 $tpl->assign( "langCharSet", $default_language[4]);
 $tpl->assign( "lang_select_array", $lang_select_array);
+$tpl->assign( "current_language", $current_language);
 $tpl->assign( "logintxt", $logintxt );
 $tpl->assign( "logouttxt", $logouttxt );
 $tpl->assign( "registertxt", $registertxt );
@@ -163,6 +173,7 @@ for ($i = $startIndex; $i < $endIndex; $i++)
 	$tpl->assign( "langCode", $default_language[1]);
 	$tpl->assign( "langCharSet", $default_language[4]);
 	$tpl->assign( "lang_select_array", $lang_select_array);
+	$tpl->assign( "current_language", $current_language);
 	$tpl->assign( "outputhideemail", $lines[$i]->gbHideEmail); 
 	
 	$html = $tpl->draw( 'list', $return_string = true );
